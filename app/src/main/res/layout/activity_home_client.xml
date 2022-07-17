@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center"
+    tools:context=".client.unnecessary.HomeClient">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+
+        <android.widget.Button
+            android:id="@+id/btn_clientToSearchMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_search_black_48">
+        </android.widget.Button>
+
+        <android.widget.Button
+            android:id="@+id/btn_clientToAppointmentMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_event_black_48">
+        </android.widget.Button>
+
+        <android.widget.Button
+            android:id="@+id/btn_clientToHistoryRecordMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_work_history_black_48">
+        </android.widget.Button>
+
+
+        <android.widget.Button
+            android:id="@+id/btn_clientToNotificationMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_notifications_black_48">
+        </android.widget.Button>
+
+
+        <android.widget.Button
+            android:id="@+id/btn_clientToProfileMenu"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/baseline_manage_accounts_black_48">
+        </android.widget.Button>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

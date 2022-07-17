@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".main.AccountType">
+    
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingBottom="30dp"
+        android:paddingTop="30dp"
+        android:elevation="10dp"
+        android:layout_marginTop="220dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="30dp"
+        android:background="@drawable/background_shape">
+
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="7dp"
+            android:text="Account Type"
+            android:textSize="18sp"/>
+
+        <Spinner
+            android:id="@+id/sp_AccountType"
+            android:layout_width="257dp"
+            android:layout_height="46dp" />
+
+        <TextView
+            android:id="@+id/tv_accountDescription"
+            android:layout_width="251dp"
+            android:layout_height="86dp"
+            android:layout_marginTop="17dp"
+            android:layout_marginBottom="51dp"
+            android:text="*Please choose which account you would like to be"
+            android:textSize="11sp" />
+
+        <Button
+            android:id="@+id/btn_accountType"
+            android:layout_width="246dp"
+            android:layout_height="56dp"
+            android:text="Register"
+            app:backgroundTint="#417D7A" />
+
+    </LinearLayout>
+
+
+
+</ScrollView>

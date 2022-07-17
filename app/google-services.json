@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "286948277844",
+    "project_id": "homerepair-88bbb",
+    "storage_bucket": "homerepair-88bbb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:286948277844:android:c823b0ef07248acaa3b7c1",
+        "android_client_info": {
+          "package_name": "mobile.test.homerepair"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "286948277844-bc9v49qnf2ugi926f1ba133ba7mff99i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5rA6vlGGCO47jOGpsf6jJVHFuLp7DXS8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "286948277844-bc9v49qnf2ugi926f1ba133ba7mff99i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity=""
+    android:layout_marginTop="0dp"
+    android:layout_marginBottom="0dp"
+    android:background="@drawable/background_shape"
+    tools:context=".provider.InProgressAppointmentServiceProvider"
+    >
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="">
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tv_detailServiceName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Service"
+            android:ems="9"
+            android:textAlignment="center"
+            android:inputType="textPersonName"
+            android:background="@drawable/cell_shape_service_offer"
+            android:textSize="13sp"
+            android:fontFamily="@font/keepcalm_medium"
+            android:layout_marginLeft="10dp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+
+        <TextView
+            android:focusable="false"
+            android:id="@+id/tv_detailServicePrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="Price"
+            android:ems="5"
+            android:textAlignment="center"
+            android:inputType="textPersonName"
+            android:background="@drawable/cell_shape_service_offer"
+            android:textSize="13sp"
+            android:fontFamily="@font/keepcalm_medium"
+            android:layout_marginLeft="25dp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+        <net.steamcrafted.materialiconlib.MaterialIconView
+            android:id="@+id/btn_Delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/background_button_delete"
+            android:backgroundTint="#8B0000"
+
+
+            android:textAlignment="gravity"
+            android:textSize="30dp"
+
+            app:materialIcon="minus"
+            app:materialIconColor="@color/white"
+
+            />
+
+    </LinearLayout>
+
+</LinearLayout>
