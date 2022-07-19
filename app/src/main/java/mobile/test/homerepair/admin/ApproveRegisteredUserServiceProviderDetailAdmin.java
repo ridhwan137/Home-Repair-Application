@@ -11,17 +11,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.SearchServices;
+import mobile.test.homerepair.provider.AppointmentScheduleServiceProviderTabLayout;
 
 public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatActivity {
 
@@ -75,6 +83,29 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
             }
         });
 
+        btn_rejectRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectRegistration();
+
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+        btn_acceptRegistration.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                acceptRegistration();
+
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+
+            }
+        });
+
         // End Bracket
     }
 
@@ -108,7 +139,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                                 et_detailCompanyAddress.setText(fullAddress);
 
                                 try {
-                                    et_detailCompanyDateApply.setText(document.getData().get("dateRegister").toString());
+                                    et_detailCompanyDateApply.setText(document.getData().get("dateRegistration").toString());
                                 }catch (Exception e){
                                     e.printStackTrace();
                                 }
@@ -121,6 +152,63 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                     }
                 });
     }
+
+
+
+
+    public void rejectRegistration() {
+        Map<String, Object> appointment = new HashMap<>();
+
+        appointment.put("updateRegistrationStatus", "reject");
+
+        DocumentReference docRef = db.collection("users").document(userID);
+        docRef.update("registrationStatus", appointment.get("updateRegistrationStatus"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
+//                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+
+    }
+
+
+    public void acceptRegistration() {
+
+        Map<String, Object> appointment = new HashMap<>();
+
+        appointment.put("updateRegistrationStatus", "accept");
+
+        DocumentReference docRef = db.collection("users").document(userID);
+        docRef.update("registrationStatus", appointment.get("updateRegistrationStatus"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
+//                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+
+    }
+
+
 
     // End Bracket
 }

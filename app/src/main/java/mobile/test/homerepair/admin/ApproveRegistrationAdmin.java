@@ -72,6 +72,7 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
         db.collection("users")
 //                .orderBy("dateRegistration", Query.Direction.DESCENDING)
                 .whereEqualTo("userType","serviceProvider")
+                .whereEqualTo("registrationStatus","pending")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

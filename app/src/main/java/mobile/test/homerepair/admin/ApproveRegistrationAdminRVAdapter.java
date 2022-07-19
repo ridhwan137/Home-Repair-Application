@@ -49,7 +49,7 @@ public class ApproveRegistrationAdminRVAdapter extends RecyclerView.Adapter<Appr
 
         holder.tv_searchCompanyName.setText(users.getCompanyName());
         holder.tv_searchCompanyServiceType.setText(users.getServiceType());
-        holder.tv_searchCompanyServiceType.setText(users.getDateRegistration());
+        holder.tv_searchCompanyDateApply.setText(users.getDateRegistration());
     }
 
     @Override

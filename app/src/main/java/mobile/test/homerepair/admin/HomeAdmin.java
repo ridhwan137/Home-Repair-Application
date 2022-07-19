@@ -19,16 +19,27 @@ public class HomeAdmin extends AppCompatActivity {
 
     Button btn_adminToApprovalMenu,btn_adminToProfileMenu,btn_adminToUserListMenu;
 
-    String currentUserID;
+    String currentUserID,userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_admin);
 
+        // get Admin ID
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         Log.e("testGetCurrentUserID", currentUserID);
 
+
+        // get Client/Customer/User ID
+        try {
+            Intent intent = getIntent();
+            userID = intent.getStringExtra("userID");
+            Log.e("testUserID",userID);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         btn_adminToProfileMenu = findViewById(R.id.btn_adminToProfileMenu);
         btn_adminToApprovalMenu = findViewById(R.id.btn_adminToApprovalMenu);
