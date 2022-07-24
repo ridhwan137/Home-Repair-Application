@@ -10,7 +10,6 @@ import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -22,8 +21,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import mobile.test.homerepair.R;
@@ -56,6 +58,8 @@ public class EditProfileClient extends AppCompatActivity {
     String TAG = "UserEditProfile";
 
     String oldPasswordFromDB;
+
+    String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     @Override
@@ -243,13 +247,16 @@ public class EditProfileClient extends AppCompatActivity {
         user.put("updateEmail",email);
 
         DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
-
         docRef.update("name",user.get("updateName"),
                 "phone",user.get("updatePhone"),
                 "email",user.get("updateEmail"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
+
+                // Update Field On Other Collection For User Information
+                updateFieldOnOtherCollectionUserInformation(name,phone);
+
                 Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "DocumentSnapshot successfully updated!");
             }
@@ -373,6 +380,10 @@ public class EditProfileClient extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                        // Update Field On Other Collection For User Address
+                        updateFieldOnOtherCollectionUserAddress(address1,address2,postcode,state,city);
+
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
                     }
@@ -498,6 +509,92 @@ public class EditProfileClient extends AppCompatActivity {
 
 
     }
+
+
+    public void updateFieldOnOtherCollection1(){
+        db.collection("appointment")
+                .whereEqualTo("clientID",currentUserID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+
+//                            loadingPB.setVisibility(View.GONE);
+
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : list) {
+
+//                                Appointment appointment = documentSnapshot.toObject(Appointment.class);
+//                                appointmentArrayList.add(appointment);
+                            }
+
+//                            appointmentScheduleClientRVAdapter.notifyDataSetChanged();
+                        } else {
+                            // if the snapshot is empty we are displaying a toast message.
+//                            loadingPB.setVisibility(View.GONE);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    public void updateFieldOnOtherCollectionUserInformation(String name, String phone){
+
+        db.collection("appointment")
+                .whereEqualTo("clientID",currentUserID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
+
+                                // Put update code in here
+                                document.getReference().update("clientName", name);
+                                document.getReference().update("clientPhone", phone);
+                            }
+                        } else {
+                            Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+    public void updateFieldOnOtherCollectionUserAddress(String address,String address2,String postcode, String state, String city){
+
+        db.collection("appointment")
+                .whereEqualTo("clientID",currentUserID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
+
+                                // Put update code in here
+                                document.getReference().update("clientAddress1", address);
+                                document.getReference().update("clientAddress2", address2);
+                                document.getReference().update("clientPostcode", postcode);
+                                document.getReference().update("clientState", state);
+                                document.getReference().update("clientCity", city);
+                            }
+                        } else {
+                            Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
 
 
 
