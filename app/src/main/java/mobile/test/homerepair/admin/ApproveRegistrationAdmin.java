@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,6 +20,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -73,6 +75,7 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
 //                .orderBy("dateRegistration", Query.Direction.DESCENDING)
                 .whereEqualTo("userType","serviceProvider")
                 .whereEqualTo("registrationStatus","pending")
+                .orderBy("dateRegistration", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -82,11 +85,11 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
 
                             loadingPB.setVisibility(View.GONE);
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot d : list) {
+                            for (DocumentSnapshot documentSnapshot : list) {
 
-                                Users c = d.toObject(Users.class);
+                                Users users = documentSnapshot.toObject(Users.class);
 
-                                usersArrayList.add(c);
+                                usersArrayList.add(users);
                             }
 
                             approveRegistrationAdminRVAdapter.notifyDataSetChanged();
@@ -98,7 +101,7 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
                 }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-
+                Log.e("testDate",e.getMessage());
                 Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
             }
         });
