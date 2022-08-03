@@ -158,7 +158,7 @@ public class ListRegisteredUserClientAdmin extends AppCompatActivity implements 
     public void onItemClick(View view, int position){
 
         String userID = listRegisteredUserClientAdminRVAdapter.getItem(position).getUserID();
-        Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailServiceProviderAdmin.class);
+        Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailClientAdmin.class);
         intent.putExtra("userID",userID);
         startActivity(intent);
 
