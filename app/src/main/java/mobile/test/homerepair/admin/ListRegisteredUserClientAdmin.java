@@ -28,12 +28,12 @@ import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.unnecessary.HomeClient;
 import mobile.test.homerepair.model.Users;
 
-public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRegisteredUserAdminRVAdapter.ItemClickListener{
+public class ListRegisteredUserClientAdmin extends AppCompatActivity implements ListRegisteredUserClientAdminRVAdapter.ItemClickListener{
 
 
     private RecyclerView rvUser;
     private ArrayList<Users> usersArrayList;
-    private ListRegisteredUserAdminRVAdapter listRegisteredUserAdminRVAdapter;
+    private ListRegisteredUserClientAdminRVAdapter listRegisteredUserClientAdminRVAdapter;
 
 
     ProgressBar loadingPB;
@@ -44,14 +44,11 @@ public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRe
 
     EditText et_searchService;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_registered_user_admin);
-
-        // It will display registered user for both client and service provider
-        // Make it searchable like search services
-
+        setContentView(R.layout.activity_list_registered_user_client_admin);
 
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
 
@@ -63,14 +60,15 @@ public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRe
         rvUser.setHasFixedSize(true);
         rvUser.setLayoutManager(new LinearLayoutManager(this));
 
-        listRegisteredUserAdminRVAdapter = new ListRegisteredUserAdminRVAdapter(usersArrayList,this);
-        listRegisteredUserAdminRVAdapter.setClickListener(this);
+        listRegisteredUserClientAdminRVAdapter = new ListRegisteredUserClientAdminRVAdapter(usersArrayList,this);
+        listRegisteredUserClientAdminRVAdapter.setClickListener(this);
 
-        rvUser.setAdapter(listRegisteredUserAdminRVAdapter);
+        rvUser.setAdapter(listRegisteredUserClientAdminRVAdapter);
 
 
         db.collection("users")
-//                .whereEqualTo("userType","serviceProvider")
+                .whereEqualTo("userType","client")
+//                .whereEqualTo("registrationStatus","accept")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -86,7 +84,7 @@ public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRe
                                 usersArrayList.add(users);
                             }
 
-                            listRegisteredUserAdminRVAdapter.notifyDataSetChanged();
+                            listRegisteredUserClientAdminRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
                             loadingPB.setVisibility(View.GONE);
@@ -133,10 +131,10 @@ public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRe
                     }
 
                 }
-                listRegisteredUserAdminRVAdapter = new ListRegisteredUserAdminRVAdapter(searchItems, getApplicationContext());
+                listRegisteredUserClientAdminRVAdapter = new ListRegisteredUserClientAdminRVAdapter(searchItems, getApplicationContext());
                 rvUser.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false));
-                listRegisteredUserAdminRVAdapter.setClickListener(ListRegisteredUserAdmin.this);
-                rvUser.setAdapter(listRegisteredUserAdminRVAdapter);
+                listRegisteredUserClientAdminRVAdapter.setClickListener(ListRegisteredUserClientAdmin.this);
+                rvUser.setAdapter(listRegisteredUserClientAdminRVAdapter);
 
             }
         });
@@ -155,10 +153,11 @@ public class ListRegisteredUserAdmin extends AppCompatActivity implements ListRe
         // End Bracket
     }
 
+
     @Override
     public void onItemClick(View view, int position){
 
-        String userID = listRegisteredUserAdminRVAdapter.getItem(position).getUserID();
+        String userID = listRegisteredUserClientAdminRVAdapter.getItem(position).getUserID();
         Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailServiceProviderAdmin.class);
         intent.putExtra("userID",userID);
         startActivity(intent);

@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="mobile.test.homerepair" >
+    package="mobile.test.homerepair">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <!--    add permission to use location permission on apps-->
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.CAMERA" /> <!-- add permission to use location permission on apps -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -17,7 +15,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_logo_v2_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.HomeRepair" >
+        android:theme="@style/Theme.HomeRepair">
+        <activity
+            android:name=".admin.ListRegisteredUserClientAdmin"
+            android:exported="true" />
         <activity
             android:name=".admin.ListRegisteredUserDetailServiceProviderAdmin"
             android:exported="true" />
@@ -31,7 +32,7 @@
             android:name=".admin.ApproveRegisteredUserServiceProviderDetailAdmin"
             android:exported="true" />
         <activity
-            android:name=".admin.ListRegisteredUserAdmin"
+            android:name=".admin.ListRegisteredUserServiceProviderAdmin"
             android:exported="true" />
         <activity
             android:name=".admin.ApproveRegistrationAdmin"
@@ -89,7 +90,7 @@
             android:exported="true" />
         <activity
             android:name=".main.SplashScreen"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -145,7 +146,6 @@
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
 
-
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
@@ -157,9 +157,6 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD5rA6vlGGCO47jOGpsf6jJVHFuLp7DXS8" />
-        <!--        API-Key Got at https://console.cloud.google.com/apis/credentials-->
-
-
     </application>
 
 </manifest>

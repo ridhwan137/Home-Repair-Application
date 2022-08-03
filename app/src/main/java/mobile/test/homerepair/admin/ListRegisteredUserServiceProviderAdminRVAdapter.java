@@ -17,26 +17,26 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Users;
 
-public class ListRegisteredUserAdminRVAdapter extends RecyclerView.Adapter<ListRegisteredUserAdminRVAdapter.ViewHolder>{
+public class ListRegisteredUserServiceProviderAdminRVAdapter extends RecyclerView.Adapter<ListRegisteredUserServiceProviderAdminRVAdapter.ViewHolder>{
 
     private ArrayList<Users> usersArrayList;
     private Context context;
-    private ListRegisteredUserAdminRVAdapter.ItemClickListener mClickListener;
+    private ListRegisteredUserServiceProviderAdminRVAdapter.ItemClickListener mClickListener;
 
 
-    public ListRegisteredUserAdminRVAdapter(ArrayList<Users> usersArrayList, Context context){
+    public ListRegisteredUserServiceProviderAdminRVAdapter(ArrayList<Users> usersArrayList, Context context){
         this.usersArrayList = usersArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public ListRegisteredUserAdminRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ListRegisteredUserServiceProviderAdminRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_list_registered_user_admin_row, parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ListRegisteredUserAdminRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ListRegisteredUserServiceProviderAdminRVAdapter.ViewHolder holder, int position) {
 
         Users users = usersArrayList.get(position);
 
@@ -92,7 +92,7 @@ public class ListRegisteredUserAdminRVAdapter extends RecyclerView.Adapter<ListR
         }
     }
 
-    void setClickListener(ListRegisteredUserAdminRVAdapter.ItemClickListener itemClickListener){
+    void setClickListener(ListRegisteredUserServiceProviderAdminRVAdapter.ItemClickListener itemClickListener){
         this.mClickListener = itemClickListener;
     }
 

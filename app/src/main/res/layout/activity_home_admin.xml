@@ -48,13 +48,23 @@
 
 
         <android.widget.Button
-            android:id="@+id/btn_adminToUserListMenu"
+            android:id="@+id/btn_adminToUserProvider"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_weight="1"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:text="List Of User Menu">
+            android:text="List Of Service Provider">
+        </android.widget.Button>
+
+        <android.widget.Button
+            android:id="@+id/btn_adminToUserClient"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="List Of Client">
         </android.widget.Button>
 
 
