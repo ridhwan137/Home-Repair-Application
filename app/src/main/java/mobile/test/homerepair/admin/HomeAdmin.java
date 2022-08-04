@@ -15,7 +15,7 @@ import mobile.test.homerepair.R;
 public class HomeAdmin extends AppCompatActivity {
 
 
-    Button btn_adminToApprovalMenu,btn_adminToProfileMenu, btn_adminToUserProvider,btn_adminToUserClient;
+    Button btn_adminToApprovalMenu,btn_adminToProfileMenu, btn_adminToUserProvider,btn_adminToUserClient,btn_adminToPendingAppointment;
 
     String currentUserID,userID;
 
@@ -43,6 +43,7 @@ public class HomeAdmin extends AppCompatActivity {
         btn_adminToApprovalMenu = findViewById(R.id.btn_adminToApprovalMenu);
         btn_adminToUserProvider = findViewById(R.id.btn_adminToUserProvider);
         btn_adminToUserClient = findViewById(R.id.btn_adminToUserClient);
+        btn_adminToPendingAppointment = findViewById(R.id.btn_adminToPendingAppointment);
 
 
         btn_adminToProfileMenu.setOnClickListener(new View.OnClickListener() {
@@ -81,6 +82,17 @@ public class HomeAdmin extends AppCompatActivity {
 //                Toast.makeText(getApplicationContext(), "Directing to Searching Service Menu", Toast.LENGTH_SHORT).show();
             }
         });
+
+
+        btn_adminToPendingAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                startActivity(intent);
+//                Toast.makeText(getApplicationContext(), "Directing to Searching Service Menu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
 
     }
 
