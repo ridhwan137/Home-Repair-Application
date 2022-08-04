@@ -31,6 +31,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -293,6 +295,9 @@ public class ProfileServiceProvider extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                        updateFieldOnOtherCollectionUserPicture(url);
+
                         Log.d("EditName", "DocumentSnapshot successfully updated!");
 
 //                        Toast.makeText(getApplicationContext(), "Name updated successfully.", Toast.LENGTH_SHORT).show();
@@ -306,6 +311,28 @@ public class ProfileServiceProvider extends AppCompatActivity {
                 });
     }
 
+
+    public void updateFieldOnOtherCollectionUserPicture(String url){
+
+        db.collection("appointment")
+                .whereEqualTo("providerID",FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
+
+                                // Put update code in here
+                                document.getReference().update("providerPictureURL", url);
+                            }
+                        } else {
+                            Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
 
 
 
