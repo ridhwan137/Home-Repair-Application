@@ -1,0 +1,189 @@
+package mobile.test.homerepair.admin;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ProgressBar;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import net.steamcrafted.materialiconlib.MaterialIconView;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import mobile.test.homerepair.R;
+import mobile.test.homerepair.client.RequestAppointmentRVAdapter;
+import mobile.test.homerepair.model.Services;
+
+    // Implement RecycleViewAdapter From Client Request Appointment To Display In This UI
+
+public class PendingAppointmentDetail extends AppCompatActivity implements PendingAppointmentDetailRVAdapter.ItemClickListener {
+
+    private RecyclerView rvServiceDetail;
+    private ArrayList<Services> servicesArrayList;
+    private PendingAppointmentDetailRVAdapter pendingAppointmentDetailRVAdapter;
+
+    ProgressBar loadingPB;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+    EditText et_appointmentID,et_clientName,et_companyName,et_serviceType,et_appointmentDate,et_appointmentTime;
+
+    MaterialIconView btn_clientDetail,btn_companyDetail;
+
+    Button btn_acceptAppointment,btn_rejectAppointment,btn_cancelAppointment;
+
+    String TAG = "TAG";
+    String appointmentID;
+    String providerID;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pending_appointment_detail);
+
+        Intent intent = getIntent();
+        appointmentID = intent.getStringExtra("appointmentID");
+        Log.e("appointmentID->",appointmentID);
+
+        et_appointmentID = findViewById(R.id.et_appointmentID);
+        et_clientName = findViewById(R.id.et_clientName);
+        et_companyName = findViewById(R.id.et_companyName);
+        et_serviceType = findViewById(R.id.et_serviceType);
+        et_appointmentDate = findViewById(R.id.et_appointmentDate);
+        et_appointmentTime = findViewById(R.id.et_appointmentTime);
+
+        btn_clientDetail = findViewById(R.id.btn_clientDetail);
+        btn_companyDetail = findViewById(R.id.btn_companyDetail);
+
+        btn_acceptAppointment = findViewById(R.id.btn_acceptAppointment);
+        btn_rejectAppointment = findViewById(R.id.btn_rejectAppointment);
+        btn_cancelAppointment = findViewById(R.id.btn_cancelAppointment);
+
+        getAppointmentInfoFromDB();
+
+
+        // Get RecycleView From Client Request Appointment To Display In This UI
+        loadingPB = findViewById(R.id.idProgressBar);
+        rvServiceDetail = findViewById(R.id.rvServiceDetail);
+
+        servicesArrayList = new ArrayList<>();
+        rvServiceDetail.setHasFixedSize(true);
+        rvServiceDetail.setLayoutManager(new LinearLayoutManager(this));
+
+        pendingAppointmentDetailRVAdapter = new PendingAppointmentDetailRVAdapter(servicesArrayList,this);
+        pendingAppointmentDetailRVAdapter.setClickListener(this);
+
+        rvServiceDetail.setAdapter(pendingAppointmentDetailRVAdapter);
+
+//        Log.e("2->providerID->",providerID);
+//        displayServiceOffer();
+
+
+        /////////
+    }
+
+    @Override
+    public void onItemClick(View view, int position){
+
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+    public void getAppointmentInfoFromDB(){
+        db.collection("appointment").whereEqualTo("appointmentID",appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("QueryDocumentSnapshot->", document.getId() + " => " + document.getData());
+
+                                try {
+
+                                    et_appointmentID.setText(document.getData().get("appointmentID").toString());
+                                    et_clientName.setText(document.getData().get("clientName").toString());
+                                    et_companyName.setText(document.getData().get("companyName").toString());
+                                    et_serviceType.setText(document.getData().get("companyServiceType").toString());
+                                    et_appointmentDate.setText(document.getData().get("date").toString());
+                                    et_appointmentTime.setText(document.getData().get("time").toString());
+
+                                    providerID = document.getData().get("providerID").toString();
+                                    Log.e("1->providerID->",providerID);
+
+                                    displayServiceOffer(providerID);
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+    }
+
+    public void displayServiceOffer(String providerID){
+        db.collection("serviceOffer")
+                .whereEqualTo("userID",providerID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+
+                            loadingPB.setVisibility(View.GONE);
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : list) {
+                                Log.d("DocumentSnapshot->", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+
+                                Services services = documentSnapshot.toObject(Services.class);
+                                servicesArrayList.add(services);
+                            }
+
+                            pendingAppointmentDetailRVAdapter.notifyDataSetChanged();
+                        } else {
+                            // if the snapshot is empty we are displaying a toast message.
+                            loadingPB.setVisibility(View.GONE);
+                            Log.e("displayServiceOffer->","empty");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    //////////
+}

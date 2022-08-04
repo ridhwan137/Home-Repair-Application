@@ -159,8 +159,8 @@ public class PendingAppointmentList extends AppCompatActivity implements Pending
     public void onItemClick(View view, int position){
 
         String appointmentID = pendingAppointmentListRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailClientAdmin.class);
-        intent.putExtra("appointmentID->",appointmentID);
+        Intent intent = new Intent(getApplicationContext(), PendingAppointmentDetail.class);
+        intent.putExtra("appointmentID",appointmentID);
         startActivity(intent);
 
 //        Toast.makeText(getApplicationContext(), "Test"+userID, Toast.LENGTH_SHORT).show();

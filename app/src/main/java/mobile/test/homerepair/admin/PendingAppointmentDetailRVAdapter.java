@@ -1,4 +1,4 @@
-package mobile.test.homerepair.client;
+package mobile.test.homerepair.admin;
 
 import android.content.Context;
 import android.util.Log;
@@ -13,28 +13,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.client.RequestAppointmentRVAdapter;
 import mobile.test.homerepair.model.Services;
 
-public class RequestAppointmentRVAdapter extends RecyclerView.Adapter<RequestAppointmentRVAdapter.ViewHolder> {
+public class PendingAppointmentDetailRVAdapter extends RecyclerView.Adapter<PendingAppointmentDetailRVAdapter.ViewHolder> {
 
     public ArrayList<Services> servicesArrayList;
     public Context context;
-    public RequestAppointmentRVAdapter.ItemClickListener mClickListener;
+    public PendingAppointmentDetailRVAdapter.ItemClickListener mClickListener;
 
 
-    public RequestAppointmentRVAdapter(ArrayList<Services> servicesArrayList, Context context){
+    public PendingAppointmentDetailRVAdapter(ArrayList<Services> servicesArrayList, Context context){
         this.servicesArrayList = servicesArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public RequestAppointmentRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public PendingAppointmentDetailRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_request_appointment_row, parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RequestAppointmentRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PendingAppointmentDetailRVAdapter.ViewHolder holder, int position) {
 
         Services services = servicesArrayList.get(position);
 
@@ -80,7 +81,7 @@ public class RequestAppointmentRVAdapter extends RecyclerView.Adapter<RequestApp
         }
     }
 
-    public void setClickListener(RequestAppointmentRVAdapter.ItemClickListener itemClickListener){
+    public void setClickListener(PendingAppointmentDetailRVAdapter.ItemClickListener itemClickListener){
         this.mClickListener = itemClickListener;
     }
 

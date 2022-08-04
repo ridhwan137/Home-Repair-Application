@@ -43,6 +43,7 @@ public class PendingAppointmentListRVAdapter extends RecyclerView.Adapter<Pendin
         holder.tv_clientName.setText(appointment.getClientName());
         holder.tv_providerName.setText(appointment.getCompanyName());
         holder.tv_appointmentDate.setText(appointment.getDate());
+        holder.tv_appointmentTime.setText(appointment.getTime());
 
     }
 
@@ -57,7 +58,7 @@ public class PendingAppointmentListRVAdapter extends RecyclerView.Adapter<Pendin
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final TextView tv_appointmentID, tv_clientName,tv_providerName,tv_appointmentDate;
+        private final TextView tv_appointmentID, tv_clientName,tv_providerName,tv_appointmentDate,tv_appointmentTime;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -67,6 +68,7 @@ public class PendingAppointmentListRVAdapter extends RecyclerView.Adapter<Pendin
             tv_clientName = itemView.findViewById(R.id.tv_clientName);
             tv_providerName = itemView.findViewById(R.id.tv_providerName);
             tv_appointmentDate = itemView.findViewById(R.id.tv_appointmentDate);
+            tv_appointmentTime = itemView.findViewById(R.id.tv_appointmentTime);
 
             itemView.setOnClickListener(this);
         }

@@ -64,9 +64,7 @@ import mobile.test.homerepair.model.Services;
 
 public class RequestAppointment extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,RequestAppointmentRVAdapter.ItemClickListener {
 
-
     private RecyclerView rvServiceDetail;
-
     private ArrayList<Services> servicesArrayList;
     private RequestAppointmentRVAdapter requestAppointmentRVAdapter;
 

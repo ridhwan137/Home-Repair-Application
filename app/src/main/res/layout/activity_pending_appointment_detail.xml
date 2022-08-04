@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".admin.PendingAppointmentList"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:gravity="left">
+
+            <Button
+                android:id="@+id/btn_BackToProviderDetail"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/ic_baseline_arrow_back_ios_24"
+                android:fontFamily="@font/keepcalm_medium" />
+
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginLeft="10dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginRight="50dp"
+                android:text="Pending Appointment Detail"
+                android:textColor="#000000"
+                android:fontFamily="@font/poppins_regular"
+                android:background="#0000"
+                app:backgroundTint="#fff"/>
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_ServicesInformation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="0dp"
+            android:layout_gravity="center"
+            android:fontFamily="@font/poppins"
+            android:text="Services Information"
+            android:textSize="20dp"
+            android:textAlignment="center" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:paddingBottom="30dp"
+            android:paddingTop="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:elevation="10dp"
+            android:background="@drawable/background_shape">
+
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity=""
+                android:layout_marginTop="0dp"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_gravity="center">
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/et_appointmentID"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:hint="Appointment ID"
+                            android:focusable="false"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/black">
+
+                            <EditText
+                                android:id="@+id/et_clientName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:padding="10dp"
+                                android:focusable="false"
+                                android:hint="Client Name"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <net.steamcrafted.materialiconlib.MaterialIconView
+                            android:id="@+id/btn_clientDetail"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:backgroundTint="#36AE7C"
+                            app:materialIcon="arrow_right_bold_box_outline"
+                            app:materialIconColor="@color/black" />
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <com.google.android.material.textfield.TextInputLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:textColorHint="@color/black">
+
+                            <EditText
+                                android:id="@+id/et_companyName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:inputType="text"
+                                android:padding="10dp"
+                                android:focusable="false"
+                                android:hint="Company Name"/>
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                        <net.steamcrafted.materialiconlib.MaterialIconView
+                            android:id="@+id/btn_companyDetail"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_weight="5"
+                            android:layout_gravity="center"
+                            android:layout_marginRight="0dp"
+                            android:layout_marginLeft="0dp"
+                            android:backgroundTint="#36AE7C"
+                            app:materialIcon="arrow_right_bold_box_outline"
+                            app:materialIconColor="@color/black" />
+
+                    </LinearLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/et_serviceType"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:focusable="false"
+                            android:hint="Service Type"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/et_appointmentDate"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:focusable="false"
+                            android:hint="Date"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:textColorHint="@color/black">
+
+                        <EditText
+                            android:id="@+id/et_appointmentTime"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:padding="10dp"
+                            android:focusable="false"
+                            android:hint="Time"/>
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+
+        <TextView
+            android:id="@+id/tv_TypeOfService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:text="Service Offer"
+            android:fontFamily="@font/poppins"
+            android:textSize="20dp"
+            android:textAlignment="center" />
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity=""
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
+            android:elevation="10dp"
+            android:background="@drawable/background_shape">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/textView19"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="Services"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+                    android:layout_marginLeft="0dp"
+
+                    />
+
+                <TextView
+                    android:id="@+id/textView20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textStyle="bold"
+                    android:text="Estimate Price(RM)"
+                    android:textSize="14sp"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:gravity="center"
+
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="28dp" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="1dp"
+                android:gravity="center">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvServiceDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ProgressBar
+                        android:id="@+id/idProgressBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/rvServiceDetail" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp">
+
+            <Button
+                android:id="@+id/btn_rejectAppointment"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginRight="20dp"
+                android:text="Reject"
+                app:backgroundTint="#B5003D" />
+
+            <Button
+                android:id="@+id/btn_acceptAppointment"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:layout_weight="1"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="20dp"
+                android:text="Accept"
+                app:backgroundTint="#417D7A" />
+
+
+
+        </LinearLayout>
+
+
+
+
+        <Button
+            android:id="@+id/btn_cancelAppointment"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="30dp"
+            android:layout_marginLeft="100dp"
+            android:layout_marginRight="100dp"
+            android:text="Cancel"
+            app:backgroundTint="#6A6C6C" />
+
+    </LinearLayout>
+
+
+</ScrollView>
+
+

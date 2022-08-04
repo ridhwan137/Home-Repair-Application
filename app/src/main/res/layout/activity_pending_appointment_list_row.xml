@@ -47,7 +47,7 @@
                 android:hint="Appointment ID"
                 android:inputType="textPersonName"
                 android:layout_marginLeft="0dp"
-                android:textSize="13sp"
+                android:textSize="11sp"
                 tools:layout_editor_absoluteX="60dp"
                 tools:layout_editor_absoluteY="782dp" />
 
@@ -154,6 +154,42 @@
             android:layout_weight="1"
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Date"
+            android:layout_marginLeft="0dp"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="5dp"
+        android:layout_gravity="left">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/keepcalm_medium"
+            android:text="Time :"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+        <TextView
+            android:id="@+id/tv_appointmentTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:fontFamily="@font/keepcalm_medium"
+            android:hint="Time"
             android:layout_marginLeft="0dp"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
