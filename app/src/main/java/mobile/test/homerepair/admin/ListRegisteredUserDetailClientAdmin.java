@@ -74,7 +74,7 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
         btn_editUserInformation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UpdateUserServiceProviderInfoAdmin.class);
+                Intent intent = new Intent(getApplicationContext(), UpdateUserClientInfoAdmin.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
             }

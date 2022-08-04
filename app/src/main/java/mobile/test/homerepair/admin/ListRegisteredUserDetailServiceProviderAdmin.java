@@ -100,8 +100,8 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
                                     et_detailCompanyName.setText(document.getData().get("companyName").toString());
                                     et_detailCompanyNo.setText(document.getData().get("companyNo").toString());
                                     et_detailCompanyServiceType.setText(document.getData().get("serviceType").toString());
-                                    et_detailCompanyPhone.setText(document.getData().get("email").toString());
-                                    et_detailCompanyEmail.setText(document.getData().get("phone").toString());
+                                    et_detailCompanyPhone.setText(document.getData().get("phone").toString());
+                                    et_detailCompanyEmail.setText(document.getData().get("email").toString());
 
                                     // Get Full Address
                                     String fullAddress;

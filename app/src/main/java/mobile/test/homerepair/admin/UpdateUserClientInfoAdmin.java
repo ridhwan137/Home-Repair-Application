@@ -15,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -43,31 +44,48 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.provider.ProfileServiceProvider;
+import mobile.test.homerepair.client.ProfileClient;
 
-public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
+public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference;
+//    FirebaseUser user;
 
     Map<String, Object> user = new HashMap<>();
 
-    EditText et_providerEditCompanyName,et_providerEditCompanyNo,et_providerEditPhone,
-            et_providerEditAddress1,et_providerEditAddress2,et_providerEditPostcode,et_providerEditState,et_providerEditCity,
-            et_providerEditNewPassword,et_providerEditConfirmPassword;
+    EditText et_clientEditName,
+            et_clientEditPhone,
+            et_clientEditEmail,
+            et_clientEditAddress1,
+            et_clientEditAddress2,
+            et_clientEditPostcode,
+            et_clientEditState,
+            et_clientEditCity,
+            et_clientEditOldPassword,
+            et_clientEditNewPassword,
+            et_clientEditConfirmPassword;
 
-    Button btn_providerEditUserUpdate,btn_providerEditAddressUpdate,btn_providerEditPasswordUpdate,
-            btn_backToProviderProfile;
+
+    Button btn_clientEditUserUpdate,
+            btn_clientEditAddressUpdate,
+            btn_clientEditPasswordUpdate,
+            btn_backToClientProfile;
 
     String TAG = "UserEditProfile";
 
-    String providerID;
+    String oldPasswordFromDB;
 
-    ImageView img_pictureCompany;
+    String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    String clientID;
+
+
+    ImageView img_pictureClient;
     String url;
     ProgressDialog progressDialog;
 
@@ -75,48 +93,120 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_update_user_infomation_admin);
+        setContentView(R.layout.activity_update_user_client_info_admin);
 
         Intent intent = getIntent();
-        providerID = intent.getStringExtra("userID");
-        Log.e("testUserID", providerID);
+        clientID = intent.getStringExtra("userID");
+        Log.e("testUserID",clientID);
 
-        btn_backToProviderProfile = findViewById(R.id.btn_backToProviderProfile);
+        btn_backToClientProfile = findViewById(R.id.btn_backToClientProfile);
 
-        img_pictureCompany = findViewById(R.id.img_pictureCompany);
-        et_providerEditCompanyName = findViewById(R.id.et_providerEditCompanyName);
-        et_providerEditCompanyNo = findViewById(R.id.et_providerEditCompanyNo);
-        et_providerEditPhone = findViewById(R.id.et_providerEditPhone);
+        img_pictureClient = findViewById(R.id.img_pictureClient);
 
-        et_providerEditAddress1 = findViewById(R.id.et_providerEditAddress1);
-        et_providerEditAddress2 = findViewById(R.id.et_providerEditAddress2);
-        et_providerEditPostcode = findViewById(R.id.et_providerEditPostcode);
-        et_providerEditState = findViewById(R.id.et_providerEditState);
-        et_providerEditCity = findViewById(R.id.et_providerEditCity);
+        et_clientEditName = findViewById(R.id.et_clientEditName);
+        et_clientEditPhone = findViewById(R.id.et_clientEditPhone);
+        et_clientEditEmail = findViewById(R.id.et_clientEditEmail);
 
-        et_providerEditNewPassword = findViewById(R.id.et_providerEditNewPassword);
-        et_providerEditConfirmPassword = findViewById(R.id.et_providerEditConfirmPassword);
+        et_clientEditAddress1 = findViewById(R.id.et_clientEditAddress1);
+        et_clientEditAddress2 = findViewById(R.id.et_clientEditAddress2);
+        et_clientEditPostcode = findViewById(R.id.et_clientEditPostcode);
+        et_clientEditState = findViewById(R.id.et_clientEditState);
+        et_clientEditCity = findViewById(R.id.et_clientEditCity);
 
-        btn_providerEditUserUpdate = findViewById(R.id.btn_providerEditUserUpdate);
-        btn_providerEditAddressUpdate = findViewById(R.id.btn_providerEditAddressUpdate);
-        btn_providerEditPasswordUpdate = findViewById(R.id.btn_providerEditPasswordUpdate);
+        et_clientEditOldPassword = findViewById(R.id.et_clientEditOldPassword);
+        et_clientEditNewPassword = findViewById(R.id.et_clientEditNewPassword);
+        et_clientEditConfirmPassword = findViewById(R.id.et_clientEditConfirmPassword);
+
+        btn_clientEditUserUpdate = findViewById(R.id.btn_clientEditUserUpdate);
+        btn_clientEditAddressUpdate = findViewById(R.id.btn_clientEditAddressUpdate);
+        btn_clientEditPasswordUpdate = findViewById(R.id.btn_clientEditPasswordUpdate);
 
 
         displayUserProfileInformation();
 
 
-        btn_backToProviderProfile.setOnClickListener(new View.OnClickListener() {
+        btn_clientEditUserUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfileServiceProvider.class);
-                startActivity(intent);
-
-                UpdateUserServiceProviderInfoAdmin.this.finish();
+                updateProfileUserInformation();
             }
         });
 
 
-        img_pictureCompany.setOnClickListener(new View.OnClickListener() {
+        btn_clientEditAddressUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfileUserAddress();
+            }
+        });
+
+
+        btn_clientEditPasswordUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                updateProfileUserPassword();
+            }
+        });
+
+        ////////////
+    }
+
+    public void displayUserProfileInformation(){
+        DocumentReference docRef = db.collection("users").document(clientID);
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+
+                if(task.isSuccessful()){
+                    DocumentSnapshot document = task.getResult();
+
+                    if (document.exists()){
+
+                        try {
+                            url = document.getData().get("pictureURL").toString();
+                            Picasso.with(getApplicationContext()).load(url).into(img_pictureClient);
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            Log.e("testPicture","No Picture");
+                        }
+
+                        et_clientEditName.setText(document.getData().get("name").toString());
+                        et_clientEditPhone.setText(document.getData().get("phone").toString());
+                        et_clientEditEmail.setText(document.getData().get("email").toString());
+
+                        et_clientEditAddress1.setText(document.getData().get("address1").toString());
+                        et_clientEditAddress2.setText(document.getData().get("address2").toString());
+                        et_clientEditPostcode.setText(document.getData().get("postcode").toString());
+                        et_clientEditState.setText(document.getData().get("state").toString());
+                        et_clientEditCity.setText(document.getData().get("city").toString());
+
+                        oldPasswordFromDB = document.getData().get("password").toString();
+
+                        Log.e("getOldPasswordDB",oldPasswordFromDB);
+
+                    }else{
+                        // No document
+                        Log.d(TAG,"no document");
+                    }
+                }else{
+                    Log.d(TAG,"get failed with",task.getException());
+                }
+
+            }
+        });
+
+
+
+        btn_backToClientProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ProfileClient.class);
+                startActivity(intent);
+            }
+        });
+
+
+        img_pictureClient.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean pick = true;
@@ -140,76 +230,6 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         });
 
 
-
-
-
-        btn_providerEditUserUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProfileUserInformation();
-            }
-        });
-
-
-        btn_providerEditAddressUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProfileUserAddress();
-            }
-        });
-
-
-        btn_providerEditPasswordUpdate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                updateProfileUserPassword();
-            }
-        });
-
-        // End Bracket
-    }
-
-    public void displayUserProfileInformation(){
-        DocumentReference docRef = db.collection("users").document(providerID);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-
-                if(task.isSuccessful()){
-                    DocumentSnapshot document = task.getResult();
-
-                    if (document.exists()){
-
-                        try {
-                            url = document.getData().get("pictureURL").toString();
-                            Picasso.with(getApplicationContext()).load(url).into(img_pictureCompany);
-                        }catch (Exception e){
-                            e.printStackTrace();
-                            Log.e("testPicture","No Picture");
-                        }
-
-                        et_providerEditCompanyName.setText(document.getData().get("companyName").toString());
-                        et_providerEditCompanyNo.setText(document.getData().get("companyNo").toString());
-                        et_providerEditPhone.setText(document.getData().get("phone").toString());
-
-                        et_providerEditAddress1.setText(document.getData().get("address1").toString());
-                        et_providerEditAddress2.setText(document.getData().get("address2").toString());
-                        et_providerEditPostcode.setText(document.getData().get("postcode").toString());
-                        et_providerEditState.setText(document.getData().get("state").toString());
-                        et_providerEditCity.setText(document.getData().get("city").toString());
-
-
-
-                    }else{
-                        // No document
-                        Log.d(TAG,"no document");
-                    }
-                }else{
-                    Log.d(TAG,"get failed with",task.getException());
-                }
-
-            }
-        });
     }
 
 
@@ -217,9 +237,9 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
 
 
         // Initialize EditText to variable
-        String companyName = et_providerEditCompanyName.getText().toString();
-        String companyNo = et_providerEditCompanyNo.getText().toString();
-        String phone = et_providerEditPhone.getText().toString();
+        String name = et_clientEditName.getText().toString();
+        String phone = et_clientEditPhone.getText().toString();
+        String email = et_clientEditEmail.getText().toString();
 
 
         //// <---- Validation ---- ////
@@ -227,93 +247,80 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         // <---- EditText Validation
 
         // If All Empty
-        if (companyName.isEmpty() &&
-                companyNo.isEmpty() &&
-                phone.isEmpty()){
+        if (name.isEmpty() &&
+                phone.isEmpty() &&
+                email.isEmpty()){
 
-            et_providerEditCompanyName.setError("Require to fill");
-            et_providerEditCompanyNo.setError("Require to fill");
-            et_providerEditPhone.setError("Require to fill");
+            et_clientEditName.setError("Require to fill");
+            et_clientEditPhone.setError("Require to fill");
+            et_clientEditEmail.setError("Require to fill");
 
             return;
 
         };
 
-        // validation companyName
-        if (companyName.isEmpty()){
-            et_providerEditCompanyName.setError("Require to fill");
+        // validation Name
+        if (name.isEmpty()){
+            et_clientEditName.setError("Require to fill");
             return;
         }
-        if (!companyName.matches("^[a-zA-Z\\s]+$")){
-            et_providerEditCompanyName.setError("Invalid character, input A~Z only");
-            return;
-        }
-
-        if (companyName.length()>100){
-            et_providerEditCompanyName.setError("Name should be less than 100 characters");
+        if (!name.matches("^[a-zA-Z\\s]+$")){
+            et_clientEditName.setError("Invalid character, input A~Z only");
             return;
         }
 
-        // validation companyNo
-        if (companyNo.isEmpty()){
-            et_providerEditCompanyNo.setError("Require to fill");
-            return;
-        }
-        if (!companyNo.matches("^[0-9]+$")){
-            et_providerEditCompanyNo.setError("Invalid character, input 0~9 only");
+        if (name.length()>100){
+            et_clientEditName.setError("Name should be less than 100 characters");
             return;
         }
 
-        if (companyNo.length() < 12){
-            Log.d("identity",companyNo);
-            et_providerEditCompanyNo.setError("Company No should be 12");
-            return;
-        }
-
-        if (companyNo.length() > 12){
-            Log.d("identity",companyNo);
-            et_providerEditCompanyNo.setError("Company No should be 12");
-            return;
-        }
 
 
         // validation phone
         if (phone.isEmpty()){
-            et_providerEditPhone.setError("Require to fill");
+            et_clientEditPhone.setError("Require to fill");
             return;
         }
         if (!phone.matches("^[0-9]+$")){
-            et_providerEditPhone.setError("Invalid character, input 0~9 only");
+            et_clientEditPhone.setError("Invalid character, input 0~9 only");
             return;
         }
 
         if (phone.length() < 10 || phone.length() > 11 ){
-            et_providerEditPhone.setError("Phone number should be at least 10 and at most 11 characters");
+            et_clientEditPhone.setError("Phone number should be at least 10 and at most 11 characters");
             return;
         }
 
-
+        //validation email
+        if (email.isEmpty()){
+            et_clientEditEmail.setError("Require to fill");
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
+            et_clientEditEmail.setError("Invalid email format");
+            return;
+        }
 
         // ----> EditText Validation
 
 
         //// ---- Validation ----> ////
 
-        user.put("updateCompanyName",companyName);
-        user.put("updateCompanyNo",companyNo);
+
+        user.put("updateName",name);
         user.put("updatePhone",phone);
+        user.put("updateEmail",email);
 
-        DocumentReference docRef = db.collection("users").document(providerID);
-
-        docRef.update("companyName",user.get("updateCompanyName"),
-                "companyNo",user.get("updateCompanyNo"),
+        DocumentReference docRef = db.collection("users").document(clientID);
+        docRef.update("name",user.get("updateName"),
                 "phone",user.get("updatePhone"),
                 "email",user.get("updateEmail"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        updateFieldOnOtherCollectionUserInformation(companyName,phone,companyNo);
+                        // Update Field On Other Collection For User Information
+                        updateFieldOnOtherCollectionUserInformation(name,phone);
 
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
@@ -332,13 +339,12 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     public void updateProfileUserAddress(){
 
 
-
         // Initialize EditText to variable
-        String address1 = et_providerEditAddress1.getText().toString();
-        String address2 = et_providerEditAddress2.getText().toString();
-        String postcode = et_providerEditPostcode.getText().toString();
-        String city = et_providerEditCity.getText().toString();
-        String state = et_providerEditState.getText().toString();
+        String address1 = et_clientEditAddress1.getText().toString();
+        String address2 = et_clientEditAddress2.getText().toString();
+        String postcode = et_clientEditPostcode.getText().toString();
+        String state = et_clientEditState.getText().toString();
+        String city = et_clientEditCity.getText().toString();
 
 
         //// <---- Validation ---- ////
@@ -349,73 +355,73 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         if (    address1.isEmpty() &&
                 address2.isEmpty() &&
                 postcode.isEmpty() &&
-                city.isEmpty() &&
-                state.isEmpty()){
+                state.isEmpty() &&
+                city.isEmpty()){
 
-            et_providerEditAddress1.setError("Require to fill");
-            et_providerEditAddress2.setError("Require to fill");
-            et_providerEditPostcode.setError("Require to fill");
-            et_providerEditCity.setError("Require to fill");
-            et_providerEditState.setError("Require to fill");
+            et_clientEditAddress1.setError("Require to fill");
+            et_clientEditAddress2.setError("Require to fill");
+            et_clientEditPostcode.setError("Require to fill");
+            et_clientEditState.setError("Require to fill");
+            et_clientEditCity.setError("Require to fill");
 
             return;
-        };
 
+        };
 
 
         //validation address1
         if (address1.isEmpty()){
-            et_providerEditAddress1.setError("Require to fill");
+            et_clientEditAddress1.setError("Require to fill");
             return;
         }
 
         //validation address2
         if (address2.isEmpty()){
-            et_providerEditAddress2.setError("Require to fill");
+            et_clientEditAddress2.setError("Require to fill");
             return;
         }
 
         // validate postcode
         if (postcode.isEmpty()){
-            et_providerEditPostcode.setError("Require to fill");
+            et_clientEditPostcode.setError("Require to fill");
             return;
         }
         if (!postcode.matches("^[0-9]+$")){
-            et_providerEditPostcode.setError("Invalid character, input 0~9 only");
+            et_clientEditPostcode.setError("Invalid character, input 0~9 only");
             return;
         }
 
 
         // validate city
         if (city.isEmpty()){
-            et_providerEditCity.setError("Require to fill");
+            et_clientEditCity.setError("Require to fill");
             return;
         }
 
 
         if (!city.matches("^[a-zA-Z\\s]+$")){
-            et_providerEditCity.setError("Invalid character, input A~Z only");
+            et_clientEditCity.setError("Invalid character, input A~Z only");
             return;
         }
 
         if (city.length()>30){
-            et_providerEditCity.setError("Name should be less than 30 characters");
+            et_clientEditCity.setError("Name should be less than 30 characters");
             return;
         }
 
         // validation state
         if (state.isEmpty()){
-            et_providerEditState.setError("Require to fill");
+            et_clientEditState.setError("Require to fill");
             return;
         }
 
         if (!state.matches("^[a-zA-Z\\s]+$")){
-            et_providerEditState.setError("Invalid character, input A~Z only");
+            et_clientEditState.setError("Invalid character, input A~Z only");
             return;
         }
 
         if (state.length()>30){
-            et_providerEditState.setError("Name should be less than 30 characters");
+            et_clientEditState.setError("Name should be less than 30 characters");
             return;
         }
 
@@ -424,14 +430,13 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
 
         //// ---- Validation ----> ////
 
-
         user.put("updateAddress1",address1);
         user.put("updateAddress2",address2);
         user.put("updatePostcode",postcode);
         user.put("updateState",state);
         user.put("updateCity",city);
 
-        DocumentReference docRef = db.collection("users").document(providerID);
+        DocumentReference docRef = db.collection("users").document(clientID);
         docRef.update("address1",user.get("updateAddress1"),
                 "address2",user.get("updateAddress2"),
                 "postcode",user.get("updatePostcode"),
@@ -441,6 +446,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                     @Override
                     public void onSuccess(Void aVoid) {
 
+                        // Update Field On Other Collection For User Address
                         updateFieldOnOtherCollectionUserAddress(address1,address2,postcode,state,city);
 
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
@@ -459,10 +465,12 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
 
     public void updateProfileUserPassword(){
 
+        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
 
         // Initialize EditText to variable
-        String newPassword = et_providerEditNewPassword.getText().toString();
-        String confirmPassword = et_providerEditConfirmPassword.getText().toString();
+        String oldPassword = et_clientEditOldPassword.getText().toString();
+        String newPassword = et_clientEditNewPassword.getText().toString();
+        String confirmPassword = et_clientEditConfirmPassword.getText().toString();
 
 
         //// <---- Validation ---- ////
@@ -470,38 +478,52 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         // <---- EditText Validation
 
         // If All Empty
-        if (
+        if (    oldPassword.isEmpty() &&
                 newPassword.isEmpty() &&
                 confirmPassword.isEmpty() ){
 
-            et_providerEditNewPassword.setError("Require to fill");
-            et_providerEditConfirmPassword.setError("Require to fill");
+            et_clientEditOldPassword.setError("Require to fill");
+            et_clientEditNewPassword.setError("Require to fill");
+            et_clientEditConfirmPassword.setError("Require to fill");
+
             return;
 
         };
 
+        //validation old password
+        if (oldPassword.isEmpty()){
+            et_clientEditOldPassword.setError("Require to fill");
+            return;
+        }
+
+        if (!oldPassword.equals(oldPasswordFromDB)){
+            et_clientEditOldPassword.setError("Password not same");
+            return;
+        }
+
+
 
         //validation password
         if (newPassword.isEmpty()){
-            et_providerEditNewPassword.setError("Require to fill");
+            et_clientEditNewPassword.setError("Require to fill");
             return;
         }
 
         if (!newPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,25}$")){
-            et_providerEditNewPassword.setError("Password should contain 0~9, a~z, symbol, more than 8");
+            et_clientEditNewPassword.setError("Password should contain 0~9, a~z, symbol, more than 8");
             return;
         }
 
         //validation confirm password
         if (confirmPassword.isEmpty()){
-            et_providerEditConfirmPassword.setError("Require to fill");
+            et_clientEditConfirmPassword.setError("Require to fill");
             return;
         }
 
         Log.e("getNewPassword",newPassword);
 
         if (!confirmPassword.equals(newPassword)){
-            et_providerEditConfirmPassword.setError("Password not same");
+            et_clientEditConfirmPassword.setError("Password not same");
             return;
         }
         // ----> EditText Validation
@@ -510,17 +532,16 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         //// ---- Validation ----> ////
 
 
+
+
         user.put("updateNewPassword",newPassword);
 
         if (newPassword.equals(confirmPassword)){
-            DocumentReference docRef = db.collection("users").document(providerID);
+            DocumentReference docRef = db.collection("users").document(clientID);
             docRef.update("password",user.get("updateNewPassword"))
                     .addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
-                            Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "DocumentSnapshot successfully updated!");
-
 
                             //Update Password in Authentication
                             FirebaseUser updateUserPassword = FirebaseAuth.getInstance().getCurrentUser();
@@ -533,6 +554,11 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                                 }
                             });
 
+                            Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+
+
                         }
                     }).addOnFailureListener(new OnFailureListener() {
                 @Override
@@ -541,12 +567,13 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                 }
             });
 
+
         }else{
             Toast.makeText(getApplicationContext(), "Password not same", Toast.LENGTH_SHORT).show();
         }
 
-    }
 
+    }
 
 
     private void pickImage() {
@@ -583,7 +610,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                 try {
                     InputStream inputStream = getContentResolver().openInputStream(resultUri);
                     Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                    img_pictureCompany.setImageBitmap(bitmap);
+                    img_pictureClient.setImageBitmap(bitmap);
 
 
 
@@ -599,7 +626,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
-                                    img_pictureCompany.setImageURI(null);
+                                    img_pictureClient.setImageURI(null);
                                     Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
 
                                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -649,10 +676,9 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     }
 
 
-
     public void updatePictureUrl(){
 
-        DocumentReference nameRef = db.collection("users").document(providerID);
+        DocumentReference nameRef = db.collection("users").document(clientID);
         nameRef
                 .update("pictureURL", url)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -675,10 +701,11 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     }
 
 
+
     public void updateFieldOnOtherCollectionUserPicture(String url){
 
         db.collection("appointment")
-                .whereEqualTo("providerID",providerID)
+                .whereEqualTo("clientID",clientID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -688,7 +715,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                                 Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
 
                                 // Put update code in here
-                                document.getReference().update("providerPictureURL", url);
+                                document.getReference().update("clientPictureURL", url);
                             }
                         } else {
                             Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
@@ -698,11 +725,10 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     }
 
 
-
-    public void updateFieldOnOtherCollectionUserInformation(String name, String phone, String companyNo){
+    public void updateFieldOnOtherCollectionUserInformation(String name, String phone){
 
         db.collection("appointment")
-                .whereEqualTo("providerID",providerID)
+                .whereEqualTo("clientID",clientID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -712,11 +738,8 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                                 Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
 
                                 // Put update code in here
-                                document.getReference().update("companyName", name);
-                                document.getReference().update("companyPhone", phone);
-//                                document.getReference().update("companyServiceType", serviceType);
-                                document.getReference().update("companyNo", companyNo);
-
+                                document.getReference().update("clientName", name);
+                                document.getReference().update("clientPhone", phone);
                             }
                         } else {
                             Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
@@ -725,10 +748,11 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                 });
     }
 
-    public void updateFieldOnOtherCollectionUserAddress(String address1,String address2,String postcode, String state, String city){
+
+    public void updateFieldOnOtherCollectionUserAddress(String address,String address2,String postcode, String state, String city){
 
         db.collection("appointment")
-                .whereEqualTo("providerID",providerID)
+                .whereEqualTo("clientID",clientID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -738,11 +762,11 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                                 Log.e("updateFieldOnOtherCollection->", document.getId() + " => " + document.getData());
 
                                 // Put update code in here
-                                document.getReference().update("companyAddress1", address1);
-                                document.getReference().update("companyAddress2", address2);
-                                document.getReference().update("companyPostcode", postcode);
-                                document.getReference().update("companyState", state);
-                                document.getReference().update("companyCity", city);
+                                document.getReference().update("clientAddress1", address);
+                                document.getReference().update("clientAddress2", address2);
+                                document.getReference().update("clientPostcode", postcode);
+                                document.getReference().update("clientState", state);
+                                document.getReference().update("clientCity", city);
                             }
                         } else {
                             Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
@@ -753,5 +777,14 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
 
 
 
-    // End Bracket
+
+    @Override
+    public void onBackPressed()
+    {
+        moveTaskToBack(true);
+    }
+
+
+
+    //////////////
 }
