@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -24,9 +23,8 @@ import mobile.test.homerepair.R;
 public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    FirebaseUser user;
 
-    String userID,providerPictureURL;
+    String userID, clientPictureURL;
     String TAG = "TAG";
 
     EditText et_detailClientName, et_detailClientEmail,
@@ -96,8 +94,8 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 try {
-                                    providerPictureURL = document.getData().get("pictureURL").toString();
-                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureClient);
+                                    clientPictureURL = document.getData().get("pictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(clientPictureURL).into(img_pictureClient);
 
                                     et_detailClientName.setText(document.getData().get("name").toString());
                                     et_detailClientPhone.setText(document.getData().get("email").toString());

@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".admin.AppointmentServiceProviderDetail"
+            android:exported="true" />
+        <activity
+            android:name=".admin.AppointmentClientDetail"
+            android:exported="true" />
+        <activity
             android:name=".admin.PendingAppointmentDetail"
             android:exported="true" />
         <activity

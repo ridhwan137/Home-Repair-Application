@@ -13,7 +13,6 @@ import android.widget.ImageView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -21,11 +20,11 @@ import com.squareup.picasso.Picasso;
 
 import mobile.test.homerepair.R;
 
-public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActivity {
+public class AppointmentServiceProviderDetail extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    String userID,providerPictureURL;
+    String providerID,providerPictureURL;
     String TAG = "TAG";
 
     EditText et_detailCompanyName, et_detailCompanyServiceType, et_detailCompanyEmail,
@@ -35,14 +34,15 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
 
     Button btn_BackToHome,btn_editUserInformation;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list_registered_user_detail_service_provider_admin);
+        setContentView(R.layout.activity_appointment_service_provider_detail);
 
         Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        Log.e("testUserID",userID);
+        providerID = intent.getStringExtra("providerID");
+        Log.e("providerID->",providerID);
 
 
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
@@ -70,20 +70,12 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
         });
 
 
-        btn_editUserInformation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), UpdateUserServiceProviderInfoAdmin.class);
-                intent.putExtra("userID",userID);
-                startActivity(intent);
-            }
-        });
 
-        // End Bracket
+        /////////
     }
 
     public void displayProviderInfoFromDB(){
-        db.collection("users").whereEqualTo("userID",userID)
+        db.collection("users").whereEqualTo("userID",providerID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -128,7 +120,6 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
                 });
     }
 
-    // End Bracket
 
-
+    ////////
 }

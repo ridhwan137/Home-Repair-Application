@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_add_service_offer.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_client_detail.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_service_provider_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_edit_profile_client.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_home_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_in_progress_appointment_service_provider.xml" value="0.259375" />
@@ -12,6 +14,7 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_list_registered_user_client_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_list_registered_user_client_admin_row.xml" value="0.2713541666666667" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_list_registered_user_detail_admin.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_list_registered_user_detail_client_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_list_registered_user_detail_service_provider_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_pending_appointment_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_pending_appointment_list.xml" value="0.259375" />

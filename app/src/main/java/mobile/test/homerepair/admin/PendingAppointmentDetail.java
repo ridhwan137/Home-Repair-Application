@@ -32,7 +32,6 @@ import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.RequestAppointmentRVAdapter;
 import mobile.test.homerepair.model.Services;
 
-    // Implement RecycleViewAdapter From Client Request Appointment To Display In This UI
 
 public class PendingAppointmentDetail extends AppCompatActivity implements PendingAppointmentDetailRVAdapter.ItemClickListener {
 
@@ -52,7 +51,7 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Pendi
 
     String TAG = "TAG";
     String appointmentID;
-    String providerID;
+    String providerID,clientID;
 
 
     @Override
@@ -81,7 +80,6 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Pendi
         getAppointmentInfoFromDB();
 
 
-        // Get RecycleView From Client Request Appointment To Display In This UI
         loadingPB = findViewById(R.id.idProgressBar);
         rvServiceDetail = findViewById(R.id.rvServiceDetail);
 
@@ -94,9 +92,28 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Pendi
 
         rvServiceDetail.setAdapter(pendingAppointmentDetailRVAdapter);
 
-//        Log.e("2->providerID->",providerID);
-//        displayServiceOffer();
 
+        btn_clientDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("2->clientID->",clientID);
+
+                Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
+                intent.putExtra("clientID",clientID);
+                startActivity(intent);
+            }
+        });
+
+        btn_companyDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("2->providerID->",providerID);
+
+                Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
+                intent.putExtra("providerID",providerID);
+                startActivity(intent);
+            }
+        });
 
         /////////
     }
@@ -132,8 +149,12 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Pendi
 
                                     providerID = document.getData().get("providerID").toString();
                                     Log.e("1->providerID->",providerID);
-
                                     displayServiceOffer(providerID);
+
+                                    clientID = document.getData().get("clientID").toString();
+                                    Log.e("1->clientID->",clientID);
+//                                    clientDetail(clientID);
+
 
                                 }catch (Exception e){
                                     e.printStackTrace();
@@ -183,6 +204,12 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Pendi
                 Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    public void clientDetail(String clientID){
+        Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
+        intent.putExtra("clientID",clientID);
+        startActivity(intent);
     }
 
     //////////
