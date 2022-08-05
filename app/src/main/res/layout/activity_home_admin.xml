@@ -87,6 +87,36 @@
             android:text="List Of Pending Appointment">
         </android.widget.Button>
 
+        <android.widget.Button
+            android:id="@+id/btn_adminToRejectAppointment"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="List Of Reject Appointment">
+        </android.widget.Button>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+
+        <android.widget.Button
+            android:id="@+id/btn_adminToCancelAppointment"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:text="List Of Cancel Appointment">
+        </android.widget.Button>
+
 
     </LinearLayout>
 

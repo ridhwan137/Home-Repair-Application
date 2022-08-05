@@ -28,11 +28,11 @@ import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.unnecessary.HomeClient;
 import mobile.test.homerepair.model.Appointment;
 
-public class PendingAppointmentList extends AppCompatActivity implements AppointmentListRVAdapter.ItemClickListener {
+public class RejectAppointmentList extends AppCompatActivity implements AppointmentListRVAdapter.ItemClickListener {
 
-    private RecyclerView rvPendingAppointment;
-    private ArrayList<Appointment> appointmentArrayList;
-    private AppointmentListRVAdapter appointmentListRVAdapter;
+    protected RecyclerView rvAppointment;
+    protected ArrayList<Appointment> appointmentArrayList;
+    protected AppointmentListRVAdapter appointmentListRVAdapter;
 
 
     ProgressBar loadingPB;
@@ -46,26 +46,26 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending_appointment_list);
+        setContentView(R.layout.activity_reject_appointment_list);
 
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
 
         loadingPB = findViewById(R.id.idProgressBar);
-        rvPendingAppointment = findViewById(R.id.rvPendingAppointment);
+        rvAppointment = findViewById(R.id.rvAppointment);
         et_searchService = findViewById(R.id.et_searchService);
 
         appointmentArrayList = new ArrayList<>();
-        rvPendingAppointment.setHasFixedSize(true);
-        rvPendingAppointment.setLayoutManager(new LinearLayoutManager(this));
+        rvAppointment.setHasFixedSize(true);
+        rvAppointment.setLayoutManager(new LinearLayoutManager(this));
 
         appointmentListRVAdapter = new AppointmentListRVAdapter(appointmentArrayList,this);
         appointmentListRVAdapter.setClickListener(this);
 
-        rvPendingAppointment.setAdapter(appointmentListRVAdapter);
+        rvAppointment.setAdapter(appointmentListRVAdapter);
 
 
         db.collection("appointment")
-                .whereEqualTo("appointmentStatus","pending")
+                .whereEqualTo("appointmentStatus","reject")
 //                .whereEqualTo("registrationStatus","accept")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -133,9 +133,9 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
 
                 }
                 appointmentListRVAdapter = new AppointmentListRVAdapter(appointments, getApplicationContext());
-                rvPendingAppointment.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false));
-                appointmentListRVAdapter.setClickListener(PendingAppointmentList.this);
-                rvPendingAppointment.setAdapter(appointmentListRVAdapter);
+                rvAppointment.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false));
+                appointmentListRVAdapter.setClickListener(RejectAppointmentList.this);
+                rvAppointment.setAdapter(appointmentListRVAdapter);
 
             }
         });
@@ -158,7 +158,7 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
     public void onItemClick(View view, int position){
 
         String appointmentID = appointmentListRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getApplicationContext(), PendingAppointmentDetail.class);
+        Intent intent = new Intent(getApplicationContext(), RejectAppointmentDetail.class);
         intent.putExtra("appointmentID",appointmentID);
         startActivity(intent);
 
@@ -171,4 +171,6 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
     }
 
 // End Bracket
+
+
 }

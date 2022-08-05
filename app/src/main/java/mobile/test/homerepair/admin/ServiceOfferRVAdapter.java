@@ -13,29 +13,28 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.RequestAppointmentRVAdapter;
 import mobile.test.homerepair.model.Services;
 
-public class PendingAppointmentDetailRVAdapter extends RecyclerView.Adapter<PendingAppointmentDetailRVAdapter.ViewHolder> {
+public class ServiceOfferRVAdapter extends RecyclerView.Adapter<ServiceOfferRVAdapter.ViewHolder> {
 
     public ArrayList<Services> servicesArrayList;
     public Context context;
-    public PendingAppointmentDetailRVAdapter.ItemClickListener mClickListener;
+    public ServiceOfferRVAdapter.ItemClickListener mClickListener;
 
 
-    public PendingAppointmentDetailRVAdapter(ArrayList<Services> servicesArrayList, Context context){
+    public ServiceOfferRVAdapter(ArrayList<Services> servicesArrayList, Context context){
         this.servicesArrayList = servicesArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public PendingAppointmentDetailRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ServiceOfferRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_request_appointment_row, parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PendingAppointmentDetailRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServiceOfferRVAdapter.ViewHolder holder, int position) {
 
         Services services = servicesArrayList.get(position);
 
@@ -81,7 +80,7 @@ public class PendingAppointmentDetailRVAdapter extends RecyclerView.Adapter<Pend
         }
     }
 
-    public void setClickListener(PendingAppointmentDetailRVAdapter.ItemClickListener itemClickListener){
+    public void setClickListener(ServiceOfferRVAdapter.ItemClickListener itemClickListener){
         this.mClickListener = itemClickListener;
     }
 

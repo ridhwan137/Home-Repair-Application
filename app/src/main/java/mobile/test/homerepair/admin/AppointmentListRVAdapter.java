@@ -14,28 +14,28 @@ import java.util.ArrayList;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Appointment;
 
-public class PendingAppointmentListRVAdapter extends RecyclerView.Adapter<PendingAppointmentListRVAdapter.ViewHolder> {
+public class AppointmentListRVAdapter extends RecyclerView.Adapter<AppointmentListRVAdapter.ViewHolder> {
 
 //    private ArrayList<Appointment> appointmentArrayList;
 
-    private ArrayList<Appointment> appointmentArrayList;
-    private Context context;
-    private PendingAppointmentListRVAdapter.ItemClickListener mClickListener;
+    protected ArrayList<Appointment> appointmentArrayList;
+    protected Context context;
+    protected AppointmentListRVAdapter.ItemClickListener mClickListener;
 
 
-    public PendingAppointmentListRVAdapter(ArrayList<Appointment> appointmentArrayList, Context context){
+    public AppointmentListRVAdapter(ArrayList<Appointment> appointmentArrayList, Context context){
         this.appointmentArrayList = appointmentArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public PendingAppointmentListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AppointmentListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_pending_appointment_list_row, parent,false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull PendingAppointmentListRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AppointmentListRVAdapter.ViewHolder holder, int position) {
 
         Appointment appointment = appointmentArrayList.get(position);
 
@@ -81,7 +81,7 @@ public class PendingAppointmentListRVAdapter extends RecyclerView.Adapter<Pendin
         }
     }
 
-    void setClickListener(PendingAppointmentListRVAdapter.ItemClickListener itemClickListener){
+    public void setClickListener(AppointmentListRVAdapter.ItemClickListener itemClickListener){
         this.mClickListener = itemClickListener;
     }
 

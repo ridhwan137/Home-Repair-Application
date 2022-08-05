@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -18,7 +17,6 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
@@ -27,15 +25,12 @@ import com.google.firebase.firestore.QuerySnapshot;
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
 
-
-public class PendingAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener {
+public class CancelAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener {
 
     private RecyclerView rvServiceDetail;
     private ArrayList<Services> servicesArrayList;
@@ -49,17 +44,14 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
     MaterialIconView btn_clientDetail,btn_companyDetail;
 
-    Button btn_acceptAppointment,btn_rejectAppointment,btn_cancelAppointment;
-
     String TAG = "TAG";
     String appointmentID;
     String providerID,clientID;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pending_appointment_detail);
+        setContentView(R.layout.activity_cancel_appointment_detail);
 
         Intent intent = getIntent();
         appointmentID = intent.getStringExtra("appointmentID");
@@ -74,10 +66,6 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
         btn_clientDetail = findViewById(R.id.btn_clientDetail);
         btn_companyDetail = findViewById(R.id.btn_companyDetail);
-
-        btn_acceptAppointment = findViewById(R.id.btn_acceptAppointment);
-        btn_rejectAppointment = findViewById(R.id.btn_rejectAppointment);
-        btn_cancelAppointment = findViewById(R.id.btn_cancelAppointment);
 
         getAppointmentInfoFromDB();
 
@@ -117,51 +105,9 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
             }
         });
 
-
-        btn_acceptAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("2->providerID->",providerID);
-
-                acceptAppointmentUsingAppointmentStatusFromDB();
-
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
-                intent.putExtra("providerID",providerID);
-                startActivity(intent);
-            }
-        });
-
-
-        btn_rejectAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("2->providerID->",providerID);
-
-                rejectAppointmentUsingAppointmentStatusFromDB();
-
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
-                intent.putExtra("providerID",providerID);
-                startActivity(intent);
-            }
-        });
-
-
-        btn_cancelAppointment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.e("2->providerID->",providerID);
-
-                cancelAppointmentUsingAppointmentStatusFromDB();
-
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
-                intent.putExtra("providerID",providerID);
-                startActivity(intent);
-            }
-        });
-
-
         /////////
     }
+
 
     @Override
     public void onItemClick(View view, int position){
@@ -250,89 +196,6 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
             }
         });
     }
-
-
-    public void rejectAppointmentUsingAppointmentStatusFromDB() {
-        Map<String, Object> appointment = new HashMap<>();
-
-        appointment.put("updateAppointmentStatus", "reject");
-
-        DocumentReference docRef = db.collection("appointment").document(appointmentID);
-        docRef.update("appointmentStatus", appointment.get("updateAppointmentStatus"))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-
-//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
-//                        startActivity(intent);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
-
-    }
-
-
-    public void acceptAppointmentUsingAppointmentStatusFromDB() {
-        // use db update requestStatus and apppointmentStatus to "cancel"
-
-        Map<String, Object> appointment = new HashMap<>();
-
-        appointment.put("updateAppointmentStatus", "in-progress");
-
-        DocumentReference docRef = db.collection("appointment").document(appointmentID);
-        docRef.update("appointmentStatus", appointment.get("updateAppointmentStatus"))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-
-//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
-//                        startActivity(intent);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
-
-    }
-
-
-    public void cancelAppointmentUsingAppointmentStatusFromDB() {
-        // use db update requestStatus and apppointmentStatus to "cancel"
-
-        Map<String, Object> appointment = new HashMap<>();
-
-        appointment.put("updateAppointmentStatus", "cancel");
-
-        DocumentReference docRef = db.collection("appointment").document(appointmentID);
-        docRef.update("appointmentStatus", appointment.get("updateAppointmentStatus"))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
-                        Log.d(TAG, "DocumentSnapshot successfully updated!");
-
-//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
-//                        startActivity(intent);
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.w(TAG, "Error updating document", e);
-            }
-        });
-
-    }
-
 
     public void clientDetail(String clientID){
         Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
