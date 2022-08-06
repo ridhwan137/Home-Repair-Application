@@ -134,7 +134,7 @@ public class InProgressAppointmentServiceProviderRVAdapter extends RecyclerView.
         void onItemClick(View view, int position);
     }
 
-    void setClickListener(InProgressAppointmentServiceProviderRVAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(InProgressAppointmentServiceProviderRVAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

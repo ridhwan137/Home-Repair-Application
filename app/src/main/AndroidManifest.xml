@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".admin.InProgressAppointmentDetail"
+            android:exported="true" />
+        <activity
+            android:name=".admin.InProgressAppointmentList"
+            android:exported="true" />
+        <activity
             android:name=".admin.CancelAppointmentDetail"
             android:exported="true" />
         <activity

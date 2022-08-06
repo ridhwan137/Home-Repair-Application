@@ -17,7 +17,7 @@ public class HomeAdmin extends AppCompatActivity {
 
     Button btn_adminToApprovalMenu,btn_adminToProfileMenu, btn_adminToUserProvider,
             btn_adminToUserClient,btn_adminToPendingAppointment,btn_adminToRejectAppointment,
-            btn_adminToCancelAppointment;
+            btn_adminToCancelAppointment,btn_adminToInProgressAppointment;
 
     String currentUserID,userID;
 
@@ -48,6 +48,7 @@ public class HomeAdmin extends AppCompatActivity {
         btn_adminToPendingAppointment = findViewById(R.id.btn_adminToPendingAppointment);
         btn_adminToRejectAppointment = findViewById(R.id.btn_adminToRejectAppointment);
         btn_adminToCancelAppointment = findViewById(R.id.btn_adminToCancelAppointment);
+        btn_adminToInProgressAppointment = findViewById(R.id.btn_adminToInProgressAppointment);
 
 
         btn_adminToProfileMenu.setOnClickListener(new View.OnClickListener() {
@@ -110,6 +111,16 @@ public class HomeAdmin extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), CancelAppointmentList.class);
+                startActivity(intent);
+//                Toast.makeText(getApplicationContext(), "Directing to Searching Service Menu", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        btn_adminToInProgressAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InProgressAppointmentList.class);
                 startActivity(intent);
 //                Toast.makeText(getApplicationContext(), "Directing to Searching Service Menu", Toast.LENGTH_SHORT).show();
             }

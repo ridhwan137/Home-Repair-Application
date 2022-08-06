@@ -1,7 +1,6 @@
-package mobile.test.homerepair.provider;
+package mobile.test.homerepair.admin;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -14,8 +13,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,20 +25,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.maps.CameraUpdate;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -70,33 +57,43 @@ import java.util.Random;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
+import mobile.test.homerepair.model.Services;
+import mobile.test.homerepair.provider.AppointmentScheduleServiceProviderTabLayout;
+import mobile.test.homerepair.provider.InProgressAppointmentServiceProvider;
+import mobile.test.homerepair.provider.InProgressAppointmentServiceProviderRVAdapter;
 
-public class InProgressAppointmentServiceProvider extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,InProgressAppointmentServiceProviderRVAdapter.ItemClickListener {
+public class InProgressAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener,ServiceOrderRVAdapter.ItemClickListener {
 
+    // 1st RecyclerView to show service offer
+    private RecyclerView rvServiceDetail;
+    private ArrayList<Services> servicesArrayList;
+    private ServiceOfferRVAdapter serviceOfferRVAdapter;
+
+    // 2nd RecyclerView to show service charges
     private RecyclerView rvServiceItem;
     private ArrayList<Order> orderArrayList;
-    private InProgressAppointmentServiceProviderRVAdapter inProgressAppointmentServiceProviderRVAdapter;
+    private ServiceOrderRVAdapter serviceOrderRVAdapter;
 
+    ProgressBar loadingPB,loadingPB2;
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference;
 
-    TextView et_detailClientName, et_detailClientEmail,
-            et_detailClientPhone, et_detailClientAddress, tv_detailClientDate, tv_detailClientTime,tv_totalPrice;
+    EditText et_appointmentID,et_clientName,et_companyName,et_serviceType,et_appointmentDate,et_appointmentTime;
 
-    ImageView img_pictureClient,img_receiptPicture;
-
-    MaterialIconView btn_addItem;
-    EditText et_addServiceOffer,et_addServicePrice;
-
-    Button btn_completeAppointment;
+    MaterialIconView btn_clientDetail,btn_companyDetail;
 
     String TAG = "TAG";
-    String clientPictureURL;
-
     String appointmentID;
-    String currentUserID;
-    String clientID;
+    String providerID,clientID;
+
+    // 2nd RecyclerView declaration
+
+    EditText et_addServicePrice,et_addServiceOffer;
+    Button btn_completeAppointment;
+    MaterialIconView btn_addItem;
+    TextView tv_totalPrice;
+    ImageView img_receiptPicture;
 
     String orderID;
     String serviceName,servicePrice;
@@ -109,46 +106,41 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     double totalPrice;
 
-    String clientAddress1,clientAddress2,clientPostcode,clientCity,clientState;
-    String clientFullAddress;
-
-    ProgressBar loadingPB;
-
-    GoogleMap mGoogleMap;
-    String getFullAddressForMap;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_in_progress_appointment_service_provider);
+        setContentView(R.layout.activity_in_progress_appointment_detail);
+
+        Intent intent = getIntent();
+        appointmentID = intent.getStringExtra("appointmentID");
+        Log.e("appointmentID->",appointmentID);
+
+        et_appointmentID = findViewById(R.id.et_appointmentID);
+        et_clientName = findViewById(R.id.et_clientName);
+        et_companyName = findViewById(R.id.et_companyName);
+        et_serviceType = findViewById(R.id.et_serviceType);
+        et_appointmentDate = findViewById(R.id.et_appointmentDate);
+        et_appointmentTime = findViewById(R.id.et_appointmentTime);
+
+        btn_clientDetail = findViewById(R.id.btn_clientDetail);
+        btn_companyDetail = findViewById(R.id.btn_companyDetail);
+
+        getAppointmentInfoFromDB();
+
+        loadingPB = findViewById(R.id.idProgressBar);
+        rvServiceDetail = findViewById(R.id.rvServiceDetail);
+
+        servicesArrayList = new ArrayList<>();
+        rvServiceDetail.setHasFixedSize(true);
+        rvServiceDetail.setLayoutManager(new LinearLayoutManager(this));
+
+        serviceOfferRVAdapter = new ServiceOfferRVAdapter(servicesArrayList,this);
+        serviceOfferRVAdapter.setClickListener(this);
+
+        rvServiceDetail.setAdapter(serviceOfferRVAdapter);
 
 
-        try {
-            Intent intent = getIntent();
-            appointmentID = intent.getStringExtra("appointmentID");
-            Log.e("testGetAppointmentID", appointmentID);
-        }catch (Exception e){
-            e.printStackTrace();
-            Log.e("testGetAppointmentID", "No-appointmentID");
-        }
-
-
-
-        currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.e("testGetCurrentUserID", currentUserID);
-
-
-        img_pictureClient = findViewById(R.id.img_pictureClient);
-
-        et_detailClientName =  findViewById(R.id.et_detailClientName);
-        et_detailClientEmail =  findViewById(R.id.et_detailClientEmail);
-        et_detailClientPhone =  findViewById(R.id.et_detailClientPhone);
-        et_detailClientAddress =  findViewById(R.id.et_detailClientAddress);
-
-        tv_detailClientDate =  findViewById(R.id.tv_detailClientDate);
-        tv_detailClientTime =  findViewById(R.id.tv_detailClientTime);
-
-        //////
+        //<-- 2nd RecyclerView
         et_addServiceOffer = findViewById(R.id.et_addServiceOffer);
         et_addServicePrice = findViewById(R.id.et_addServicePrice);
         btn_addItem = findViewById(R.id.btn_addItem);
@@ -159,34 +151,24 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
         btn_completeAppointment = findViewById(R.id.btn_completeAppointment);
 
-        loadingPB = findViewById(R.id.idProgressBar);
+        loadingPB2 = findViewById(R.id.idProgressBar2);
         rvServiceItem = findViewById(R.id.rvServiceItem);
 
         orderArrayList = new ArrayList<>();
         rvServiceItem.setHasFixedSize(true);
         rvServiceItem.setLayoutManager(new LinearLayoutManager(this));
 
-        inProgressAppointmentServiceProviderRVAdapter = new InProgressAppointmentServiceProviderRVAdapter(orderArrayList,this);
-        inProgressAppointmentServiceProviderRVAdapter.setClickListener(this);
+        serviceOrderRVAdapter = new ServiceOrderRVAdapter(orderArrayList,this);
+        serviceOrderRVAdapter.setClickListener(this);
 
-        rvServiceItem.setAdapter(inProgressAppointmentServiceProviderRVAdapter);
-
-        // Get Client ID from DB
-        getClientIDFromDB();
-
-        // Get Client Address from DB
-        getClientAddressFromDB();
+        rvServiceItem.setAdapter(serviceOrderRVAdapter);
+        //-->
 
         // Get Receipt URL for Condition
         getReceiptURLForCondition();
 
-        // Display Client Information
-        displayClientInfoFromDB();
-
         // Display Service Provider Offer & Price
-//        displayServiceOfferFromTableServiceOffer();
-
-        displayServiceOfferFromTableOrder();
+//        displayServiceOfferFromTableOrder();
 
         // Display Receipt Picture
         try {
@@ -195,9 +177,6 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
             e.printStackTrace();
             Log.e("No Picture", "No Picture");
         }
-
-
-        initMap();
 
         // Add Service Offered
         btn_addItem.setOnClickListener(new View.OnClickListener() {
@@ -249,9 +228,8 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
                     addTotalPriceToAppointmentDB();
 
-//                addReceiptPictureUrlToDB(); // add picture URL on table appointment
 
-                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
+                    Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                     intent.putExtra("appointmentID",appointmentID);
                     Log.e("testPassAppointmentID",appointmentID);
                     startActivity(intent);
@@ -263,14 +241,36 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
 
 
+        btn_clientDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("2->clientID->",clientID);
+
+                Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
+                intent.putExtra("clientID",clientID);
+                startActivity(intent);
+            }
+        });
+
+        btn_companyDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("2->providerID->",providerID);
+
+                Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
+                intent.putExtra("providerID",providerID);
+                startActivity(intent);
+            }
+        });
+
+        /////////
     }
 
 
 
     @Override
     public void onItemClick(View view, int position){
-        String test = inProgressAppointmentServiceProviderRVAdapter.getItem(position).getOrderID();
-//        Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
@@ -278,51 +278,90 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     }
 
+    public void getProviderID(String getProviderID){
+        providerID = getProviderID;
+    }
 
-    ///// Map Function
-    private void geoLocate() {
-        String locationName = getFullAddressForMap;
+    public void getAppointmentInfoFromDB(){
+        db.collection("appointment").whereEqualTo("appointmentID",appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.d("QueryDocumentSnapshot->", document.getId() + " => " + document.getData());
 
-        Log.e("geoLocate->",locationName);
+                                try {
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+                                    et_appointmentID.setText(document.getData().get("appointmentID").toString());
+                                    et_clientName.setText(document.getData().get("clientName").toString());
+                                    et_companyName.setText(document.getData().get("companyName").toString());
+                                    et_serviceType.setText(document.getData().get("companyServiceType").toString());
+                                    et_appointmentDate.setText(document.getData().get("date").toString());
+                                    et_appointmentTime.setText(document.getData().get("time").toString());
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+                                    providerID = document.getData().get("providerID").toString();
+                                    Log.e("1->providerID->",providerID);
+                                    displayServiceOffer(providerID);
+//                                    getProviderID(providerID);
+                                    displayServiceOfferFromTableOrder(providerID);
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+                                    clientID = document.getData().get("clientID").toString();
+                                    Log.e("1->clientID->",clientID);
+//                                    clientDetail(clientID);
 
 
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
+
+
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+
+                    }
+                });
+    }
+
+    /////////
+    public void displayServiceOffer(String providerID){
+        db.collection("serviceOffer")
+                .whereEqualTo("userID",providerID)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+
+                        if (!queryDocumentSnapshots.isEmpty()) {
+
+                            loadingPB.setVisibility(View.GONE);
+                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
+                            for (DocumentSnapshot documentSnapshot : list) {
+                                Log.d("DocumentSnapshot->", documentSnapshot.getId() + " => " + documentSnapshot.getData());
+
+                                Services services = documentSnapshot.toObject(Services.class);
+                                servicesArrayList.add(services);
+                            }
+
+                            serviceOfferRVAdapter.notifyDataSetChanged();
+                        } else {
+                            // if the snapshot is empty we are displaying a toast message.
+                            loadingPB.setVisibility(View.GONE);
+                            Log.e("displayServiceOffer->","empty");
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(),InProgressAppointmentServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
-
-            startActivity(intent);
-        }
+        });
     }
-
-    private void gotoLocation(double latitude, double longitude) {
-
-        LatLng LatLng = new LatLng(latitude, longitude);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng, 18);
-        mGoogleMap.moveCamera(cameraUpdate);
-        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-    }
-
-    private void initMap() {
-        SupportMapFragment supportMapFragment =  (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        supportMapFragment.getMapAsync(this);
-    }
-    ///// Map Function
-
 
 
     public void getReceiptURLForCondition(){
@@ -346,112 +385,6 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                                     Log.e("getReceiptURLFromDB","No Data In Database");
                                 }
 
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-    }
-
-
-    public void getClientIDFromDB(){
-        db.collection("appointment").whereEqualTo("appointmentID", appointmentID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                try {
-                                    clientID = document.getData().get("clientID").toString();
-
-                                    Log.e("clientID",clientID);
-
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                    Log.e("LogDisplayUserInformation","No Data In Database");
-                                }
-
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-    }
-
-
-    public void getClientAddressFromDB(){
-        db.collection("appointment").whereEqualTo("appointmentID", appointmentID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                try {
-                                    clientAddress1 = document.getData().get("clientAddress1").toString() + ", ";
-                                    clientAddress2 = document.getData().get("clientAddress2").toString() + ",\n";
-                                    clientPostcode = document.getData().get("clientPostcode").toString() + " ";
-                                    clientCity = document.getData().get("clientCity").toString() + ",\n";
-                                    clientState = document.getData().get("clientState").toString();
-
-                                    Log.e("clientAddress1",clientAddress1);
-                                    Log.e("clientAddress2",clientAddress2);
-                                    Log.e("clientPostcode",clientPostcode);
-                                    Log.e("clientCity",clientCity);
-                                    Log.e("clientState",clientState);
-
-                                    clientFullAddress = clientAddress1 + clientAddress2 + clientPostcode + clientCity + clientState;
-
-                                    Log.e("clientFullAddress",clientFullAddress);
-
-                                }catch (Exception e){
-                                    e.printStackTrace();
-                                    Log.e("LogDisplayUserInformation","No Data In Database");
-                                }
-
-                            }
-                        } else {
-                            Log.d(TAG, "Error getting documents: ", task.getException());
-                        }
-
-                    }
-                });
-    }
-
-
-    public void displayClientInfoFromDB(){
-        db.collection("appointment").whereEqualTo("appointmentID",appointmentID)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.d(TAG, document.getId() + " => " + document.getData());
-
-                                clientPictureURL = document.getData().get("clientPictureURL").toString();
-                                Picasso.with(getApplicationContext()).load(clientPictureURL).into(img_pictureClient);
-
-                                et_detailClientName.setText(document.getData().get("clientName").toString());
-                                et_detailClientEmail.setText(document.getData().get("clientEmail").toString());
-                                et_detailClientPhone.setText(document.getData().get("clientPhone").toString());
-                                et_detailClientAddress.setText(clientFullAddress);
-                                tv_detailClientDate.setText(document.getData().get("date").toString());
-                                tv_detailClientTime.setText(document.getData().get("time").toString());
-
-                                getFullAddressForMap = clientFullAddress;
-                                Log.e("displayClientInfoFromDB->",getFullAddressForMap);
-                                geoLocate();
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -505,7 +438,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
         orderID = "order" + randomID;
 
         Map<String, Object> serviceOffer = new HashMap<>();
-        serviceOffer.put("providerID",currentUserID);
+        serviceOffer.put("providerID",providerID);
         serviceOffer.put("clientID",clientID);
         serviceOffer.put("orderID", orderID);
         serviceOffer.put("appointmentID",appointmentID);
@@ -517,11 +450,11 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Intent intent = new Intent(getApplicationContext(), InProgressAppointmentServiceProvider.class);
+                        Intent intent = new Intent(getApplicationContext(), InProgressAppointmentDetail.class);
                         intent.putExtra("appointmentID",appointmentID);
                         startActivity(intent);
 
-                        InProgressAppointmentServiceProvider.this.finish();
+                        InProgressAppointmentDetail.this.finish();
 
                         Toast.makeText(getApplicationContext(), "Services added successfully.", Toast.LENGTH_SHORT).show();
                     }
@@ -534,52 +467,14 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                 });
     }
 
-/*
 
-    public void displayServiceOfferFromTableServiceOffer(){
-        // Display on recycleview and get data from DB collection serviceOffer by User ID
-        db.collection("serviceOffer")
-                .whereEqualTo("userID",currentUserID)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                        if (!queryDocumentSnapshots.isEmpty()) {
-
-                            loadingPB.setVisibility(View.GONE);
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot d : list) {
-
-                                Services c = d.toObject(Services.class);
-                                orderArrayList.add(c);
-                            }
-
-                            inProgressAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
-                        } else {
-                            // if the snapshot is empty we are displaying a toast message.
-                            loadingPB.setVisibility(View.GONE);
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-*/
-
-
-    public void displayServiceOfferFromTableOrder(){
-        Log.e("displayServiceOfferFromTableOrder->providerID",currentUserID);
+    public void displayServiceOfferFromTableOrder(String providerID){
+        Log.e("displayServiceOfferFromTableOrder->providerID",providerID);
         Log.e("displayServiceOfferFromTableOrder->appointmentID",appointmentID);
-//        Log.e("displayServiceOfferFromTableOrder->clientID",clientID);
 
         // Display on recycleview and get data from DB collection order by User ID
         db.collection("order")
-                .whereEqualTo("providerID",currentUserID)
+                .whereEqualTo("providerID",providerID)
 //                .whereEqualTo("clientID",clientID)
                 .whereEqualTo("appointmentID",appointmentID)
                 .get()
@@ -587,12 +482,11 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     @Override
                     public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
-//                        double totalPrice;
                         double servicePrice = 0.00;
 
                         if (!queryDocumentSnapshots.isEmpty()) {
 
-                            loadingPB.setVisibility(View.GONE);
+                            loadingPB2.setVisibility(View.GONE);
                             List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                             for (DocumentSnapshot documentSnapshot : list) {
 
@@ -602,16 +496,13 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                                 servicePrice = servicePrice + Double.parseDouble(order.getServicePrice());
                             }
 
-                            inProgressAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
+                            serviceOrderRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
-                            loadingPB.setVisibility(View.GONE);
+                            loadingPB2.setVisibility(View.GONE);
                         }
 
                         totalPrice = servicePrice;
-
-//                        String.valueOf(totalPrice);
-//                        tv_totalPrice.setText(String.valueOf(totalPrice));
 
                         tv_totalPrice.setText(String.format("%.2f",totalPrice));
 
@@ -661,7 +552,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
         dataTotalPrice.put("totalPrice", getTotalPriceToString);
 
         db.collection("appointment").document(appointmentID)
-                .set(dataTotalPrice,SetOptions.merge())
+                .set(dataTotalPrice, SetOptions.merge())
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -725,7 +616,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     storageReference = FirebaseStorage.getInstance().getReference("images/"+ "receiptpic " +fileName);
 
                     //upload the photo uploaded from camera to storage
-                    storageReference.putFile(getImageUri(InProgressAppointmentServiceProvider.this,bitmap))
+                    storageReference.putFile(getImageUri(InProgressAppointmentDetail.this,bitmap))
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -822,67 +713,10 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
     }
 
 
-    public void updatePictureUrl(){
-        DocumentReference nameRef = db.collection("appointment").document(appointmentID);
-        nameRef
-                .update("receiptPictureURL", urlReceiptPicture)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.e("EditName", "DocumentSnapshot successfully updated!");
-
-//                        Toast.makeText(getApplicationContext(), "updated successfully.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("EditName", "Error updating document", e);
-                    }
-                });
-    }
-
-
     public void addReceiptPictureUrlToDB(){
 
         // Make condition, if urlReceiptPicture not exist it will add new
         // if urlReceiptPicture exist it will merge
-
-
-        /*
-        try {
-            Log.e("addPictureUrlToDB->",getReceiptURLFromDB);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        //////////////////////////////
-        Map<String, Object> completeAppointment = new HashMap<>();
-
-        completeAppointment.put("receiptPictureURL", urlReceiptPicture);
-
-        Log.e("testMapData", String.valueOf(completeAppointment));
-
-        db.collection("appointment").document(appointmentID)
-
-                .set(completeAppointment, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Added successfully.", Toast.LENGTH_SHORT).show();
-                        Log.e("addReceiptPictureUrlToDB->", "Error writing document");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("addReceiptPictureUrlToDB->", "Error writing document", e);
-                    }
-                });
-        //////////////////////////////
-        */
-
 
         if (getReceiptURLFromDB == null){
             try {
@@ -910,7 +744,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                             intent.putExtra("appointmentID",appointmentID);
                             startActivity(intent);
 
-                            InProgressAppointmentServiceProvider.this.finish();
+                            InProgressAppointmentDetail.this.finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -950,40 +784,8 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     }
 
-    public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
-        intent.putExtra("testPassAppointmentID",appointmentID);
-        startActivity(intent);
-    }
 
 
-    ///// Map Function/Method
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
 
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-    }
-    ///// Map Function/Method
-
-
-    @Override
-    public void onBackPressed()
-    {
-        moveTaskToBack(true);
-    }
-
+    //////////
 }
