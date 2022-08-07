@@ -33,7 +33,7 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
 
     ImageView img_pictureCompany;
 
-    Button btn_BackToHome,btn_editUserInformation;
+    Button btn_BackToHome,btn_editUserInformation,btn_editServiceOffer,btn_pendingAppointment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,9 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
 
         et_detailCompanyNo =  findViewById(R.id.et_detailCompanyNo);
         btn_editUserInformation =  findViewById(R.id.btn_editUserInformation);
+        btn_editServiceOffer = findViewById(R.id.btn_editServiceOffer);
+
+        btn_pendingAppointment = findViewById(R.id.btn_pendingAppointment);
 
 
         displayProviderInfoFromDB();
@@ -74,6 +77,25 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), UpdateUserServiceProviderInfoAdmin.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_editServiceOffer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), UpdateServiceOfferOfProvider.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+        btn_pendingAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
             }
