@@ -125,7 +125,7 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
                 acceptAppointmentUsingAppointmentStatusFromDB();
 
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                 intent.putExtra("providerID",providerID);
                 startActivity(intent);
             }
@@ -139,7 +139,7 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
                 rejectAppointmentUsingAppointmentStatusFromDB();
 
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                 intent.putExtra("providerID",providerID);
                 startActivity(intent);
             }
@@ -153,7 +153,7 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
                 cancelAppointmentUsingAppointmentStatusFromDB();
 
-                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                 intent.putExtra("providerID",providerID);
                 startActivity(intent);
             }

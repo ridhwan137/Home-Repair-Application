@@ -32,7 +32,8 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
 
     ImageView img_pictureClient;
 
-    Button btn_BackToHome,btn_editUserInformation;
+    Button btn_BackToHome,btn_editUserInformation,btn_pendingAppointment,
+            btn_rejectAppointment, btn_cancelAppointment,btn_inProgressAppointment,btn_completeAppointment;
 
 
     @Override
@@ -55,6 +56,12 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
         et_detailClientAddress =  findViewById(R.id.et_detailClientAddress);
 
         btn_editUserInformation =  findViewById(R.id.btn_editUserInformation);
+        btn_pendingAppointment =  findViewById(R.id.btn_pendingAppointment);
+
+        btn_rejectAppointment = findViewById(R.id.btn_rejectAppointment);
+        btn_cancelAppointment = findViewById(R.id.btn_cancelAppointment);
+        btn_inProgressAppointment = findViewById(R.id.btn_inProgressAppointment);
+        btn_completeAppointment = findViewById(R.id.btn_completeAppointment);
 
 
         displayProviderInfoFromDB();
@@ -77,6 +84,58 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btn_pendingAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
+
+        btn_rejectAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), RejectAppointmentList.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_cancelAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CancelAppointmentList.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_inProgressAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InProgressAppointmentList.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_completeAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CompleteAppointmentList.class);
+                intent.putExtra("userID",userID);
+                startActivity(intent);
+            }
+        });
+
+
 
         // End Bracket
 
