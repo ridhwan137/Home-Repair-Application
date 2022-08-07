@@ -145,13 +145,13 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
 
         et_addServiceOffer = findViewById(R.id.et_addServiceOffer);
         et_addServicePrice = findViewById(R.id.et_addServicePrice);
-        btn_addItem = findViewById(R.id.btn_addItem);
+//        btn_addItem = findViewById(R.id.btn_addItem);
 
         tv_totalPrice = findViewById(R.id.tv_totalPrice);
 
         img_receiptPicture = findViewById(R.id.img_receiptPicture);
 
-        btn_completeAppointment = findViewById(R.id.btn_completeAppointment);
+//        btn_completeAppointment = findViewById(R.id.btn_completeAppointment);
 
         btn_downloadReceipt = findViewById(R.id.btn_downloadReceipt);
 
