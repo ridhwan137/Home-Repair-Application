@@ -149,7 +149,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         getClientInfoFromDB();
         getClientAddressFromDB();
         getProviderAddressFromDB();
-        displayServiceOffer();
+//        displayServiceOffer();
         initMap();
 
         date_in.setOnClickListener(new View.OnClickListener() {
@@ -311,6 +311,9 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                     et_detailCompanyServiceType.setText(document.getData().get("serviceType").toString());
                                     et_detailCompanyPhone.setText(document.getData().get("phone").toString());
                                     et_detailCompanyEmail.setText(document.getData().get("email").toString());
+
+                                    String getServiceType = document.getData().get("serviceType").toString();
+                                    displayServiceOffer(getServiceType);
 
                                     // Get Full Address
                                     String fullAddress;
@@ -498,9 +501,13 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                 });
     }
 
-    public void displayServiceOffer(){
+    public void displayServiceOffer(String serviceType){
+
+        Log.e("getServiceType->",serviceType);
+
         db.collection("serviceOffer")
-                .whereEqualTo("userID",providerID)
+//                .whereEqualTo("userID",providerID)
+                .whereEqualTo("serviceType",serviceType)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
