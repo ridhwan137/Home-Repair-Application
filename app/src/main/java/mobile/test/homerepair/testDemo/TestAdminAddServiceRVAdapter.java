@@ -89,12 +89,16 @@ public class TestAdminAddServiceRVAdapter extends RecyclerView.Adapter<TestAdmin
             holder.btn_addServiceOffer.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
                     String getServiceTypeID = services.getServiceTypeID();
+                    String getServiceType = services.getServiceType();
 
-                    Toast.makeText(context, "serviceTypeID-> "+ getServiceTypeID , Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(context, "serviceTypeID-> "+ getServiceTypeID , Toast.LENGTH_SHORT).show();
+                    Log.e("serviceTypeID->", getServiceTypeID);
 
-                    Intent intent = new Intent(context, TestAdminAddService.class);
+                    Intent intent = new Intent(context, TestAdminAddServiceOffer.class);
                     intent.putExtra("serviceTypeID",getServiceTypeID);
+                    intent.putExtra("serviceType",getServiceType);
                     context.startActivity(intent);
                 }
             });

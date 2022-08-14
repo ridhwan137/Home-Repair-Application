@@ -97,8 +97,31 @@ public class TestFirebaseDataToSpinner extends AppCompatActivity {
             }
         });
 
-        getData();
+//        getData();
+        db.collection("service").get().addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+            @Override
+            public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
 
+                services = queryDocumentSnapshots;
+                if (queryDocumentSnapshots.size()>0){
+
+
+                    for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots){
+                        arrayServices.add(documentSnapshot.getString("serviceType"));
+                    }
+
+                    adapterServices.notifyDataSetChanged();
+
+                }else{
+                    Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(getApplicationContext(), "No Data", Toast.LENGTH_SHORT).show();
+            }
+        });
         /////
 
 

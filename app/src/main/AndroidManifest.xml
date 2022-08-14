@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".testDemo.TestProviderDisplayServiceOffer"
+            android:exported="true" />
+        <activity
+            android:name=".testDemo.TestAdminAddServiceOffer"
+            android:exported="true" />
+        <activity
             android:name=".main.ForgotPassword"
             android:exported="true" />
         <activity
