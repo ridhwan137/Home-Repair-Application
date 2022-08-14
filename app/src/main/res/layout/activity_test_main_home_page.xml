@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".testDemo.TestMainHomePage"
+    android:orientation="vertical"
+    android:layout_marginTop="50dp">
+
+
+    <Button
+        android:id="@+id/btn_testFirebaseDataToSpinner"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Firebase_Data_To_Spinner"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
+    <Button
+        android:id="@+id/btn_testSendEmail"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Send_Email"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
+</LinearLayout>
