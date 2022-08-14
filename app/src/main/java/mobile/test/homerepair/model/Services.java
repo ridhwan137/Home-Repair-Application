@@ -5,6 +5,28 @@ public class Services {
     String servicePrice;
     String userID;
     String serviceID;
+    String serviceTypeID;
+    String serviceType;
+
+    public String getServiceTypeID() {
+        return serviceTypeID;
+    }
+
+    public void setServiceTypeID(String serviceTypeID) {
+        this.serviceTypeID = serviceTypeID;
+    }
+
+
+
+    public String getServiceType() {
+        return serviceType;
+    }
+
+    public void setServiceType(String serviceType) {
+        this.serviceType = serviceType;
+    }
+
+
 
     public String getServiceID() {
         return serviceID;

@@ -18,6 +18,7 @@ public class TestMainHomePage extends AppCompatActivity {
 
         Button btn_testFirebaseDataToSpinner = findViewById(R.id.btn_testFirebaseDataToSpinner);
         Button btn_testSendEmail = findViewById(R.id.btn_testSendEmail);
+        Button btn_testAdminAddService = findViewById(R.id.btn_testAdminAddService);
 
 
 
@@ -34,6 +35,14 @@ public class TestMainHomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TestSendEmail.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_testAdminAddService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestAdminAddService.class);
                 startActivity(intent);
             }
         });

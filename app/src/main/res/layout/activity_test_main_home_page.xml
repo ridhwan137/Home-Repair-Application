@@ -21,6 +21,16 @@
         app:backgroundTint="#417D7A"/>
 
     <Button
+        android:id="@+id/btn_testAdminAddService"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Admin_Add_Service"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
+    <Button
         android:id="@+id/btn_testSendEmail"
         android:layout_width="350dp"
         android:layout_height="56dp"

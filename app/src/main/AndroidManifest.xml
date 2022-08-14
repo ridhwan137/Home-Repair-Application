@@ -26,6 +26,9 @@
             android:name=".testDemo.TestMainHomePage"
             android:exported="true" />
         <activity
+            android:name=".testDemo.TestAdminAddService"
+            android:exported="true" />
+        <activity
             android:name=".testDemo.TestFirebaseDataToSpinner"
             android:exported="true" />
         <activity
