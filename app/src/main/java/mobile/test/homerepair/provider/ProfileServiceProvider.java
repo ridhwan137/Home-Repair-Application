@@ -42,12 +42,15 @@ import com.theartofdev.edmodo.cropper.CropImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.main.Login;
+import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.provider.EditProfileServiceProvider;
 
 public class ProfileServiceProvider extends AppCompatActivity {
@@ -72,7 +75,7 @@ public class ProfileServiceProvider extends AppCompatActivity {
 
     TextView txt_providerAccountType;
 
-    Button btn_providerEditProfile ;
+    Button btn_providerEditProfile,btn_providerTotalIncome ;
 
     String TAG = "UserProfile";
 
@@ -130,6 +133,7 @@ public class ProfileServiceProvider extends AppCompatActivity {
         et_providerProfileAddress = findViewById(R.id.et_providerProfileAddress);
         et_providerProfilePhone = findViewById(R.id.et_providerProfilePhone);
         et_providerProfileEmail = findViewById(R.id.et_providerProfileEmail);
+        btn_providerTotalIncome = findViewById(R.id.btn_providerTotalIncome);
 
         btn_providerEditProfile = findViewById(R.id.btn_providerEditProfile);
         btLogout = findViewById(R.id.btLogout);
@@ -146,7 +150,8 @@ public class ProfileServiceProvider extends AppCompatActivity {
 
         displayUserProfileInformation();
 
-
+        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        totalIncome(userID);
 
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +182,14 @@ public class ProfileServiceProvider extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), EditProfileServiceProvider.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_providerTotalIncome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HistoryAppointmentServiceProviderTabLayout.class);
                 startActivity(intent);
             }
         });
@@ -395,6 +408,48 @@ public class ProfileServiceProvider extends AppCompatActivity {
             }
         });
     }
+
+    public void totalIncome(String userID) {
+
+        db.collection("appointment")
+                .whereEqualTo("providerID", userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        double totalPrice = 0.00;
+                        String servicePrice = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getUserInfoFromAppointmentDB->", document.getId() + " => " + document.getData());
+
+
+                                try {
+                                    servicePrice = document.getData().get("totalPrice").toString();
+                                    totalPrice += Double.parseDouble(servicePrice);
+
+                                    Log.e("totalIncome->", String.valueOf(totalPrice));
+                                }catch (Exception e){
+                                    Log.e("NullServicePrice->", "servicePrice = null");
+                                }
+
+
+                            }
+
+                            Log.e("totalIncome->", String.valueOf(totalPrice));
+                            btn_providerTotalIncome.setText("Total Income: "+"RM " + String.format("%.2f",totalPrice));
+
+
+                        } else {
+                            Log.e("updateFieldOnOtherCollection->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
 
     public void signOut() {
         // [START auth_sign_out]

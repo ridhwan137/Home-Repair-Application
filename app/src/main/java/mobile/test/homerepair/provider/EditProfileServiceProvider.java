@@ -45,7 +45,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
     String TAG = "UserEditProfile";
 
-    String oldPasswordFromDB;
+//    String oldPasswordFromDB;
 
     String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -68,7 +68,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
         et_providerEditState = findViewById(R.id.et_providerEditState);
         et_providerEditCity = findViewById(R.id.et_providerEditCity);
 
-        et_providerEditOldPassword = findViewById(R.id.et_providerEditOldPassword);
+//        et_providerEditOldPassword = findViewById(R.id.et_providerEditOldPassword);
         et_providerEditNewPassword = findViewById(R.id.et_providerEditNewPassword);
         et_providerEditConfirmPassword = findViewById(R.id.et_providerEditConfirmPassword);
 
@@ -143,7 +143,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
                         et_providerEditState.setText(document.getData().get("state").toString());
                         et_providerEditCity.setText(document.getData().get("city").toString());
 
-                        oldPasswordFromDB = document.getData().get("password").toString();
+//                        oldPasswordFromDB = document.getData().get("password").toString();
 
 
                     }else{
@@ -421,10 +421,10 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
     public void updateProfileUserPassword(){
 
-        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
+//        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
 
         // Initialize EditText to variable
-        String oldPassword = et_providerEditOldPassword.getText().toString();
+//        String oldPassword = et_providerEditOldPassword.getText().toString();
         String newPassword = et_providerEditNewPassword.getText().toString();
         String confirmPassword = et_providerEditConfirmPassword.getText().toString();
 
@@ -434,6 +434,17 @@ public class EditProfileServiceProvider extends AppCompatActivity {
         // <---- EditText Validation
 
         // If All Empty
+
+        if (    newPassword.isEmpty() &&
+                confirmPassword.isEmpty() ){
+
+            et_providerEditNewPassword.setError("Require to fill");
+            et_providerEditConfirmPassword.setError("Require to fill");
+            return;
+        };
+
+
+        /*
         if (    oldPassword.isEmpty() &&
                 newPassword.isEmpty() &&
                 confirmPassword.isEmpty() ){
@@ -442,7 +453,6 @@ public class EditProfileServiceProvider extends AppCompatActivity {
             et_providerEditNewPassword.setError("Require to fill");
             et_providerEditConfirmPassword.setError("Require to fill");
             return;
-
         };
 
         //validation old password
@@ -455,7 +465,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
             et_providerEditOldPassword.setError("Password not same");
             return;
         }
-
+*/
 
 
         //validation password

@@ -56,7 +56,7 @@ public class EditProfileAdmin extends AppCompatActivity {
 
     String TAG = "UserEditProfile";
 
-    String oldPasswordFromDB;
+//    String oldPasswordFromDB;
 
 
     @Override
@@ -69,7 +69,7 @@ public class EditProfileAdmin extends AppCompatActivity {
 
         et_adminEditName = findViewById(R.id.et_adminEditName);
         et_adminEditPhone = findViewById(R.id.et_adminEditPhone);
-        et_adminEditEmail = findViewById(R.id.et_adminEditEmail);
+//        et_adminEditEmail = findViewById(R.id.et_adminEditEmail);
 
         et_adminEditAddress1 = findViewById(R.id.et_adminEditAddress1);
         et_adminEditAddress2 = findViewById(R.id.et_adminEditAddress2);
@@ -77,7 +77,7 @@ public class EditProfileAdmin extends AppCompatActivity {
         et_adminEditState = findViewById(R.id.et_adminEditState);
         et_adminEditCity = findViewById(R.id.et_adminEditCity);
 
-        et_adminEditOldPassword = findViewById(R.id.et_adminEditOldPassword);
+//        et_adminEditOldPassword = findViewById(R.id.et_adminEditOldPassword);
         et_adminEditNewPassword = findViewById(R.id.et_adminEditNewPassword);
         et_adminEditConfirmPassword = findViewById(R.id.et_adminEditConfirmPassword);
 
@@ -136,9 +136,8 @@ public class EditProfileAdmin extends AppCompatActivity {
                         et_adminEditState.setText(document.getData().get("state").toString());
                         et_adminEditCity.setText(document.getData().get("city").toString());
 
-                        oldPasswordFromDB = document.getData().get("password").toString();
-
-                        Log.e("getOldPasswordDB",oldPasswordFromDB);
+//                        oldPasswordFromDB = document.getData().get("password").toString();
+//                        Log.e("getOldPasswordDB",oldPasswordFromDB);
 
                     }else{
                         // No document
@@ -390,20 +389,29 @@ public class EditProfileAdmin extends AppCompatActivity {
 
     public void updateProfileUserPassword(){
 
-        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
+//        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
 
         // Initialize EditText to variable
-        String oldPassword = et_adminEditOldPassword.getText().toString();
+//        String oldPassword = et_adminEditOldPassword.getText().toString();
         String newPassword = et_adminEditNewPassword.getText().toString();
         String confirmPassword = et_adminEditConfirmPassword.getText().toString();
-
 
         //// <---- Validation ---- ////
 
         // <---- EditText Validation
 
         // If All Empty
-        if (    oldPassword.isEmpty() &&
+        if (    newPassword.isEmpty() &&
+                confirmPassword.isEmpty() ){
+
+            et_adminEditNewPassword.setError("Require to fill");
+            et_adminEditConfirmPassword.setError("Require to fill");
+
+            return;
+
+        };
+
+/*        if (    oldPassword.isEmpty() &&
                 newPassword.isEmpty() &&
                 confirmPassword.isEmpty() ){
 
@@ -413,10 +421,11 @@ public class EditProfileAdmin extends AppCompatActivity {
 
             return;
 
-        };
+        };*/
+
 
         //validation old password
-        if (oldPassword.isEmpty()){
+/*        if (oldPassword.isEmpty()){
             et_adminEditOldPassword.setError("Require to fill");
             return;
         }
@@ -425,6 +434,7 @@ public class EditProfileAdmin extends AppCompatActivity {
             et_adminEditOldPassword.setError("Password not same");
             return;
         }
+        */
 
 
 

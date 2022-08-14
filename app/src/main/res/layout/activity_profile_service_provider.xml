@@ -229,6 +229,15 @@
 
         </LinearLayout>
 
+
+        <Button
+            android:id="@+id/btn_providerTotalIncome"
+            android:layout_width="246dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="20dp"
+            android:text="Total Gain"
+            app:backgroundTint="#417D7A" />
+
         <Button
             android:id="@+id/btn_providerEditProfile"
             android:layout_width="246dp"
@@ -236,6 +245,8 @@
             android:layout_marginBottom="80dp"
             android:text="Edit Profile"
             app:backgroundTint="#417D7A" />
+
+
 
     </LinearLayout>
 

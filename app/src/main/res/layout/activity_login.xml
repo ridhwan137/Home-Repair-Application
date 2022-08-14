@@ -34,7 +34,7 @@
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:textColorHint="@color/black"
-            app:startIconDrawable="@drawable/ic_person">
+            app:startIconDrawable="@drawable/ic_baseline_email_24">
 
             <EditText
                 android:id="@+id/etEmail"
@@ -70,21 +70,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="0dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:orientation="horizontal"
-            android:gravity="right">
+            android:orientation="horizontal">
 
+
+            <TextView
+                android:id="@+id/tvForgotPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_gravity="center"
+                android:text="Forgot Password?"/>
 
 
             <TextView
                 android:id="@+id/tvRegister"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="140dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="0dp"
                 android:layout_gravity="center"
                 android:text="No Account? Create Account"
                 android:textAlignment="center" />
@@ -100,6 +111,16 @@
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="Login"
+            android:textColor="@color/white"
+            app:backgroundTint="#417D7A"/>
+
+        <Button
+            android:id="@+id/btn_toTestPage"
+            android:layout_width="350dp"
+            android:layout_height="56dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Test Page"
             android:textColor="@color/white"
             app:backgroundTint="#417D7A"/>
 

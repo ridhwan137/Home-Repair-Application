@@ -26,6 +26,7 @@ import mobile.test.homerepair.admin.HomeAdmin;
 import mobile.test.homerepair.client.ProfileClient;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.provider.ProfileServiceProvider;
+import mobile.test.homerepair.testDemo.TestMainHomePage;
 
 public class Login extends AppCompatActivity {
 
@@ -33,8 +34,8 @@ public class Login extends AppCompatActivity {
     private FirebaseAuth mAuth;
     
     
-    TextView tvRegister;
-    Button btLogin;
+    TextView tvRegister,tvForgotPassword;
+    Button btLogin,btn_toTestPage;
     EditText etEmail,etPassword;
 
     String email,password,userType;
@@ -48,13 +49,23 @@ public class Login extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         tvRegister = findViewById(R.id.tvRegister);
+        tvForgotPassword = findViewById(R.id.tvForgotPassword);
+
         btLogin = findViewById(R.id.btLogin);
 
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
 
+        btn_toTestPage = findViewById(R.id.btn_toTestPage);
 
 
+        tvForgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
 
 
         tvRegister.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +80,15 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 userLogin();
+            }
+        });
+
+
+        btn_toTestPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestMainHomePage.class);
+                startActivity(intent);
             }
         });
     }

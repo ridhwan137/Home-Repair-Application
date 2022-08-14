@@ -57,7 +57,7 @@ public class EditProfileClient extends AppCompatActivity {
 
     String TAG = "UserEditProfile";
 
-    String oldPasswordFromDB;
+//    String oldPasswordFromDB;
 
     String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
@@ -79,7 +79,7 @@ public class EditProfileClient extends AppCompatActivity {
         et_clientEditState = findViewById(R.id.et_clientEditState);
         et_clientEditCity = findViewById(R.id.et_clientEditCity);
 
-        et_clientEditOldPassword = findViewById(R.id.et_clientEditOldPassword);
+//        et_clientEditOldPassword = findViewById(R.id.et_clientEditOldPassword);
         et_clientEditNewPassword = findViewById(R.id.et_clientEditNewPassword);
         et_clientEditConfirmPassword = findViewById(R.id.et_clientEditConfirmPassword);
 
@@ -139,9 +139,8 @@ public class EditProfileClient extends AppCompatActivity {
                         et_clientEditState.setText(document.getData().get("state").toString());
                         et_clientEditCity.setText(document.getData().get("city").toString());
 
-                        oldPasswordFromDB = document.getData().get("password").toString();
-
-                        Log.e("getOldPasswordDB",oldPasswordFromDB);
+//                        oldPasswordFromDB = document.getData().get("password").toString();
+//                        Log.e("getOldPasswordDB",oldPasswordFromDB);
 
                     }else{
                         // No document
@@ -400,10 +399,10 @@ public class EditProfileClient extends AppCompatActivity {
 
     public void updateProfileUserPassword(){
 
-        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
+//        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
 
         // Initialize EditText to variable
-        String oldPassword = et_clientEditOldPassword.getText().toString();
+//        String oldPassword = et_clientEditOldPassword.getText().toString();
         String newPassword = et_clientEditNewPassword.getText().toString();
         String confirmPassword = et_clientEditConfirmPassword.getText().toString();
 
@@ -412,6 +411,18 @@ public class EditProfileClient extends AppCompatActivity {
 
         // <---- EditText Validation
 
+        // If All Empty
+        if (    newPassword.isEmpty() &&
+                confirmPassword.isEmpty() ){
+
+            et_clientEditNewPassword.setError("Require to fill");
+            et_clientEditConfirmPassword.setError("Require to fill");
+
+            return;
+
+        };
+
+/*
         // If All Empty
         if (    oldPassword.isEmpty() &&
                 newPassword.isEmpty() &&
@@ -424,7 +435,9 @@ public class EditProfileClient extends AppCompatActivity {
             return;
 
         };
+        */
 
+/*
         //validation old password
         if (oldPassword.isEmpty()){
             et_clientEditOldPassword.setError("Require to fill");
@@ -435,6 +448,7 @@ public class EditProfileClient extends AppCompatActivity {
             et_clientEditOldPassword.setError("Password not same");
             return;
         }
+*/
 
 
 

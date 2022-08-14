@@ -17,6 +17,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".main.ForgotPassword"
+            android:exported="true" />
+        <activity
+            android:name=".testDemo.TestSendEmail"
+            android:exported="true" />
+        <activity
+            android:name=".testDemo.TestMainHomePage"
+            android:exported="true" />
+        <activity
+            android:name=".testDemo.TestFirebaseDataToSpinner"
+            android:exported="true" />
+        <activity
             android:name=".admin.UpdateServiceOfferOfProvider"
             android:exported="true" />
         <activity

@@ -127,7 +127,7 @@ public class ProfileAdmin extends AppCompatActivity {
         btn_adminEditProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), EditProfileClient.class);
+                Intent intent = new Intent(getApplicationContext(), EditProfileAdmin.class);
                 startActivity(intent);
             }
         });
