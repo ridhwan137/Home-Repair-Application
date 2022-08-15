@@ -84,25 +84,10 @@
     </LinearLayout>
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity=""
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="30dp"
-        android:elevation="10dp"
-        android:background="@drawable/background_shape">
-
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginTop="1dp"
             android:layout_weight="1"
             android:gravity="center">
 
@@ -135,10 +120,6 @@
 
 
         </LinearLayout>
-
-
-
-    </LinearLayout>
 
 
     <!--    <RelativeLayout

@@ -8,8 +8,11 @@
     android:orientation="vertical"
     android:gravity=""
     android:clickable="true"
-    android:layout_marginTop="0dp"
-    android:layout_marginBottom="0dp"
+    android:layout_marginTop="10dp"
+    android:layout_marginLeft="30dp"
+    android:layout_marginRight="30dp"
+    android:layout_marginBottom="30dp"
+    android:elevation="10dp"
     android:background="@drawable/background_shape"
     tools:context=".admin.ListRegisteredUserServiceProviderAdmin"
     >

@@ -53,12 +53,13 @@
 
         <android.widget.Button
             android:id="@+id/btn_adminToUserProvider"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:background="@drawable/background_shape"
             android:layout_weight="1"
             android:elevation="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:stateListAnimator="@null"
+            android:layout_margin="20dp"
             android:text="List Of Service Provider">
         </android.widget.Button>
 
@@ -69,19 +70,20 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal"
         android:gravity="center">
 
 
         <android.widget.Button
             android:id="@+id/btn_adminToUserClient"
-            android:layout_width="100dp"
+            android:layout_width="match_parent"
             android:layout_height="150dp"
+            android:background="@drawable/background_shape"
             android:layout_weight="1"
             android:elevation="10dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
+            android:stateListAnimator="@null"
+            android:layout_margin="20dp"
             android:text="List Of Client">
         </android.widget.Button>
 
