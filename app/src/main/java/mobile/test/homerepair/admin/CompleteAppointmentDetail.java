@@ -243,9 +243,13 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
                                     providerID = document.getData().get("providerID").toString();
                                     Log.e("1->providerID->",providerID);
-                                    displayServiceOffer(providerID);
+//                                    displayServiceOffer(providerID);
                                     displayServiceOfferFromTableOrder(providerID);
 
+
+                                    String serviceType = document.getData().get("companyServiceType").toString();
+                                    Log.e("1->serviceType->",serviceType);
+                                    displayServiceOffer(serviceType);
 
                                     clientID = document.getData().get("clientID").toString();
                                     Log.e("1->clientID->",clientID);
@@ -267,9 +271,9 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
     }
 
 
-    public void displayServiceOffer(String providerID){
+    public void displayServiceOffer(String serviceType){
         db.collection("serviceOffer")
-                .whereEqualTo("userID",providerID)
+                .whereEqualTo("serviceType",serviceType)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

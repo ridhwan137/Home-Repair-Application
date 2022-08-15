@@ -316,9 +316,14 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
                                     providerID = document.getData().get("providerID").toString();
                                     Log.e("1->providerID->",providerID);
-                                    displayServiceOffer(providerID);
+//                                    displayServiceOffer(providerID);
 //                                    getProviderID(providerID);
                                     displayServiceOfferFromTableOrder(providerID);
+
+
+                                    String serviceType = document.getData().get("companyServiceType").toString();
+                                    Log.e("1->serviceType->",serviceType);
+                                    displayServiceOffer(serviceType);
 
                                     clientID = document.getData().get("clientID").toString();
                                     Log.e("1->clientID->",clientID);
@@ -341,9 +346,9 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
     }
 
     /////////
-    public void displayServiceOffer(String providerID){
+    public void displayServiceOffer(String serviceType){
         db.collection("serviceOffer")
-                .whereEqualTo("userID",providerID)
+                .whereEqualTo("serviceType",serviceType)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

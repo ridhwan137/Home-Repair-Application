@@ -53,7 +53,7 @@
             android:name=".testDemo.TestFirebaseDataToSpinner"
             android:exported="true" />
         <activity
-            android:name=".admin.UpdateServiceOfferOfProvider"
+            android:name=".admin.unnecessary.UpdateServiceOfferOfProvider"
             android:exported="true" />
         <activity
             android:name=".admin.CompleteAppointmentDetail"

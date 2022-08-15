@@ -32,7 +32,7 @@
                 android:elevation="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:text="Approval Menu">
+                android:text="Registration Approval">
             </android.widget.Button>
 
 
@@ -44,7 +44,7 @@
                 android:elevation="10dp"
                 android:layout_marginRight="20dp"
                 android:layout_marginLeft="20dp"
-                android:text="Profile Menu">
+                android:text="Admin Profile">
             </android.widget.Button>
 
         </LinearLayout>

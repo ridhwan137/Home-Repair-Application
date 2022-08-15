@@ -21,8 +21,6 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.admin.UpdateServiceOfferOfProvider;
-import mobile.test.homerepair.admin.UpdateServiceOfferRVAdapter;
 import mobile.test.homerepair.model.Services;
 
 public class TestAdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<TestAdminAddServiceOfferRVAdapter.ViewHolder>{

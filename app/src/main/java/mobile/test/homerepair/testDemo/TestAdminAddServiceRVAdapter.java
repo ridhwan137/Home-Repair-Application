@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,9 +21,6 @@ import net.steamcrafted.materialiconlib.MaterialIconView;
 import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.admin.ListRegisteredUserDetailServiceProviderAdmin;
-import mobile.test.homerepair.admin.UpdateServiceOfferOfProvider;
-import mobile.test.homerepair.admin.UpdateServiceOfferRVAdapter;
 import mobile.test.homerepair.model.Services;
 
 public class TestAdminAddServiceRVAdapter extends RecyclerView.Adapter<TestAdminAddServiceRVAdapter.ViewHolder>{

@@ -56,6 +56,7 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
     String TAG = "TAG";
     String appointmentID;
     String providerID,clientID;
+    String serviceType;
 
 
     @Override
@@ -209,7 +210,12 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
                                     providerID = document.getData().get("providerID").toString();
                                     Log.e("1->providerID->",providerID);
-                                    displayServiceOffer(providerID);
+//                                    displayServiceOffer(providerID);
+
+
+                                    serviceType = document.getData().get("companyServiceType").toString();
+                                    Log.e("1->serviceType->",serviceType);
+                                    displayServiceOffer(serviceType);
 
                                     clientID = document.getData().get("clientID").toString();
                                     Log.e("1->clientID->",clientID);
@@ -231,9 +237,9 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
                 });
     }
 
-    public void displayServiceOffer(String providerID){
+    public void displayServiceOffer(String serviceType){
         db.collection("serviceOffer")
-                .whereEqualTo("userID",providerID)
+                .whereEqualTo("serviceType",serviceType)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

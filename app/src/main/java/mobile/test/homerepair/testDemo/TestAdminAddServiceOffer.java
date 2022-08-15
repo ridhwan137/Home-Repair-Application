@@ -19,7 +19,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
@@ -31,8 +30,6 @@ import java.util.Random;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.admin.ListRegisteredUserDetailServiceProviderAdmin;
-import mobile.test.homerepair.admin.UpdateServiceOfferOfProvider;
-import mobile.test.homerepair.admin.UpdateServiceOfferRVAdapter;
 import mobile.test.homerepair.model.Services;
 
 public class TestAdminAddServiceOffer extends AppCompatActivity implements TestAdminAddServiceOfferRVAdapter.ItemClickListener{

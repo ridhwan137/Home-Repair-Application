@@ -1,4 +1,4 @@
-package mobile.test.homerepair.admin;
+package mobile.test.homerepair.admin.unnecessary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Random;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.admin.ListRegisteredUserDetailServiceProviderAdmin;
 import mobile.test.homerepair.model.Services;
 
 public class UpdateServiceOfferOfProvider extends AppCompatActivity implements UpdateServiceOfferRVAdapter.ItemClickListener{

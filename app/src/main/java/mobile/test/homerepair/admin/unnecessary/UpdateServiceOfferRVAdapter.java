@@ -1,4 +1,4 @@
-package mobile.test.homerepair.admin;
+package mobile.test.homerepair.admin.unnecessary;
 
 import android.app.Activity;
 import android.content.Context;
