@@ -343,8 +343,6 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                providerPictureURL = document.getData().get("providerPictureURL").toString();
-                                Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
 
                                 et_detailCompanyName.setText(document.getData().get("companyName").toString());
                                 et_detailCompanyServiceType.setText(document.getData().get("companyServiceType").toString());
@@ -357,6 +355,15 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                                 getFullAddressForMap = companyFullAddress;
                                 Log.e("displayClientInfoFromDB->",getFullAddressForMap);
                                 geoLocate();
+
+
+                                try {
+                                    providerPictureURL = document.getData().get("providerPictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());

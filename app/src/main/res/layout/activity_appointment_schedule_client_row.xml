@@ -34,6 +34,7 @@
 
         <ImageView
             android:id="@+id/img_pictureCompany"
+            android:src="@drawable/profilepicturenoimage"
             android:layout_width="150dp"
             android:layout_height="150dp" />
 

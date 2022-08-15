@@ -694,7 +694,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
             //create appointment id by date
             Date currentDate = new Date();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyy");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyy");
 
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
 

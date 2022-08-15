@@ -351,6 +351,7 @@ public class RegisterClient extends AppCompatActivity {
         user.put("email", email);
         user.put("password", password);
         user.put("userType","client");
+        user.put("pictureURL","https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=fe7e401f-422e-4c95-9308-2e5a441e0bcb");
 //        user.put("userType","admin");
         user.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
 

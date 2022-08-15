@@ -1,6 +1,7 @@
 package mobile.test.homerepair.client;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -44,9 +46,17 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
     public void onBindViewHolder(@NonNull SearchServicesRVAdapter.ViewHolder holder, int position) {
         Users users = usersArrayList.get(position);
 
-        String pictureURL = null;
-        pictureURL = users.getPictureURL();
-        Picasso.with(context).load(pictureURL).into(holder.img_searchCompany);
+        try{
+            String pictureURL = null;
+            pictureURL = users.getPictureURL();
+            Picasso.with(context).load(pictureURL).into(holder.img_searchCompany);
+        }catch (Exception e){
+            holder.img_searchCompany.setImageResource(R.drawable.profilepicturenoimage);
+//            holder.img_searchCompany.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.profilepicturenoimage));
+            e.printStackTrace();
+        }
+
+
 
         holder.tv_searchCompanyName.setText(users.getCompanyName());
         holder.tv_searchCompanyServiceType.setText(users.getServiceType());

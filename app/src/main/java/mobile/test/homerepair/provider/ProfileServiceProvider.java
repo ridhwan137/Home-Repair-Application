@@ -249,7 +249,7 @@ public class ProfileServiceProvider extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     ivProfile.setImageURI(null);
-                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded",Toast.LENGTH_SHORT).show();
 
                                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
@@ -311,7 +311,7 @@ public class ProfileServiceProvider extends AppCompatActivity {
 
                         updateFieldOnOtherCollectionUserPicture(url);
 
-                        Log.d("EditName", "DocumentSnapshot successfully updated!");
+                        Log.d("updatePicture", "DocumentSnapshot successfully updated!");
 
 //                        Toast.makeText(getApplicationContext(), "Name updated successfully.", Toast.LENGTH_SHORT).show();
                     }

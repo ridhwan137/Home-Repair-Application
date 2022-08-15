@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -49,10 +50,17 @@ public class HistoryAppointmentClientRVAdapter extends RecyclerView.Adapter<Hist
     public void onBindViewHolder(@NonNull HistoryAppointmentClientRVAdapter.ViewHolder holder, int position) {
         Appointment appointment = appointmentArrayList.get(position);
 
+        try{
+            pictureURL = appointment.getProviderPictureURL();
+            Picasso.with(context).load(pictureURL).into(holder.img_pictureCompany);
+        }catch (Exception e){
+            e.printStackTrace();
 
-        String pictureURL = null;
-        pictureURL = appointment.getProviderPictureURL();
-        Picasso.with(context).load(pictureURL).into(holder.img_pictureCompany);
+//            holder.img_pictureCompany.setImageDrawable(ContextCompat.getDrawable(context,R.drawable.profilepicturenoimage));
+//            holder.img_pictureCompany.setImageResource(R.drawable.profilepicturenoimage);
+//            holder.img_pictureCompany.setImageResource(android.R.color.transparent);
+
+        }
 
         holder.et_detailCompanyName.setText(appointment.getCompanyName());
         holder.et_detailCompanyServiceType.setText(appointment.getCompanyServiceType());
@@ -71,6 +79,8 @@ public class HistoryAppointmentClientRVAdapter extends RecyclerView.Adapter<Hist
 
         holder.tv_detailCompanyDate.setText(appointment.getDate());
         holder.tv_detailCompanyTime.setText(appointment.getTime());
+
+
 
 
         ///////
