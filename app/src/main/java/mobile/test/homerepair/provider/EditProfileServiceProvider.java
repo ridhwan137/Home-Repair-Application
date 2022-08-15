@@ -36,9 +36,11 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
     Map<String, Object> user = new HashMap<>();
 
-    EditText et_providerEditCompanyName,et_providerEditCompanyNo,et_providerEditServiceType,et_providerEditPhone,et_providerEditEmail,
+    EditText et_providerEditCompanyName,et_providerEditCompanyNo,et_providerEditPhone,et_providerEditEmail,
             et_providerEditAddress1,et_providerEditAddress2,et_providerEditPostcode,et_providerEditState,et_providerEditCity,
             et_providerEditOldPassword,et_providerEditNewPassword,et_providerEditConfirmPassword;
+
+//    EditText et_providerEditServiceType;
 
     Button btn_providerEditUserUpdate,btn_providerEditAddressUpdate,btn_providerEditPasswordUpdate,
             btn_backToProviderProfile;
@@ -58,7 +60,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
         et_providerEditCompanyName = findViewById(R.id.et_providerEditCompanyName);
         et_providerEditCompanyNo = findViewById(R.id.et_providerEditCompanyNo);
-        et_providerEditServiceType = findViewById(R.id.et_providerEditServiceType);
+//        et_providerEditServiceType = findViewById(R.id.et_providerEditServiceType);
         et_providerEditPhone = findViewById(R.id.et_providerEditPhone);
         et_providerEditEmail = findViewById(R.id.et_providerEditEmail);
 
@@ -113,10 +115,6 @@ public class EditProfileServiceProvider extends AppCompatActivity {
             }
         });
 
-
-
-
-
     }
 
 
@@ -134,7 +132,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
                         et_providerEditCompanyName.setText(document.getData().get("companyName").toString());
                         et_providerEditCompanyNo.setText(document.getData().get("companyNo").toString());
                         et_providerEditPhone.setText(document.getData().get("phone").toString());
-                        et_providerEditServiceType.setText(document.getData().get("serviceType").toString());
+//                        et_providerEditServiceType.setText(document.getData().get("serviceType").toString());
                         et_providerEditEmail.setText(document.getData().get("email").toString());
 
                         et_providerEditAddress1.setText(document.getData().get("address1").toString());
@@ -165,7 +163,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
         // Initialize EditText to variable
         String companyName = et_providerEditCompanyName.getText().toString();
         String companyNo = et_providerEditCompanyNo.getText().toString();
-        String serviceType = et_providerEditServiceType.getText().toString();
+//        String serviceType = et_providerEditServiceType.getText().toString();
         String phone = et_providerEditPhone.getText().toString();
         String email = et_providerEditEmail.getText().toString();
 
@@ -260,7 +258,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
         user.put("updateCompanyName",companyName);
         user.put("updateCompanyNo",companyNo);
-        user.put("updateServiceType",serviceType);
+//        user.put("updateServiceType",serviceType);
         user.put("updatePhone",phone);
         user.put("updateEmail",email);
 
@@ -268,14 +266,13 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
         docRef.update("companyName",user.get("updateCompanyName"),
                 "companyNo",user.get("updateCompanyNo"),
-                "serviceType",user.get("updateServiceType"),
                 "phone",user.get("updatePhone"),
                 "email",user.get("updateEmail"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
 
-                        updateFieldOnOtherCollectionUserInformation(companyName,phone,serviceType);
+                        updateFieldOnOtherCollectionUserInformation(companyName,phone);
 
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
@@ -537,7 +534,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
 
     }
 
-    public void updateFieldOnOtherCollectionUserInformation(String name, String phone, String serviceType){
+    public void updateFieldOnOtherCollectionUserInformation(String name, String phone){
 
         db.collection("appointment")
                 .whereEqualTo("providerID",currentUserID)
@@ -552,7 +549,7 @@ public class EditProfileServiceProvider extends AppCompatActivity {
                                 // Put update code in here
                                 document.getReference().update("companyName", name);
                                 document.getReference().update("companyPhone", phone);
-                                document.getReference().update("companyServiceType", serviceType);
+//                                document.getReference().update("companyServiceType", serviceType);
 //                                document.getReference().update("companyNo", companyNo);
 
                             }

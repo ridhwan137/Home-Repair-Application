@@ -18,7 +18,7 @@
         android:layout_marginTop="20dp"
         android:gravity="center">
 
-        <Button
+<!--        <Button
             android:id="@+id/btn_BackToHome"
             android:layout_width="30dp"
             android:layout_height="30dp"
@@ -26,7 +26,7 @@
             android:layout_marginBottom="0dp"
             android:layout_marginLeft="0dp"
             android:background="@drawable/ic_baseline_arrow_back_ios_24"
-            android:fontFamily="@font/keepcalm_medium" />
+            android:fontFamily="@font/keepcalm_medium" />-->
 
 
         <Button
@@ -136,6 +136,23 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <!--    Bottom-Navigation will show up when run the app-->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            app:backgroundTint="#6200ee"
+            app:itemIconTint="@drawable/selector"
+            app:itemTextColor="@drawable/selector"
+            app:menu="@menu/menu_navigation_provider" />
+
+    </RelativeLayout>
 
 
 

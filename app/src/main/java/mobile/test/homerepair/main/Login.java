@@ -39,6 +39,7 @@ public class Login extends AppCompatActivity {
     EditText etEmail,etPassword;
 
     String email,password,userType;
+    String registrationStatus;
 
 
     @Override
@@ -166,7 +167,13 @@ public class Login extends AppCompatActivity {
                                         DocumentSnapshot document = task.getResult();
 
                                         if(document.exists()){
-                                            userType = document.getData().get("userType").toString();
+
+                                            try {
+                                                userType = document.getData().get("userType").toString();
+                                                registrationStatus = document.getData().get("registrationStatus").toString();
+                                            }catch (Exception e){
+                                                e.printStackTrace();
+                                            }
 
                                             if(userType.equals("client")){
                                                 Toast.makeText(getApplicationContext(), "Authentication Success.",
@@ -175,18 +182,42 @@ public class Login extends AppCompatActivity {
                                                 Intent intent = new Intent(Login.this, ProfileClient.class);
                                                 startActivity(intent);
 
-                                            }else if (userType.equals("serviceProvider")){
+                                            }
+
+                                            else if(userType.equals("admin"))
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Authentication Success.",
+                                                        Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(Login.this, HomeAdmin.class);
+                                                startActivity(intent);
+
+                                            }
+
+                                            else if (userType.equals("serviceProvider") && registrationStatus.equals("accept"))
+                                            {
 
                                                 Toast.makeText(getApplicationContext(), "Authentication Success.",
                                                         Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(Login.this, ProfileServiceProvider.class);
                                                 startActivity(intent);
 
-                                            }else{
-                                                Toast.makeText(getApplicationContext(), "Authentication Success.",
+                                            }
+
+                                            else if(userType.equals("serviceProvider") && registrationStatus.equals("reject"))
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Sorry your registration has been reject.",
                                                         Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(Login.this, HomeAdmin.class);
-                                                startActivity(intent);
+                                            }
+
+                                            else if(userType.equals("serviceProvider") && registrationStatus.equals("pending"))
+                                            {
+                                                Toast.makeText(getApplicationContext(), "Sorry your registration still in pending.",
+                                                        Toast.LENGTH_SHORT).show();
+                                            }
+
+                                            else{
+                                                Toast.makeText(getApplicationContext(), "Authentication Failed.",
+                                                        Toast.LENGTH_SHORT).show();
                                             }
                                         }
                                     }

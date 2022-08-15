@@ -22,8 +22,6 @@ import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.provider.AddServices;
-import mobile.test.homerepair.provider.AddServicesRVAdapter;
 
 public class UpdateServiceOfferRVAdapter extends RecyclerView.Adapter<UpdateServiceOfferRVAdapter.ViewHolder>{
 

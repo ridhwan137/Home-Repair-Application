@@ -39,8 +39,8 @@ public class AppointmentScheduleServiceProviderTabLayout extends AppCompatActivi
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.menu_addService:
-                        startActivity(new Intent(getApplicationContext(),AddServices.class));
+                    case R.id.menu_serviceOffer:
+                        startActivity(new Intent(getApplicationContext(),ProviderDisplayServiceOffer.class));
                         overridePendingTransition(0,0);
                         return true;
 

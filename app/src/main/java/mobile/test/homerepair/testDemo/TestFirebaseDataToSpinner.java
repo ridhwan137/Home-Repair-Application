@@ -32,8 +32,10 @@ public class TestFirebaseDataToSpinner extends AppCompatActivity {
     Spinner spinner;
     ArrayList<String> arrayServices;
     ArrayAdapter<String> adapterServices;
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
     QuerySnapshot services;
+
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

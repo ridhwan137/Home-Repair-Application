@@ -1,4 +1,4 @@
-package mobile.test.homerepair.provider;
+package mobile.test.homerepair.provider.unnecessary;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +35,9 @@ import java.util.Random;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
+import mobile.test.homerepair.provider.AppointmentScheduleServiceProviderTabLayout;
+import mobile.test.homerepair.provider.HistoryAppointmentServiceProviderTabLayout;
+import mobile.test.homerepair.provider.ProfileServiceProvider;
 
 public class AddServices extends AppCompatActivity implements AddServicesRVAdapter.ItemClickListener{
 
@@ -80,30 +83,30 @@ public class AddServices extends AppCompatActivity implements AddServicesRVAdapt
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigation);
 
         //Set Menu Selected
-        bottomNavigationView.setSelectedItemId(R.id.menu_addService);
+        bottomNavigationView.setSelectedItemId(R.id.menu_serviceOffer);
 
         //Perform ItemSelectedListener
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 switch (menuItem.getItemId()){
-                    case R.id.menu_addService:
+                    case R.id.menu_serviceOffer:
 //                        startActivity(new Intent(getApplicationContext(),AddServices.class));
 //                        overridePendingTransition(0,0);
                         return true;
 
                     case R.id.menu_appointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(),AppointmentScheduleServiceProviderTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.menu_historyAppointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(),HistoryAppointmentServiceProviderTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(), HistoryAppointmentServiceProviderTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.menu_profile:
-                        startActivity(new Intent(getApplicationContext(),ProfileServiceProvider.class));
+                        startActivity(new Intent(getApplicationContext(), ProfileServiceProvider.class));
                         overridePendingTransition(0,0);
                         return true;
 

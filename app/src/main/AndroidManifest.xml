@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".provider.ProviderDisplayServiceOffer"
+            android:exported="true" />
+        <activity
             android:name=".testDemo.TestProviderDisplayServiceOffer"
             android:exported="true" />
         <activity
@@ -173,7 +176,7 @@
             android:name=".client.unnecessary.HomeClient"
             android:exported="true" />
         <activity
-            android:name=".provider.AddServices"
+            android:name=".provider.unnecessary.AddServices"
             android:exported="true" />
         <activity
             android:name=".provider.EditProfileServiceProvider"

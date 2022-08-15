@@ -3,6 +3,7 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_account_type.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_add_service_offer.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_client_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_service_provider_detail.xml" value="0.259375" />
@@ -53,6 +54,7 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/fragment_history_appointment_service_provider_tab_complete.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/spinner_item.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/test_add_service_type_row.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/menu/menu_navigation_provider.xml" value="0.259375" />
       </map>
     </option>
   </component>
