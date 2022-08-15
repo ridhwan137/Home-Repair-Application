@@ -44,7 +44,6 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
@@ -75,7 +74,7 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
     Button btn_clientEditUserUpdate,
             btn_clientEditAddressUpdate,
             btn_clientEditPasswordUpdate,
-            btn_backToClientProfile;
+            btn_back;
 
     String TAG = "UserEditProfile";
 
@@ -99,7 +98,7 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
         clientID = intent.getStringExtra("userID");
         Log.e("testUserID",clientID);
 
-        btn_backToClientProfile = findViewById(R.id.btn_backToClientProfile);
+        btn_back = findViewById(R.id.btn_back);
 
         img_pictureClient = findViewById(R.id.img_pictureClient);
 
@@ -197,10 +196,11 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
 
 
-        btn_backToClientProfile.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfileClient.class);
+                Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailClientAdmin.class);
+                intent.putExtra("userID",clientID);
                 startActivity(intent);
             }
         });

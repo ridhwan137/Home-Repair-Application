@@ -22,14 +22,27 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="right"
+            android:orientation="horizontal"
             android:paddingBottom="10dp">
+
+            <Button
+                android:id="@+id/btn_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="5dp"
+                android:background="@drawable/ic_baseline_arrow_back_ios_24"
+                android:fontFamily="@font/keepcalm_medium"
+                android:textColor="#000000"
+                app:backgroundTint="#000000" />
 
             <android.widget.Button
                 android:id="@+id/btLogout"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="10dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:gravity="right"
+                android:layout_marginLeft="280dp"
 
                 android:background="@drawable/buttonlogout"
                 tools:ignore="SpeakableTextPresentCheck">

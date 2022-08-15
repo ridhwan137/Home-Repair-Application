@@ -144,7 +144,7 @@ public class ListRegisteredUserClientAdmin extends AppCompatActivity implements 
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeClient.class);
+                Intent intent = new Intent(getApplicationContext(), AdminManageUsers.class);
                 startActivity(intent);
             }
         });

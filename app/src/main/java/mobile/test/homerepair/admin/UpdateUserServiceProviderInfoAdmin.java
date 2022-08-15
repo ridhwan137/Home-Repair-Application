@@ -61,7 +61,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
             et_providerEditNewPassword,et_providerEditConfirmPassword;
 
     Button btn_providerEditUserUpdate,btn_providerEditAddressUpdate,btn_providerEditPasswordUpdate,
-            btn_backToProviderProfile;
+            btn_back;
 
     String TAG = "UserEditProfile";
 
@@ -81,7 +81,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         providerID = intent.getStringExtra("userID");
         Log.e("testUserID", providerID);
 
-        btn_backToProviderProfile = findViewById(R.id.btn_backToProviderProfile);
+        btn_back = findViewById(R.id.btn_back);
 
         img_pictureCompany = findViewById(R.id.img_pictureCompany);
         et_providerEditCompanyName = findViewById(R.id.et_providerEditCompanyName);
@@ -105,13 +105,14 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         displayUserProfileInformation();
 
 
-        btn_backToProviderProfile.setOnClickListener(new View.OnClickListener() {
+        btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ProfileServiceProvider.class);
+                Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailServiceProviderAdmin.class);
+                intent.putExtra("userID",providerID);
                 startActivity(intent);
 
-                UpdateUserServiceProviderInfoAdmin.this.finish();
+//                UpdateUserServiceProviderInfoAdmin.this.finish();
             }
         });
 

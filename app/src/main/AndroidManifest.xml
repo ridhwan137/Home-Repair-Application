@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".admin.AdminManageAppointment"
+            android:exported="true" />
+        <activity
+            android:name=".admin.AdminManageUsers"
+            android:exported="true" />
+        <activity
             android:name=".admin.AdminAddServiceOffer"
             android:exported="true" />
         <activity

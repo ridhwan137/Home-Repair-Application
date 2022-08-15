@@ -22,16 +22,16 @@
             android:layout_marginTop="20dp"
             android:gravity="left">
 
+
             <Button
-                android:id="@+id/btn_BackToProviderDetail"
+                android:id="@+id/btn_back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_marginLeft="30dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
-                android:layout_marginLeft="30dp"
                 android:background="@drawable/ic_baseline_arrow_back_ios_24"
                 android:fontFamily="@font/keepcalm_medium" />
-
 
             <Button
                 android:layout_width="match_parent"

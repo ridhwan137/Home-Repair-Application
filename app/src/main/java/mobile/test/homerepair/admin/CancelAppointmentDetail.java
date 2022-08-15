@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
@@ -48,6 +49,8 @@ public class CancelAppointmentDetail extends AppCompatActivity implements Servic
     String appointmentID;
     String providerID,clientID;
 
+    Button btn_back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +59,9 @@ public class CancelAppointmentDetail extends AppCompatActivity implements Servic
         Intent intent = getIntent();
         appointmentID = intent.getStringExtra("appointmentID");
         Log.e("appointmentID->",appointmentID);
+
+
+        btn_back = findViewById(R.id.btn_back);
 
         et_appointmentID = findViewById(R.id.et_appointmentID);
         et_clientName = findViewById(R.id.et_clientName);
@@ -81,6 +87,15 @@ public class CancelAppointmentDetail extends AppCompatActivity implements Servic
         serviceOfferRVAdapter.setClickListener(this);
 
         rvServiceDetail.setAdapter(serviceOfferRVAdapter);
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CancelAppointmentList.class);
+                startActivity(intent);
+            }
+        });
 
 
         btn_clientDetail.setOnClickListener(new View.OnClickListener() {

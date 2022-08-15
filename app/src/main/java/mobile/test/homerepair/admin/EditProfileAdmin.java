@@ -128,7 +128,7 @@ public class EditProfileAdmin extends AppCompatActivity {
 
                         et_adminEditName.setText(document.getData().get("name").toString());
                         et_adminEditPhone.setText(document.getData().get("phone").toString());
-                        et_adminEditEmail.setText(document.getData().get("email").toString());
+//                        et_adminEditEmail.setText(document.getData().get("email").toString());
 
                         et_adminEditAddress1.setText(document.getData().get("address1").toString());
                         et_adminEditAddress2.setText(document.getData().get("address2").toString());
@@ -170,7 +170,7 @@ public class EditProfileAdmin extends AppCompatActivity {
         // Initialize EditText to variable
         String name = et_adminEditName.getText().toString();
         String phone = et_adminEditPhone.getText().toString();
-        String email = et_adminEditEmail.getText().toString();
+//        String email = et_adminEditEmail.getText().toString();
 
 
         //// <---- Validation ---- ////
@@ -179,12 +179,13 @@ public class EditProfileAdmin extends AppCompatActivity {
 
         // If All Empty
         if (name.isEmpty() &&
-                phone.isEmpty() &&
-                email.isEmpty()){
+                phone.isEmpty()
+//                && email.isEmpty()
+        ){
 
             et_adminEditName.setError("Require to fill");
             et_adminEditPhone.setError("Require to fill");
-            et_adminEditEmail.setError("Require to fill");
+//            et_adminEditEmail.setError("Require to fill");
 
             return;
 
@@ -222,7 +223,7 @@ public class EditProfileAdmin extends AppCompatActivity {
             return;
         }
 
-        //validation email
+/*        //validation email
         if (email.isEmpty()){
             et_adminEditEmail.setError("Require to fill");
             return;
@@ -230,7 +231,7 @@ public class EditProfileAdmin extends AppCompatActivity {
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
             et_adminEditEmail.setError("Invalid email format");
             return;
-        }
+        }*/
 
         // ----> EditText Validation
 
@@ -240,14 +241,14 @@ public class EditProfileAdmin extends AppCompatActivity {
 
         user.put("updateName",name);
         user.put("updatePhone",phone);
-        user.put("updateEmail",email);
+//        user.put("updateEmail",email);
 
         DocumentReference docRef = db.collection("users").document(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        docRef.update("name",user.get("updateName"),
-                "phone",user.get("updatePhone"),
-                "email",user.get("updateEmail"))
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
+        docRef.update("name",user.get("updateName")
+                ,"phone",user.get("updatePhone")
+//                ,"email",user.get("updateEmail")
+        ).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();

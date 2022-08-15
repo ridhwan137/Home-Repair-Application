@@ -147,7 +147,7 @@ public class ListRegisteredUserServiceProviderAdmin extends AppCompatActivity im
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeClient.class);
+                Intent intent = new Intent(getApplicationContext(), AdminManageUsers.class);
                 startActivity(intent);
             }
         });

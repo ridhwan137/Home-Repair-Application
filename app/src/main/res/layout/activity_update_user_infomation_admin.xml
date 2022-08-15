@@ -22,7 +22,7 @@
             android:gravity="left">
 
             <Button
-                android:id="@+id/btn_backToProviderProfile"
+                android:id="@+id/btn_back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"

@@ -51,6 +51,8 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
 
     Button btn_acceptAppointment,btn_rejectAppointment,btn_cancelAppointment;
 
+    Button btn_back;
+
     String TAG = "TAG";
     String appointmentID;
     String providerID,clientID;
@@ -64,6 +66,8 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
         Intent intent = getIntent();
         appointmentID = intent.getStringExtra("appointmentID");
         Log.e("appointmentID->",appointmentID);
+
+        btn_back = findViewById(R.id.btn_back);
 
         et_appointmentID = findViewById(R.id.et_appointmentID);
         et_clientName = findViewById(R.id.et_clientName);
@@ -93,6 +97,17 @@ public class PendingAppointmentDetail extends AppCompatActivity implements Servi
         serviceOfferRVAdapter.setClickListener(this);
 
         rvServiceDetail.setAdapter(serviceOfferRVAdapter);
+
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), PendingAppointmentList.class);
+                startActivity(intent);
+            }
+        });
+
 
 
         btn_clientDetail.setOnClickListener(new View.OnClickListener() {

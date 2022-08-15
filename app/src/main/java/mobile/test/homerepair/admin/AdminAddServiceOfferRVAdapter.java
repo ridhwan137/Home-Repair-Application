@@ -63,7 +63,7 @@ public class AdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<AdminAdd
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d("TAG", "DocumentSnapshot successfully deleted!");
-                                Intent intent = new Intent(context, TestAdminAddServiceOffer.class);
+                                Intent intent = new Intent(context, AdminAddServiceOffer.class);
                                 intent.putExtra("serviceTypeID",services.getServiceTypeID());
                                 intent.putExtra("serviceType", services.getServiceType());
                                 context.startActivity(intent);

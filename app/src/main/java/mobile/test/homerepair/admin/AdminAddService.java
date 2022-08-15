@@ -124,7 +124,7 @@ public class AdminAddService extends AppCompatActivity implements AdminAddServic
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), TestMainHomePage.class);
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
 //                intent.putExtra("userID",providerID);
                 startActivity(intent);
             }

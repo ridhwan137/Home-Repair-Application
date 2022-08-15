@@ -143,8 +143,8 @@ public class AdminAddServiceOffer extends AppCompatActivity implements AdminAddS
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailServiceProviderAdmin.class);
-                intent.putExtra("serviceTypeID", serviceTypeID);
+                Intent intent = new Intent(getApplicationContext(), AdminAddService.class);
+//                intent.putExtra("serviceTypeID", serviceTypeID);
                 startActivity(intent);
             }
         });

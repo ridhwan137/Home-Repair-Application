@@ -23,7 +23,7 @@
             android:gravity="left">
 
             <Button
-                android:id="@+id/btn_BackToProviderDetail"
+                android:id="@+id/btn_back"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
@@ -40,7 +40,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="50dp"
-                android:text="In-Progress Appointment Detail"
+                android:text="In-Progress Appointment"
                 android:textColor="#000000"
                 android:fontFamily="@font/poppins_regular"
                 android:background="#0000"

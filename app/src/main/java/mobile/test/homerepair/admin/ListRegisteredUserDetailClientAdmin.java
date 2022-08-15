@@ -70,7 +70,7 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ApproveRegistrationAdmin.class);
+                Intent intent = new Intent(getApplicationContext(), ListRegisteredUserClientAdmin.class);
                 startActivity(intent);
             }
         });
@@ -153,8 +153,6 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 try {
-                                    clientPictureURL = document.getData().get("pictureURL").toString();
-                                    Picasso.with(getApplicationContext()).load(clientPictureURL).into(img_pictureClient);
 
                                     et_detailClientName.setText(document.getData().get("name").toString());
                                     et_detailClientPhone.setText(document.getData().get("email").toString());
@@ -170,6 +168,10 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity {
                                     fullAddress += document.getData().get("state").toString() ;
 
                                     et_detailClientAddress.setText(fullAddress);
+
+                                    clientPictureURL = document.getData().get("pictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(clientPictureURL).into(img_pictureClient);
+
 
                                 }catch (Exception e){
                                     e.printStackTrace();

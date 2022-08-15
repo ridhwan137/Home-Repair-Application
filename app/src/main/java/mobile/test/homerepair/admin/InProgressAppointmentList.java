@@ -218,7 +218,7 @@ public class InProgressAppointmentList extends AppCompatActivity implements Appo
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), HomeClient.class);
+                Intent intent = new Intent(getApplicationContext(), AdminManageAppointment.class);
                 startActivity(intent);
             }
         });

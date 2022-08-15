@@ -64,15 +64,28 @@ public class ProfileAdmin extends AppCompatActivity {
 
     TextView txt_adminAccountType;
 
-    Button btn_adminEditProfile;
+    Button btn_adminEditProfile,btn_back;
 
     String TAG = "UserProfile";
+
+    String userID;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_admin);
+
+
+/*        try {
+            Intent intent = getIntent();
+            userID = intent.getStringExtra("userID");
+            Log.e("testUserID",userID);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
+
 
         // initializing our variables.
 
@@ -84,9 +97,18 @@ public class ProfileAdmin extends AppCompatActivity {
         et_adminProfileEmail = findViewById(R.id.et_adminProfileEmail);
         txt_adminAccountType = findViewById(R.id.txt_adminAccountType);
         btn_adminEditProfile = findViewById(R.id.btn_adminEditProfile);
+        btn_back = findViewById(R.id.btn_back);
 
         btLogout = findViewById(R.id.btLogout);
 
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
+//                intent.putExtra("userID", userID);
+                startActivity(intent);
+            }
+        });
 
         btLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -186,7 +208,7 @@ public class ProfileAdmin extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     ivProfile.setImageURI(null);
-                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
 
                                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override

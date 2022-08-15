@@ -5,6 +5,8 @@
       <map>
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_account_type.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_add_service_offer.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_admin_manage_appointment.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_admin_manage_users.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_client_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_schedule_client_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_schedule_client_tab_layout.xml" value="0.259375" />
@@ -64,6 +66,8 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/spinner_item.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/test_add_service_type_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/menu/menu_navigation_provider.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/mipmap-anydpi-v26/ic_logo_v2.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/mipmap-anydpi-v26/ic_logo_v2_round.xml" value="0.2755208333333333" />
       </map>
     </option>
   </component>

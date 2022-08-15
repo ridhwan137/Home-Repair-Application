@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".testDemo.TestAdminAddService"
+    tools:context=".admin.AdminAddService"
 
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -15,8 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:orientation="horizontal"
-        android:layout_marginTop="20dp"
-        android:gravity="center">
+        android:layout_marginTop="20dp">
 
         <Button
             android:id="@+id/btn_BackToHome"
@@ -24,7 +23,8 @@
             android:layout_height="30dp"
             android:layout_marginTop="0dp"
             android:layout_marginBottom="0dp"
-            android:layout_marginLeft="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center"
             android:background="@drawable/ic_baseline_arrow_back_ios_24"
             android:fontFamily="@font/keepcalm_medium" />
 
@@ -34,7 +34,7 @@
             android:layout_height="50dp"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="20dp"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="Add Services Type"

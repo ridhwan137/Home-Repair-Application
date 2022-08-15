@@ -64,8 +64,7 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity {
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ApproveRegistrationAdmin.class);
-                startActivity(intent);
+                onBackPressed();
             }
         });
 

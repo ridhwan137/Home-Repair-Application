@@ -96,6 +96,7 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
     TextView tv_totalPrice;
 
+    Button btn_back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +106,9 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
         Intent intent = getIntent();
         appointmentID = intent.getStringExtra("appointmentID");
         Log.e("appointmentID->",appointmentID);
+
+
+        btn_back = findViewById(R.id.btn_back);
 
         et_appointmentID = findViewById(R.id.et_appointmentID);
         et_clientName = findViewById(R.id.et_clientName);
@@ -153,6 +157,15 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
         rvServiceItem.setAdapter(completeServiceOrderRVAdapter);
         // -->
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), CompleteAppointmentList.class);
+                startActivity(intent);
+            }
+        });
 
         btn_clientDetail.setOnClickListener(new View.OnClickListener() {
             @Override

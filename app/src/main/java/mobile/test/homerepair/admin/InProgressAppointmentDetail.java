@@ -104,6 +104,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
     String getReceiptURLFromDB;
 
+    Button btn_back;
+
     double totalPrice;
 
     @Override
@@ -114,6 +116,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
         Intent intent = getIntent();
         appointmentID = intent.getStringExtra("appointmentID");
         Log.e("appointmentID->",appointmentID);
+
+        btn_back = findViewById(R.id.btn_back);
 
         et_appointmentID = findViewById(R.id.et_appointmentID);
         et_clientName = findViewById(R.id.et_clientName);
@@ -259,6 +263,15 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
                 intent.putExtra("providerID",providerID);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), InProgressAppointmentList.class);
                 startActivity(intent);
             }
         });

@@ -41,9 +41,13 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_registered_user_detail_service_provider_admin);
 
-        Intent intent = getIntent();
-        userID = intent.getStringExtra("userID");
-        Log.e("testUserID",userID);
+        try {
+            Intent intent = getIntent();
+            userID = intent.getStringExtra("userID");
+            Log.e("testUserID",userID);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
 
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
@@ -73,7 +77,7 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), ApproveRegistrationAdmin.class);
+                Intent intent = new Intent(getApplicationContext(), ListRegisteredUserServiceProviderAdmin.class);
                 startActivity(intent);
             }
         });
@@ -161,8 +165,6 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 try {
-                                    providerPictureURL = document.getData().get("pictureURL").toString();
-                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
 
                                     et_detailCompanyName.setText(document.getData().get("companyName").toString());
                                     et_detailCompanyNo.setText(document.getData().get("companyNo").toString());
@@ -180,6 +182,10 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
                                     fullAddress += document.getData().get("state").toString() ;
 
                                     et_detailCompanyAddress.setText(fullAddress);
+
+                                    providerPictureURL = document.getData().get("pictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
+
 
                                 }catch (Exception e){
                                     e.printStackTrace();
