@@ -17,6 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".admin.AdminAddServiceOffer"
+            android:exported="true" />
+        <activity
+            android:name=".admin.AdminAddService"
+            android:exported="true" />
+        <activity
             android:name=".provider.ProviderDisplayServiceOffer"
             android:exported="true" />
         <activity

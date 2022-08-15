@@ -115,7 +115,8 @@ public class SearchServices extends AppCompatActivity implements SearchServicesR
 
         db.collection("users")
                 .whereEqualTo("userType","serviceProvider")
-                .whereEqualTo("hasServiceOffer","yes")
+                .whereEqualTo("registrationStatus","accept")
+//                .whereEqualTo("hasServiceOffer","yes")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

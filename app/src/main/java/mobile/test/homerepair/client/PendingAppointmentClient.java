@@ -160,8 +160,13 @@ public class PendingAppointmentClient extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                pictureURL = document.getData().get("providerPictureURL").toString();
-                                Picasso.with(getApplicationContext()).load(pictureURL).into(img_pictureCompany);
+                                try {
+                                    pictureURL = document.getData().get("providerPictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(pictureURL).into(img_pictureCompany);
+
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
 
                                 et_detailCompanyName.setText(document.getData().get("companyName").toString());
                                 et_detailCompanyServiceType.setText(document.getData().get("companyServiceType").toString());

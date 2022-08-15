@@ -304,9 +304,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 try {
-                                    providerPictureURL = document.getData().get("pictureURL").toString();
-                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
-
                                     et_detailCompanyName.setText(document.getData().get("companyName").toString());
                                     et_detailCompanyServiceType.setText(document.getData().get("serviceType").toString());
                                     et_detailCompanyPhone.setText(document.getData().get("phone").toString());
@@ -330,6 +327,12 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                     Log.e("displayClientInfoFromDB->",getFullAddressForMap);
 
                                     geoLocate();
+
+
+                                    providerPictureURL = document.getData().get("pictureURL").toString();
+                                    Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
+
+
                                 }catch (Exception e){
                                     e.printStackTrace();
                                     Log.e("LogDisplayUserInformation","No Data In Database");
@@ -691,7 +694,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
             //create appointment id by date
             Date currentDate = new Date();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyhhmmss");
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyy");
 
 //        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
 
@@ -699,7 +702,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
             Log.e("formatCurrentDate->",formatCurrentDate);
 
             Random rand = new Random();
-            int randomID = rand.nextInt(99999)+1;
+            int randomID = rand.nextInt(9999)+1;
 
             appointmentID = "appointment" + formatCurrentDate + randomID;
 
