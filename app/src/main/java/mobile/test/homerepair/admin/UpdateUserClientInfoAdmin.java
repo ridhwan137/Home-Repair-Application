@@ -49,10 +49,12 @@ import java.util.Map;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.ProfileClient;
+import mobile.test.homerepair.main.Login;
 
 public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     StorageReference storageReference;
 //    FirebaseUser user;
 
@@ -60,20 +62,16 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
     EditText et_clientEditName,
             et_clientEditPhone,
-            et_clientEditEmail,
             et_clientEditAddress1,
             et_clientEditAddress2,
             et_clientEditPostcode,
             et_clientEditState,
-            et_clientEditCity,
-            et_clientEditOldPassword,
-            et_clientEditNewPassword,
-            et_clientEditConfirmPassword;
+            et_clientEditCity;
 
 
     Button btn_clientEditUserUpdate,
             btn_clientEditAddressUpdate,
-            btn_clientEditPasswordUpdate,
+            btn_resetPassword,
             btn_back;
 
     String TAG = "UserEditProfile";
@@ -87,6 +85,8 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
     ImageView img_pictureClient;
     String url;
     ProgressDialog progressDialog;
+
+    String emailToResetPassword;
 
 
     @Override
@@ -104,7 +104,6 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
         et_clientEditName = findViewById(R.id.et_clientEditName);
         et_clientEditPhone = findViewById(R.id.et_clientEditPhone);
-        et_clientEditEmail = findViewById(R.id.et_clientEditEmail);
 
         et_clientEditAddress1 = findViewById(R.id.et_clientEditAddress1);
         et_clientEditAddress2 = findViewById(R.id.et_clientEditAddress2);
@@ -112,13 +111,10 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
         et_clientEditState = findViewById(R.id.et_clientEditState);
         et_clientEditCity = findViewById(R.id.et_clientEditCity);
 
-        et_clientEditOldPassword = findViewById(R.id.et_clientEditOldPassword);
-        et_clientEditNewPassword = findViewById(R.id.et_clientEditNewPassword);
-        et_clientEditConfirmPassword = findViewById(R.id.et_clientEditConfirmPassword);
 
         btn_clientEditUserUpdate = findViewById(R.id.btn_clientEditUserUpdate);
         btn_clientEditAddressUpdate = findViewById(R.id.btn_clientEditAddressUpdate);
-        btn_clientEditPasswordUpdate = findViewById(R.id.btn_clientEditPasswordUpdate);
+        btn_resetPassword = findViewById(R.id.btn_resetPassword);
 
 
         displayUserProfileInformation();
@@ -140,15 +136,33 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
         });
 
 
-        btn_clientEditPasswordUpdate.setOnClickListener(new View.OnClickListener() {
+        btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProfileUserPassword();
+                sendPasswordReset(emailToResetPassword);
             }
         });
 
         ////////////
     }
+
+
+
+    public void sendPasswordReset(String userEmail) {
+
+        mAuth.sendPasswordResetEmail(userEmail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.e("adminResetPassword->", "Email sent to : " + userEmail);
+                            Toast.makeText(getApplicationContext(), "Reset Password has sent to user email: " + userEmail, Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+    }
+
 
     public void displayUserProfileInformation(){
         DocumentReference docRef = db.collection("users").document(clientID);
@@ -171,7 +185,6 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
                         et_clientEditName.setText(document.getData().get("name").toString());
                         et_clientEditPhone.setText(document.getData().get("phone").toString());
-                        et_clientEditEmail.setText(document.getData().get("email").toString());
 
                         et_clientEditAddress1.setText(document.getData().get("address1").toString());
                         et_clientEditAddress2.setText(document.getData().get("address2").toString());
@@ -179,9 +192,11 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
                         et_clientEditState.setText(document.getData().get("state").toString());
                         et_clientEditCity.setText(document.getData().get("city").toString());
 
-                        oldPasswordFromDB = document.getData().get("password").toString();
 
-                        Log.e("getOldPasswordDB",oldPasswordFromDB);
+                        emailToResetPassword = document.getData().get("email").toString();
+//                        emailToResetPassword = "home.repair.management@gmail.com";
+
+
 
                     }else{
                         // No document
@@ -239,7 +254,6 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
         // Initialize EditText to variable
         String name = et_clientEditName.getText().toString();
         String phone = et_clientEditPhone.getText().toString();
-        String email = et_clientEditEmail.getText().toString();
 
 
         //// <---- Validation ---- ////
@@ -248,12 +262,10 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
         // If All Empty
         if (name.isEmpty() &&
-                phone.isEmpty() &&
-                email.isEmpty()){
+                phone.isEmpty()){
 
             et_clientEditName.setError("Require to fill");
             et_clientEditPhone.setError("Require to fill");
-            et_clientEditEmail.setError("Require to fill");
 
             return;
 
@@ -291,15 +303,6 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
             return;
         }
 
-        //validation email
-        if (email.isEmpty()){
-            et_clientEditEmail.setError("Require to fill");
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            et_clientEditEmail.setError("Invalid email format");
-            return;
-        }
 
         // ----> EditText Validation
 
@@ -309,12 +312,10 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
         user.put("updateName",name);
         user.put("updatePhone",phone);
-        user.put("updateEmail",email);
 
         DocumentReference docRef = db.collection("users").document(clientID);
         docRef.update("name",user.get("updateName"),
-                "phone",user.get("updatePhone"),
-                "email",user.get("updateEmail"))
+                "phone",user.get("updatePhone"))
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -462,118 +463,6 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
     }
 
 
-
-    public void updateProfileUserPassword(){
-
-        Log.e("getOldPasswordFromUpdatePasswordFC",oldPasswordFromDB);
-
-        // Initialize EditText to variable
-        String oldPassword = et_clientEditOldPassword.getText().toString();
-        String newPassword = et_clientEditNewPassword.getText().toString();
-        String confirmPassword = et_clientEditConfirmPassword.getText().toString();
-
-
-        //// <---- Validation ---- ////
-
-        // <---- EditText Validation
-
-        // If All Empty
-        if (    oldPassword.isEmpty() &&
-                newPassword.isEmpty() &&
-                confirmPassword.isEmpty() ){
-
-            et_clientEditOldPassword.setError("Require to fill");
-            et_clientEditNewPassword.setError("Require to fill");
-            et_clientEditConfirmPassword.setError("Require to fill");
-
-            return;
-
-        };
-
-        //validation old password
-        if (oldPassword.isEmpty()){
-            et_clientEditOldPassword.setError("Require to fill");
-            return;
-        }
-
-        if (!oldPassword.equals(oldPasswordFromDB)){
-            et_clientEditOldPassword.setError("Password not same");
-            return;
-        }
-
-
-
-        //validation password
-        if (newPassword.isEmpty()){
-            et_clientEditNewPassword.setError("Require to fill");
-            return;
-        }
-
-        if (!newPassword.matches("^(?=.*[0-9])(?=.*[a-z])(?=.*[!@#$%^&*+=?-]).{8,25}$")){
-            et_clientEditNewPassword.setError("Password should contain 0~9, a~z, symbol, more than 8");
-            return;
-        }
-
-        //validation confirm password
-        if (confirmPassword.isEmpty()){
-            et_clientEditConfirmPassword.setError("Require to fill");
-            return;
-        }
-
-        Log.e("getNewPassword",newPassword);
-
-        if (!confirmPassword.equals(newPassword)){
-            et_clientEditConfirmPassword.setError("Password not same");
-            return;
-        }
-        // ----> EditText Validation
-
-
-        //// ---- Validation ----> ////
-
-
-
-
-        user.put("updateNewPassword",newPassword);
-
-        if (newPassword.equals(confirmPassword)){
-            DocumentReference docRef = db.collection("users").document(clientID);
-            docRef.update("password",user.get("updateNewPassword"))
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-
-                            //Update Password in Authentication
-                            FirebaseUser updateUserPassword = FirebaseAuth.getInstance().getCurrentUser();
-                            updateUserPassword.updatePassword(newPassword).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        Log.e("updatePassword", "User password updated.");
-                                    }
-                                }
-                            });
-
-                            Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "DocumentSnapshot successfully updated!");
-
-
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.w(TAG, "Error updating document", e);
-                }
-            });
-
-
-        }else{
-            Toast.makeText(getApplicationContext(), "Password not same", Toast.LENGTH_SHORT).show();
-        }
-
-
-    }
 
 
     private void pickImage() {

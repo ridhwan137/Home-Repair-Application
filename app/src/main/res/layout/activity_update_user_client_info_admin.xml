@@ -75,6 +75,7 @@
 
             <ImageView
                 android:id="@+id/img_pictureClient"
+                android:src="@drawable/profilepicturenoimage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginLeft="10dp"
@@ -354,7 +355,7 @@
                 android:textAlignment="center" />
 
 
-            <com.google.android.material.textfield.TextInputLayout
+<!--            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
@@ -373,59 +374,16 @@
                     android:inputType="textPassword"
                     android:padding="10dp" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
 
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center"
-                app:passwordToggleEnabled="true"
-                android:textColorHint="@color/black">
-
-                <EditText
-                    android:id="@+id/et_clientEditNewPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="New Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center"
-                app:passwordToggleEnabled="true"
-                android:textColorHint="@color/black">
-
-                <EditText
-                    android:id="@+id/et_clientEditConfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:hint="Confirm Password"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
 
 
             <Button
-                android:id="@+id/btn_clientEditPasswordUpdate"
+                android:id="@+id/btn_resetPassword"
                 android:layout_width="246dp"
                 android:layout_height="56dp"
                 android:layout_marginTop="30dp"
-                android:text="Update"
+                android:text="Reset Password"
                 app:backgroundTint="#417D7A" />
 
         </LinearLayout>

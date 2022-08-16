@@ -20,17 +20,21 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:layout_width="230dp"
+            android:layout_width="match_parent"
             android:layout_height="230dp"
             android:layout_gravity="center"
             android:layout_marginTop="100dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
             android:background="@drawable/pic_repairman"
             />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="30dp"
             android:textColorHint="@color/black"
@@ -50,8 +54,10 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_gravity="center"
             android:textColorHint="@color/black"
             app:passwordToggleEnabled="true"
@@ -106,18 +112,22 @@
 
         <Button
             android:id="@+id/btLogin"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:text="Login"
             android:textColor="@color/white"
             app:backgroundTint="#417D7A"/>
 
         <Button
             android:id="@+id/btn_toTestPage"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="56dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
             android:text="Test Page"

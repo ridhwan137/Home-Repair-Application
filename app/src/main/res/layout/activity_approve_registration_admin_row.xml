@@ -36,53 +36,130 @@
             android:layout_marginLeft="20dp"
             android:layout_gravity="">
 
-            <TextView
-                android:id="@+id/tv_searchCompanyName"
-                android:layout_weight="1"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="9"
-                android:focusable="false"
-                android:fontFamily="@font/keepcalm_medium"
-                android:hint="Company Name"
-                android:inputType="textPersonName"
-                android:textSize="13sp"
-                tools:layout_editor_absoluteX="60dp"
-                tools:layout_editor_absoluteY="782dp" />
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="9"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:text="Company Name: "
+                    android:inputType="textPersonName"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
+
+                <TextView
+                    android:id="@+id/tv_searchCompanyName"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="9"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:hint="Company Name"
+                    android:inputType="textPersonName"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
 
 
-            <TextView
-                android:id="@+id/tv_searchCompanyServiceType"
-                android:layout_weight="1"
+            </LinearLayout>
+
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="5"
-                android:focusable="false"
-                android:fontFamily="@font/keepcalm_medium"
-                android:hint="Service Type"
-                android:inputType="textPersonName"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:textSize="13sp"
-                tools:layout_editor_absoluteX="60dp"
-                tools:layout_editor_absoluteY="782dp" />
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
 
 
-            <TextView
-                android:id="@+id/tv_searchCompanyDateApply"
-                android:layout_weight="1"
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:text="Service Type: "
+                    android:inputType="textPersonName"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_searchCompanyServiceType"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:hint="Service Type"
+                    android:inputType="textPersonName"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="5"
-                android:focusable="false"
-                android:fontFamily="@font/keepcalm_medium"
-                android:hint="Date Apply"
-                android:inputType="textPersonName"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center"
-                android:textSize="13sp"
-                tools:layout_editor_absoluteX="60dp"
-                tools:layout_editor_absoluteY="782dp" />
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+
+                <TextView
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:text="Date Apply: "
+                    android:inputType="textPersonName"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_searchCompanyDateApply"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:focusable="false"
+                    android:fontFamily="@font/keepcalm_medium"
+                    android:hint="Date Apply"
+                    android:inputType="textPersonName"
+                    android:layout_marginTop="0dp"
+                    android:layout_gravity="center"
+                    android:textSize="13sp"
+                    tools:layout_editor_absoluteX="60dp"
+                    tools:layout_editor_absoluteY="782dp" />
+
+            </LinearLayout>
+
+
+
+
 
 
         </LinearLayout>

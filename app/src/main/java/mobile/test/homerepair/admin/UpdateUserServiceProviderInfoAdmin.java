@@ -52,6 +52,7 @@ import mobile.test.homerepair.provider.ProfileServiceProvider;
 public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
     StorageReference storageReference;
 
     Map<String, Object> user = new HashMap<>();
@@ -60,7 +61,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
             et_providerEditAddress1,et_providerEditAddress2,et_providerEditPostcode,et_providerEditState,et_providerEditCity,
             et_providerEditNewPassword,et_providerEditConfirmPassword;
 
-    Button btn_providerEditUserUpdate,btn_providerEditAddressUpdate,btn_providerEditPasswordUpdate,
+    Button btn_providerEditUserUpdate,btn_providerEditAddressUpdate,btn_resetPassword,
             btn_back;
 
     String TAG = "UserEditProfile";
@@ -70,6 +71,8 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
     ImageView img_pictureCompany;
     String url;
     ProgressDialog progressDialog;
+
+    String emailToResetPassword;
 
 
     @Override
@@ -94,13 +97,10 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         et_providerEditState = findViewById(R.id.et_providerEditState);
         et_providerEditCity = findViewById(R.id.et_providerEditCity);
 
-        et_providerEditNewPassword = findViewById(R.id.et_providerEditNewPassword);
-        et_providerEditConfirmPassword = findViewById(R.id.et_providerEditConfirmPassword);
 
         btn_providerEditUserUpdate = findViewById(R.id.btn_providerEditUserUpdate);
         btn_providerEditAddressUpdate = findViewById(R.id.btn_providerEditAddressUpdate);
-        btn_providerEditPasswordUpdate = findViewById(R.id.btn_providerEditPasswordUpdate);
-
+        btn_resetPassword = findViewById(R.id.btn_resetPassword);
 
         displayUserProfileInformation();
 
@@ -160,15 +160,32 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
         });
 
 
-        btn_providerEditPasswordUpdate.setOnClickListener(new View.OnClickListener() {
+        btn_resetPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateProfileUserPassword();
+                sendPasswordReset(emailToResetPassword);
             }
         });
 
         // End Bracket
     }
+
+
+    public void sendPasswordReset(String userEmail) {
+
+        mAuth.sendPasswordResetEmail(userEmail)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.e("adminResetPassword->", "Email sent to : " + userEmail);
+                            Toast.makeText(getApplicationContext(), "Reset Password has sent to user email: " + userEmail, Toast.LENGTH_LONG).show();
+
+                        }
+                    }
+                });
+    }
+
 
     public void displayUserProfileInformation(){
         DocumentReference docRef = db.collection("users").document(providerID);
@@ -199,6 +216,7 @@ public class UpdateUserServiceProviderInfoAdmin extends AppCompatActivity {
                         et_providerEditState.setText(document.getData().get("state").toString());
                         et_providerEditCity.setText(document.getData().get("city").toString());
 
+                        emailToResetPassword = document.getData().get("email").toString();
 
 
                     }else{

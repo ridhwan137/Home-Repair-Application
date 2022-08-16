@@ -76,6 +76,7 @@
 
             <ImageView
                 android:id="@+id/img_pictureCompany"
+                android:src="@drawable/profilepicturenoimage"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginLeft="10dp"
@@ -103,7 +104,7 @@
 
             <TextView
                 android:id="@+id/tvUserInformation"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -115,7 +116,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
@@ -125,6 +126,8 @@
                     android:id="@+id/et_providerEditCompanyName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:inputType="text"
                     android:padding="10dp"
                     android:hint="Company Name"/>
@@ -133,8 +136,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -151,8 +156,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -187,9 +194,11 @@
 
             <Button
                 android:id="@+id/btn_providerEditUserUpdate"
-                android:layout_width="225dp"
+                android:layout_width="match_parent"
                 android:layout_height="53dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
                 android:text="Update"
                 app:backgroundTint="#417D7A" />
 
@@ -211,7 +220,7 @@
 
             <TextView
                 android:id="@+id/tvAddress"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
@@ -223,8 +232,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -240,8 +251,10 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -258,8 +271,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -276,8 +291,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -294,8 +311,10 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_gravity="center"
                 android:textColorHint="@color/black">
@@ -313,9 +332,11 @@
 
             <Button
                 android:id="@+id/btn_providerEditAddressUpdate"
-                android:layout_width="246dp"
+                android:layout_width="match_parent"
                 android:layout_height="56dp"
                 android:layout_marginTop="30dp"
+                android:layout_marginLeft="70dp"
+                android:layout_marginRight="70dp"
                 android:text="Update"
                 app:backgroundTint="#417D7A" />
 
@@ -350,70 +371,12 @@
                 android:textSize="20dp"
                 android:textAlignment="center" />
 
-
-<!--            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center"
-                app:passwordToggleEnabled="true"
-                android:textColorHint="@color/black">
-
-                <EditText
-                    android:id="@+id/et_providerEditOldPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Old Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>-->
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center"
-                app:passwordToggleEnabled="true"
-                android:textColorHint="@color/black">
-
-                <EditText
-                    android:id="@+id/et_providerEditNewPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="New Password"
-                    android:inputType="textPassword"
-                    android:padding="10dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="310dp"
-                android:layout_height="wrap_content"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_gravity="center"
-                app:passwordToggleEnabled="true"
-                android:textColorHint="@color/black">
-
-                <EditText
-                    android:id="@+id/et_providerEditConfirmPassword"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="textPassword"
-                    android:padding="10dp"
-                    android:hint="Confirm Password"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-
             <Button
-                android:id="@+id/btn_providerEditPasswordUpdate"
+                android:id="@+id/btn_resetPassword"
                 android:layout_width="246dp"
                 android:layout_height="56dp"
                 android:layout_marginTop="30dp"
-                android:text="Update"
+                android:text="Reset Password"
                 app:backgroundTint="#417D7A" />
 
         </LinearLayout>

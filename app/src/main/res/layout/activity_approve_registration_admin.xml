@@ -35,7 +35,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="10dp"
-            android:text="Find Services"
+            android:text="Registration Approval"
             android:textColor="#000000"
             android:fontFamily="@font/poppins_regular"
             android:background="#0000"
@@ -59,7 +59,7 @@
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:layout_width="350dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textColorHint="@color/black"
@@ -68,7 +68,7 @@
 
             <EditText
                 android:id="@+id/et_searchService"
-                android:layout_width="290dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:hint="Search"
