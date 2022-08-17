@@ -231,16 +231,46 @@
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-
                 </LinearLayout>
 
             </LinearLayout>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_gravity="center"
+                android:text="Location"
+                android:fontFamily="@font/poppins"
+                android:textSize="20dp"
+                android:textAlignment="center" />
+
+            <!-- Map Fragment-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="30dp">
+
+                <fragment
+                    class="com.google.android.gms.maps.SupportMapFragment"
+                    android:id="@+id/mapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    />
+
+            </LinearLayout>
+
 
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:orientation="horizontal">
 
             <Button

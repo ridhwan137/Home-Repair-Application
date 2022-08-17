@@ -1,9 +1,12 @@
 package mobile.test.homerepair.admin;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,6 +14,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -18,9 +30,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.util.List;
+import java.util.Locale;
+
 import mobile.test.homerepair.R;
 
-public class AppointmentServiceProviderDetail extends AppCompatActivity {
+public class AppointmentServiceProviderDetail extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -33,6 +48,9 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity {
     ImageView img_pictureCompany;
 
     Button btn_BackToHome,btn_editUserInformation;
+
+    GoogleMap mGoogleMap;
+    String getFullAddressForMap;
 
 
     @Override
@@ -59,7 +77,7 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity {
 
 
         displayProviderInfoFromDB();
-
+        initializeMap();
 
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +90,72 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity {
 
         /////////
     }
+
+    ///// Map Function
+    private void geoLocate(String getFullAddressForMap) {
+        String locationName = getFullAddressForMap;
+
+        Log.e("geoLocate->",getFullAddressForMap);
+
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+        try {
+            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+
+            if(addressList.size()>0){
+                Address address = addressList.get(0);
+                Log.e("geoLocate->addressList->", String.valueOf(address));
+
+                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+                gotoLocation(address.getLatitude(),address.getLongitude());
+
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
+            intent.putExtra("providerID",providerID);
+
+            startActivity(intent);
+        }
+    }
+
+    private void gotoLocation(double latitude, double longitude) {
+
+        LatLng LatLng = new LatLng(latitude, longitude);
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(LatLng, 18);
+        mGoogleMap.moveCamera(cameraUpdate);
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
+
+    private void initializeMap() {
+        SupportMapFragment supportMapFragment =  (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        supportMapFragment.getMapAsync(this);
+    }
+    ///// Map Function
+
+    ///// Map Function/Method
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+    }
+    ///// Map Function/Method
 
     public void displayProviderInfoFromDB(){
         db.collection("users").whereEqualTo("userID",providerID)
@@ -103,6 +187,9 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity {
                                     fullAddress += document.getData().get("state").toString() ;
 
                                     et_detailCompanyAddress.setText(fullAddress);
+
+                                    getFullAddressForMap = fullAddress;
+                                    geoLocate(getFullAddressForMap);
 
                                 }catch (Exception e){
                                     e.printStackTrace();
