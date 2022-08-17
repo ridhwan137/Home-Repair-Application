@@ -91,6 +91,7 @@
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Client Name"
             android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="782dp" />
@@ -127,6 +128,7 @@
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Provider Name"
             android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="782dp" />
@@ -147,7 +149,7 @@
             android:focusable="false"
             android:layout_weight="1.5"
             android:fontFamily="@font/keepcalm_medium"
-            android:text="Date :"
+            android:text="Date Appointment:"
             android:layout_marginLeft="20dp"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
@@ -163,6 +165,7 @@
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Date"
             android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="782dp" />
@@ -199,6 +202,7 @@
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Time"
             android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="782dp" />
@@ -235,6 +239,7 @@
             android:fontFamily="@font/keepcalm_medium"
             android:hint="Total Price"
             android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
             android:textSize="13sp"
             tools:layout_editor_absoluteX="60dp"
             tools:layout_editor_absoluteY="782dp" />
