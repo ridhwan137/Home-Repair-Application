@@ -4,6 +4,8 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable-v24/background_shape.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable/bottom_navigation_background_shape.xml" value="0.2712820512820513" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable/selector.xml" value="0.2712820512820513" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_account_type.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_add_service_offer.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_admin_manage_appointment.xml" value="0.259375" />
@@ -11,6 +13,7 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_client_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_schedule_client_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_schedule_client_tab_layout.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_schedule_service_provider_tab_layout.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_appointment_service_provider_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_approve_registration_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_approve_registration_admin_row.xml" value="0.259375" />
@@ -28,6 +31,8 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_edit_profile_service_provider.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_forgot_password.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_history_appointment_client_row.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_history_appointment_client_tab_layout.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_history_appointment_service_provider_tab_layout.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_home_admin.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_in_progress_appointment_detail.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_in_progress_appointment_list.xml" value="0.259375" />
@@ -54,6 +59,7 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_reject_appointment_list.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_request_appointment.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_request_appointment_row.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_search_services.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_search_sevices_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_test_admin_add_service.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_test_admin_add_service_offer.xml" value="0.259375" />

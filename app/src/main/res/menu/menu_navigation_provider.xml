@@ -4,7 +4,7 @@
     <item
         android:id="@+id/menu_serviceOffer"
         android:title="Service Offer"
-        android:icon="@drawable/vector_ic_baseline_add_circle_outline_24"/>
+        android:icon="@drawable/ic_baseline_home_repair_service_24"/>
     <item
         android:id="@+id/menu_appointmentSchedule"
         android:title="Schedule"
