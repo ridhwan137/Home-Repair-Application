@@ -20,6 +20,7 @@ public class TestMainHomePage extends AppCompatActivity {
         Button btn_testSendEmail = findViewById(R.id.btn_testSendEmail);
         Button btn_testAdminAddService = findViewById(R.id.btn_testAdminAddService);
         Button btn_testProviderDislayServiceOffer = findViewById(R.id.btn_testProviderDislayServiceOffer);
+        Button btn_testCreatePDF = findViewById(R.id.btn_testCreatePDF);
 
 
 
@@ -52,6 +53,15 @@ public class TestMainHomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TestProviderDisplayServiceOffer.class);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_testCreatePDF.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestCreatePDF.class);
                 startActivity(intent);
             }
         });

@@ -50,4 +50,14 @@
         android:textColor="@color/white"
         app:backgroundTint="#417D7A"/>
 
+    <Button
+        android:id="@+id/btn_testCreatePDF"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Create_PDF"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
 </LinearLayout>

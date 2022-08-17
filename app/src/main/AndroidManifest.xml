@@ -17,6 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".testDemo.TestCreatePDF"
+            android:exported="true" />
+        <activity
             android:name=".admin.AdminManageAppointment"
             android:exported="true" />
         <activity
