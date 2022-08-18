@@ -124,6 +124,7 @@ public class ProfileAdmin extends AppCompatActivity {
         ivProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 boolean pick = true;
                 if(pick == true){
 

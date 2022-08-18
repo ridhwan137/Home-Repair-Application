@@ -135,9 +135,6 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        checkExternalStoragePermission();
-
         setContentView(R.layout.activity_complete_appointment_detail);
 
         Intent intent = getIntent();
@@ -252,13 +249,56 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
         btn_generateInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAppointmentDataFormDbForInvoice();
+
+//                checkExternalStoragePermission();
+//                getAppointmentDataFormDbForInvoice();
+
+
+                boolean pick = true;
+                if(pick == true){
+
+                    if(!checkCameraPermission()){
+                        requestCameraPermissions();
+                    }
+                    else
+                        getAppointmentDataFormDbForInvoice();
+
+                }
+                else {
+
+                    if (!checkStoragePermission()) {
+                        requestStoragePermissions();
+                    } else
+                        getAppointmentDataFormDbForInvoice();
+                }
+
+
             }
         });
 
 
         // End Bracket
     }
+
+    private void requestStoragePermissions() {
+        requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},100);
+    }
+
+    private void requestCameraPermissions() {
+        requestPermissions(new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE},100);
+    }
+
+    private boolean checkStoragePermission() {
+        boolean res2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
+        return res2;
+    }
+
+    private boolean checkCameraPermission() {
+        boolean res1 = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)== PackageManager.PERMISSION_GRANTED;
+        boolean res2 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)== PackageManager.PERMISSION_GRANTED;
+        return  res1 && res2;
+    }
+
 
     private void checkExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {

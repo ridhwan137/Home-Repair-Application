@@ -150,7 +150,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        checkExternalStoragePermission();
+
         setContentView(R.layout.activity_complete_appointment_schedule_service_provider);
 
         try {
@@ -242,7 +242,28 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
         btn_generateInvoice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getAppointmentDataFormDbForInvoice();
+
+//                checkExternalStoragePermission();
+//                getAppointmentDataFormDbForInvoice();
+
+                boolean pick = true;
+                if(pick == true){
+
+                    if(!checkCameraPermission()){
+                        requestCameraPermissions();
+                    }
+                    else
+                        getAppointmentDataFormDbForInvoice();
+
+                }
+                else {
+
+                    if (!checkStoragePermission()) {
+                        requestStoragePermissions();
+                    } else
+                        getAppointmentDataFormDbForInvoice();
+                }
+
             }
         });
 
