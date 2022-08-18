@@ -59,15 +59,6 @@ public class TestCreatePDF extends AppCompatActivity {
     SimpleDateFormat datePatternFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 
 
-    PdfDocument myPdfDocument = new PdfDocument();
-    Paint forLinePaint = new Paint();
-    PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(250,350,1).create();
-
-    PdfDocument.Page myPage=myPdfDocument.startPage(myPageInfo);
-    Canvas canvas = myPage.getCanvas();
-    Paint paint = new Paint();
-
-
 
     // For Test Demo
     String title = "Home Repair Apps";
@@ -102,6 +93,16 @@ public class TestCreatePDF extends AppCompatActivity {
     String invoiceTitleServicePrice = "Price(RM)";
     String invoiceServiceOffer = "";
     String invoiceServicePrice = "";
+
+
+    PdfDocument myPdfDocument = new PdfDocument();
+    Paint forLinePaint = new Paint();
+    PdfDocument.PageInfo myPageInfo = new PdfDocument.PageInfo.Builder(250,350,1).create();
+
+    PdfDocument.Page myPage=myPdfDocument.startPage(myPageInfo);
+    Canvas canvas = myPage.getCanvas();
+    Paint paint = new Paint();
+
 
     String appointmentID = "appointment170620220103512740";
 

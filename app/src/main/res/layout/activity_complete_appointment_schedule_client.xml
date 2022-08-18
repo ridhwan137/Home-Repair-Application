@@ -423,6 +423,14 @@
 
         </LinearLayout>
 
+        <Button
+            android:id="@+id/btn_generateInvoice"
+            android:layout_width="246dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="30dp"
+            android:text="Generate Invoice"
+            app:backgroundTint="#417D7A" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -445,7 +453,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:layout_gravity="center"
-                android:text="Receipt"
+                android:text="Receipt Picture"
                 android:textSize="20dp"
                 android:fontFamily="@font/keepcalm_medium"
                 android:textAlignment="center" />
