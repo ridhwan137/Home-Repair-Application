@@ -69,7 +69,6 @@ public class TestCreatePDF extends AppCompatActivity {
 
 
 
-
     // For Test Demo
     String title = "Home Repair Apps";
     String address1 = "Plot No.2, Shri Bharat Marg";
@@ -86,6 +85,26 @@ public class TestCreatePDF extends AppCompatActivity {
     String invoiceID;
     String paymentMethod = "Payment Method: Cash";
     String greeting = "Thank You";
+
+
+
+
+    // For Appointment Invoice
+    String invoiceTitle = "Home Repair Apps";
+    String invoiceAppointmentID = "";
+    String invoiceServiceProviderName = "";
+    String invoiceClientName = "";
+    String invoiceDateComplete = "";
+    String invoicePaymentMethod = "Payment Method: Cash";
+    String invoiceGreeting = "Thank You";
+    String invoiceTitleServiceCharges = "Service Charges:";
+    String invoiceTitleServiceOffer = "Service Offer";
+    String invoiceTitleServicePrice = "Price(RM)";
+    String invoiceServiceOffer = "";
+    String invoiceServicePrice = "";
+
+    String appointmentID = "appointment170620220103512740";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,8 +132,6 @@ public class TestCreatePDF extends AppCompatActivity {
 //                addInvoiceToDbMethodOOP();
 
 
-
-
             }
         });
 
@@ -126,13 +143,372 @@ public class TestCreatePDF extends AppCompatActivity {
         btnPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getDataFormDb2();
+
+                getAppointmentDataFormDbForInvoice();
+
+
+//                getDataFormDb2();
 //                createPDFGetDataFromDb(invoiceID,customerName,date,fuelQuantity,fuelType,totalPrice);
             }
         });
 
         ///////
     }
+
+
+
+
+    ///////////////////////////
+    ///////////////////////////
+
+    public void getAppointmentDataFormDbForInvoice(){
+
+        db.collection("appointment")
+                .whereEqualTo("appointmentID",appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getAppointmentDataFormDbForInvoice->", document.getId() + " => " + document.getData());
+
+                                invoiceAppointmentID = appointmentID;
+                                invoiceClientName = document.getData().get("clientName").toString();
+                                invoiceServiceProviderName = document.getData().get("companyName").toString();
+                                invoiceDateComplete = document.getData().get("date").toString();
+
+                            }
+
+                            createPDFGetDataFromDbForInvoice(invoiceAppointmentID,invoiceServiceProviderName,
+                                    invoiceClientName,invoiceDateComplete);
+
+                        } else {
+                            Log.e("getAppointmentDataFormDbForInvoice->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void createPDFGetDataFromDbForInvoice(String appointmentID,String providerName, String clientName, String date) {
+
+        myPdfDocument = new PdfDocument();
+        forLinePaint = new Paint();
+        myPageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
+
+        myPage = myPdfDocument.startPage(myPageInfo);
+        canvas = myPage.getCanvas();
+        paint = new Paint();
+
+        forLinePaint.setStyle(Paint.Style.STROKE);
+        forLinePaint.setPathEffect(new DashPathEffect(new float[]{5, 5}, 0));
+        forLinePaint.setStrokeWidth(2);
+
+        paint.setTextSize(15.5f);
+        paint.setColor(Color.rgb(0, 50, 250));
+        paint.setTextAlign(Paint.Align.CENTER);
+        canvas.drawText(invoiceTitle, canvas.getWidth() / 2, 20, paint);
+
+        canvas.drawLine(20, 40, 230, 40, forLinePaint);
+
+        paint.setTextSize(8.5f);
+        paint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText("Appointment ID: " +appointmentID, 20, 55, paint);
+
+        canvas.drawText("Service Provider: " + providerName, 20, 67, paint);
+
+        canvas.drawText("Client: " + clientName, 20, 80, paint);
+
+        canvas.drawLine(20, 90, 230, 90, forLinePaint);
+
+        canvas.drawText(invoiceTitleServiceCharges, 20, 105, paint);
+
+        canvas.drawText(invoiceTitleServiceOffer, 20, 135, paint);
+
+        paint.setTextAlign(Paint.Align.RIGHT);
+        canvas.drawText(invoiceTitleServicePrice, 225, 135, paint);
+
+        paint.setTextAlign(Paint.Align.LEFT);
+
+        db.collection("order")
+                .whereEqualTo("appointmentID", appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            int yPlus = 140;
+
+                            double servicePrice;
+                            double totalAmount = 0.00;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("createPDFGetDataFromDbForInvoice->", document.getId() + " => " + document.getData());
+
+
+                                invoiceServiceOffer = document.getData().get("serviceName").toString();
+                                invoiceServicePrice = document.getData().get("servicePrice").toString();
+
+                                Log.e("invoiceServiceOffer->", invoiceServiceOffer);
+                                Log.e("invoiceServicePrice->", invoiceServicePrice);
+                                Log.e("invoiceServicePrice->", invoiceServicePrice);
+
+                                servicePrice = Double.parseDouble(invoiceServicePrice);
+
+                                yPlus += 15;
+                                canvas.drawText(invoiceServiceOffer, 20, yPlus, paint);
+
+                                totalAmount += servicePrice;
+
+                                paint.setTextAlign(Paint.Align.RIGHT);
+                                canvas.drawText(String.format("%.2f",servicePrice), 225, yPlus, paint);
+
+                                paint.setTextAlign(Paint.Align.LEFT);
+
+                            }
+
+                            Log.e("yPlusLast->", String.valueOf(yPlus));
+
+                            yPlus += 20;
+
+                            paint.setTextAlign(Paint.Align.LEFT);
+
+                            canvas.drawLine(20, yPlus, 230, yPlus, forLinePaint);
+
+                            paint.setTextSize(10f);
+
+                            yPlus += 15;
+                            canvas.drawText("Total", 120, yPlus, paint);
+
+                            paint.setTextAlign(Paint.Align.RIGHT);
+                            canvas.drawText(String.format("%.2f",totalAmount), 225, yPlus, paint);
+
+
+
+                            yPlus += 35;
+                            paint.setTextAlign(Paint.Align.LEFT);
+                            paint.setTextSize(8.5f);
+                            canvas.drawText("Date: " + date, 20, yPlus, paint);
+
+                            yPlus += 15;
+                            canvas.drawText(invoicePaymentMethod, 20, yPlus, paint);
+
+                            yPlus += 30;
+                            paint.setTextAlign(Paint.Align.CENTER);
+                            paint.setTextSize(12f);
+                            canvas.drawText(invoiceGreeting, canvas.getWidth() / 2, yPlus, paint);
+
+
+                            myPdfDocument.finishPage(myPage);
+
+                            String pdfDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                            File pdfFile = new File(pdfDirectory, "AppointmentInvoice" + ".pdf");
+
+                            try {
+
+                                myPdfDocument.writeTo(new FileOutputStream(pdfFile));
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } finally {
+                                myPdfDocument.close();
+
+                                DownloadManager downloadManager = (DownloadManager) TestCreatePDF.this.getSystemService(DOWNLOAD_SERVICE);
+                                downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
+
+                                Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
+                            }
+
+
+                        } else {
+                            Log.e("createPDFGetDataFromDbForInvoice->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        ///////
+    }
+
+    ///////////////////////////
+    ///////////////////////////
+
+
+
+
+
+
+    public void getDataFormDb2(){
+
+        db.collection("invoice")
+                .whereEqualTo("invoiceID","invoice3535")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb2->", document.getId() + " => " + document.getData());
+
+                                invoiceID = document.getData().get("invoiceID").toString();
+                                customerName = document.getData().get("customerName").toString();
+                                date = document.getData().get("date").toString();
+
+                            }
+
+                            createPDF_GetDataFromDb_UsingForLoop_ForXnY(invoiceID,customerName,date);
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    public void createPDF_GetDataFromDb_UsingForLoop_ForXnY(String invoiceID,String customerName, String date) {
+
+        myPdfDocument = new PdfDocument();
+        forLinePaint = new Paint();
+        myPageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
+
+        myPage = myPdfDocument.startPage(myPageInfo);
+        canvas = myPage.getCanvas();
+        paint = new Paint();
+
+        paint.setTextSize(15.5f);
+        paint.setColor(Color.rgb(0, 50, 250));
+        canvas.drawText(title, 20, 20, paint); // Title -> Home Repair Apps
+
+        paint.setTextSize(8.5f);
+        canvas.drawText(address1, 20, 40, paint); // Address
+        canvas.drawText(address2, 20, 55, paint); // Address
+
+        forLinePaint.setStyle(Paint.Style.STROKE);
+        forLinePaint.setPathEffect(new DashPathEffect(new float[]{5, 5}, 0));
+        forLinePaint.setStrokeWidth(2);
+
+        canvas.drawLine(20, 65, 230, 65, forLinePaint); // Stroke Line
+
+        canvas.drawText("Customer Name: " + customerName, 20, 80, paint); // Customer Name
+
+        canvas.drawLine(20, 90, 230, 90, forLinePaint); //Stroke Line
+
+        canvas.drawText(purchaseTitle, 20, 105, paint); // Purchase -> Service Charges
+
+        db.collection("testinvoice")
+                .whereEqualTo("invoiceID", "invoice11111")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+
+                            int yPlus = 135;
+                            double amount;
+                            double totalAmount = 0.00;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDbForLoop->", document.getId() + " => " + document.getData());
+
+
+                                String fuelQuantity = document.getData().get("fuelQty").toString();
+                                String fuelType = document.getData().get("fuelType").toString();
+                                String totalPrice = document.getData().get("amount").toString();
+
+                                Log.e("fuelType->", fuelType);
+                                Log.e("fuelQuantity->", fuelQuantity);
+                                Log.e("totalPrice->", totalPrice);
+
+                                amount = Double.parseDouble(totalPrice);
+
+                                yPlus += 20;
+                                canvas.drawText(fuelType, 20, yPlus, paint); // Petrol/Diesel -> Clogged Sink
+                                Log.e("fuelType2->", fuelType);
+
+                                canvas.drawText(fuelQuantity + " litre", 120, yPlus, paint); // maybe no need
+                                Log.e("fuelQuantity2->", fuelQuantity);
+
+//                                double amount = Double.parseDouble(totalPrice); // order total price
+                                totalAmount += amount;
+                                paint.setTextAlign(Paint.Align.RIGHT);
+//                                canvas.drawText(decimalFormat.format(amount), 230, yPlus, paint);
+
+                                canvas.drawText(String.format("%.2f",amount), 230, yPlus, paint);
+
+                                Log.e("totalPrice2->", totalPrice);
+
+                                paint.setTextAlign(Paint.Align.LEFT);
+
+                            }
+
+                            Log.e("yPlusLast->", String.valueOf(yPlus));
+
+                            yPlus += 20;
+
+                            paint.setTextAlign(Paint.Align.LEFT);
+
+                            canvas.drawLine(20, yPlus, 230, yPlus, forLinePaint);
+
+                            paint.setTextSize(10f);
+
+                            yPlus += 15;
+                            canvas.drawText("Total", 120, yPlus, paint);
+
+                            paint.setTextAlign(Paint.Align.RIGHT);
+                            canvas.drawText(decimalFormat.format(totalAmount), 230, yPlus, paint);
+
+                            yPlus += 35;
+                            paint.setTextAlign(Paint.Align.LEFT);
+                            paint.setTextSize(8.5f);
+                            canvas.drawText("Date:" + date, 20, yPlus, paint);
+
+                            yPlus += 15;
+                            canvas.drawText(invoiceID, 20, yPlus, paint);
+
+                            yPlus += 15;
+                            canvas.drawText(paymentMethod, 20, yPlus, paint);
+
+                            yPlus += 30;
+                            paint.setTextAlign(Paint.Align.CENTER);
+                            paint.setTextSize(12f);
+                            canvas.drawText(greeting, canvas.getWidth() / 2, yPlus, paint);
+
+
+                            myPdfDocument.finishPage(myPage);
+
+                            String pdfDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
+                            File pdfFile = new File(pdfDirectory, "AppointmentInvoice" + ".pdf");
+
+                            try {
+
+                                myPdfDocument.writeTo(new FileOutputStream(pdfFile));
+
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } finally {
+                                myPdfDocument.close();
+
+                                DownloadManager downloadManager = (DownloadManager) TestCreatePDF.this.getSystemService(DOWNLOAD_SERVICE);
+                                downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
+
+                                Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
+                            }
+
+
+                        } else {
+                            Log.e("getDataFormDbForLoop->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+        ///////
+    }
+
+
+
+
 
 
     public void addInvoiceToDbMethodOOP(){
@@ -306,41 +682,6 @@ public class TestCreatePDF extends AppCompatActivity {
     public void getDataFormDb1(){
 
         String TAG = "TAG";
-/*
-        // For Test Demo
-        String title = "Home Repair Apps";
-        String address1 = "Plot No.2, Shri Bharat Marg";
-        String address2 = "Ayodhya 224123";
-        String customerName = null;
-        String purchaseTitle = "Purchase :";
-        String fuelType;
-        String fuelQuantity;
-        String fuelPrice;
-        String tax = "Tax 5%";
-        String taxPrice = "";
-        String totalPrice = "";
-        String date;
-        String invoiceID;
-        String paymentMethod = "Payment Method: Cash";
-        String greeting = "Thank You";*/
-
-
-/*
-        // For Appointment Invoice
-        String invoiceTitle = "Home Repair Apps";
-        String invoiceAppointmentID = "";
-        String invoiceServiceProviderName = "";
-        String invoiceClientName = "";
-        String invoiceDateComplete = "";
-        String invoicePaymentMethod = "Payment Method: Cash";
-        String invoiceGreeting = "Thank You";
-        String invoiceTitleServiceCharges = "Service Charges:";
-        String invoiceTitleServiceOffer = "";
-        String invoiceTitleServicePrice = "";
-        String invoiceServiceOffer = "";
-        String invoiceServicePrice = "";
-        String invoiceTitleTotalPrice = "";
-        String invoiceTotalPrice = "";*/
 
         DocumentReference docRef = db.collection("invoice").document();
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -370,39 +711,6 @@ public class TestCreatePDF extends AppCompatActivity {
 
             }
         });
-    }
-
-
-    public void getDataFormDb2(){
-
-        db.collection("invoice")
-                .whereEqualTo("invoiceID","invoice3535")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.e("getDataFormDb2->", document.getId() + " => " + document.getData());
-
-                                invoiceID = document.getData().get("invoiceID").toString();
-                                customerName = document.getData().get("customerName").toString();
-                                date = document.getData().get("date").toString();
-//                                fuelQuantity = document.getData().get("fuelQty").toString();
-//                                fuelType = document.getData().get("fuelType").toString();
-//                                totalPrice = document.getData().get("amount").toString();
-
-                            }
-
-                            createPDF_GetDataFromDb_UsingForLoop_ForXnY(invoiceID,customerName,date);
-
-//                            createPDFGetDataFromDb(invoiceID,customerName,date,fuelQuantity,fuelType,totalPrice);
-
-                        } else {
-                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
     }
 
 
@@ -632,294 +940,4 @@ public class TestCreatePDF extends AppCompatActivity {
     }
 
 
-    public void createPDF_GetDataFromDb_UsingForLoop_ForXnY(String invoiceID,String customerName, String date) {
-
-        myPdfDocument = new PdfDocument();
-        forLinePaint = new Paint();
-        myPageInfo = new PdfDocument.PageInfo.Builder(250, 350, 1).create();
-
-        myPage = myPdfDocument.startPage(myPageInfo);
-        canvas = myPage.getCanvas();
-        paint = new Paint();
-
-        paint.setTextSize(15.5f);
-        paint.setColor(Color.rgb(0, 50, 250));
-        canvas.drawText(title, 20, 20, paint); // Title -> Home Repair Apps
-
-        paint.setTextSize(8.5f);
-        canvas.drawText(address1, 20, 40, paint); // Address
-        canvas.drawText(address2, 20, 55, paint); // Address
-
-        forLinePaint.setStyle(Paint.Style.STROKE);
-        forLinePaint.setPathEffect(new DashPathEffect(new float[]{5, 5}, 0));
-        forLinePaint.setStrokeWidth(2);
-
-        canvas.drawLine(20, 65, 230, 65, forLinePaint); // Stroke Line
-
-        canvas.drawText("Customer Name: " + customerName, 20, 80, paint); // Customer Name
-
-        canvas.drawLine(20, 90, 230, 90, forLinePaint); //Stroke Line
-
-        canvas.drawText(purchaseTitle, 20, 105, paint); // Purchase -> Service Charges
-
-
-        //////// Do Looping Here
-/*
-
-        // --> Normal Loop
-        int i;
-        int yPlus = 135;
-        double amount = Double.parseDouble(totalPrice);
-        double totalAmount = 0.00;
-
-        for (i = 0; i < 5; i++) {
-
-            Log.e("i->", String.valueOf(i));
-
-            yPlus = yPlus + 20;
-            Log.e("yPlus->", String.valueOf(yPlus));
-
-            canvas.drawText(fuelType, 20, yPlus, paint); // Petrol/Diesel -> Clogged Sink
-            Log.e("fuelType2->", fuelType);
-
-            canvas.drawText(fuelQuantity + " litre", 120, yPlus, paint); // maybe no need
-            Log.e("fuelQuantity2->", fuelQuantity);
-
-//            amount = Double.parseDouble(totalPrice); // order total price
-            totalAmount += amount;
-            paint.setTextAlign(Paint.Align.RIGHT);
-            canvas.drawText(String.valueOf(decimalFormat.format(amount)), 230, yPlus, paint);
-            Log.e("totalPrice2->", totalPrice);
-
-            paint.setTextAlign(Paint.Align.LEFT);
-        }
-
-        Log.e("yPlusLast->", String.valueOf(yPlus));
-
-        yPlus += 20;
-
-        paint.setTextAlign(Paint.Align.LEFT);
-
-        canvas.drawLine(20, yPlus, 230, yPlus, forLinePaint);
-
-        paint.setTextSize(10f);
-
-        yPlus += 15;
-        canvas.drawText("Total", 120, yPlus, paint);
-
-        paint.setTextAlign(Paint.Align.RIGHT);
-        canvas.drawText(decimalFormat.format(totalAmount), 230, yPlus, paint);
-
-        yPlus += 35;
-        paint.setTextAlign(Paint.Align.LEFT);
-        paint.setTextSize(8.5f);
-        canvas.drawText("Date:" + date, 20, yPlus, paint);
-
-        yPlus += 15;
-        canvas.drawText(invoiceID, 20, yPlus, paint);
-
-        yPlus += 15;
-        canvas.drawText(paymentMethod, 20, yPlus, paint);
-
-        yPlus += 30;
-        paint.setTextAlign(Paint.Align.CENTER);
-        paint.setTextSize(12f);
-        canvas.drawText(greeting, canvas.getWidth() / 2, yPlus, paint);
-
-
-        myPdfDocument.finishPage(myPage);
-
-        String pdfDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File pdfFile = new File(pdfDirectory, "AppointmentInvoice" + ".pdf");
-
-        try {
-
-            myPdfDocument.writeTo(new FileOutputStream(pdfFile));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            myPdfDocument.close();
-
-            DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
-            downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
-
-            Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
-        }
-
-        //<-- Normal Loop
-*/
-        /////////////////////
-        /////////////////////
-
-        db.collection("testinvoice")
-                .whereEqualTo("invoiceID", "invoice11111")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-
-                            int yPlus = 135;
-                            double amount;
-                            double totalAmount = 0.00;
-
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                Log.e("getDataFormDbForLoop->", document.getId() + " => " + document.getData());
-
-
-                                String fuelQuantity = document.getData().get("fuelQty").toString();
-                                String fuelType = document.getData().get("fuelType").toString();
-                                String totalPrice = document.getData().get("amount").toString();
-
-                                Log.e("fuelType->", fuelType);
-                                Log.e("fuelQuantity->", fuelQuantity);
-                                Log.e("totalPrice->", totalPrice);
-
-                                amount = Double.parseDouble(totalPrice);
-
-                                yPlus += 20;
-                                canvas.drawText(fuelType, 20, yPlus, paint); // Petrol/Diesel -> Clogged Sink
-                                Log.e("fuelType2->", fuelType);
-
-                                canvas.drawText(fuelQuantity + " litre", 120, yPlus, paint); // maybe no need
-                                Log.e("fuelQuantity2->", fuelQuantity);
-
-//                                double amount = Double.parseDouble(totalPrice); // order total price
-                                totalAmount += amount;
-                                paint.setTextAlign(Paint.Align.RIGHT);
-//                                canvas.drawText(decimalFormat.format(amount), 230, yPlus, paint);
-
-                                canvas.drawText(String.format("%.2f",amount), 230, yPlus, paint);
-
-                                Log.e("totalPrice2->", totalPrice);
-
-                                paint.setTextAlign(Paint.Align.LEFT);
-
-                            }
-
-                            Log.e("yPlusLast->", String.valueOf(yPlus));
-
-                            yPlus += 20;
-
-                            paint.setTextAlign(Paint.Align.LEFT);
-
-                            canvas.drawLine(20, yPlus, 230, yPlus, forLinePaint);
-
-                            paint.setTextSize(10f);
-
-                            yPlus += 15;
-                            canvas.drawText("Total", 120, yPlus, paint);
-
-                            paint.setTextAlign(Paint.Align.RIGHT);
-                            canvas.drawText(decimalFormat.format(totalAmount), 230, yPlus, paint);
-
-                            yPlus += 35;
-                            paint.setTextAlign(Paint.Align.LEFT);
-                            paint.setTextSize(8.5f);
-                            canvas.drawText("Date:" + date, 20, yPlus, paint);
-
-                            yPlus += 15;
-                            canvas.drawText(invoiceID, 20, yPlus, paint);
-
-                            yPlus += 15;
-                            canvas.drawText(paymentMethod, 20, yPlus, paint);
-
-                            yPlus += 30;
-                            paint.setTextAlign(Paint.Align.CENTER);
-                            paint.setTextSize(12f);
-                            canvas.drawText(greeting, canvas.getWidth() / 2, yPlus, paint);
-
-
-                            myPdfDocument.finishPage(myPage);
-
-                            String pdfDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-                            File pdfFile = new File(pdfDirectory, "AppointmentInvoice" + ".pdf");
-
-                            try {
-
-                                myPdfDocument.writeTo(new FileOutputStream(pdfFile));
-
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            } finally {
-                                myPdfDocument.close();
-
-                                DownloadManager downloadManager = (DownloadManager) TestCreatePDF.this.getSystemService(DOWNLOAD_SERVICE);
-                                downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
-
-                                Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
-                            }
-
-
-                        } else {
-                            Log.e("getDataFormDbForLoop->", "Error getting documents: ", task.getException());
-                        }
-                    }
-                });
-
-        //////// Looping
-
-
-//
-//        paint.setTextAlign(Paint.Align.LEFT);
-//        canvas.drawText("+",20,175,paint);
-//
-//        canvas.drawText("Tax 5%",120,175,paint);
-//        paint.setTextAlign(Paint.Align.RIGHT);
-//
-////        canvas.drawText(decimalFormat.format(amount*5/100),230,175,paint);
-//        paint.setTextAlign(Paint.Align.LEFT);
-//
-//        canvas.drawLine(20,210,230,210,forLinePaint);
-//
-//        paint.setTextSize(10f);
-//        canvas.drawText("Total",120,225,paint);
-//
-//        paint.setTextAlign(Paint.Align.RIGHT);
-////        canvas.drawText(decimalFormat.format((amount*5/100)+amount),230,225,paint);
-//        canvas.drawText(decimalFormat.format(totalAmount),230,225,paint);
-//
-//        paint.setTextAlign(Paint.Align.LEFT);
-//        paint.setTextSize(8.5f);
-//        canvas.drawText("Date:" + date,20,260,paint);
-//
-//        canvas.drawText(invoiceID,20,275,paint);
-//
-//        canvas.drawText(paymentMethod,20,290,paint);
-//
-//        paint.setTextAlign(Paint.Align.CENTER);
-//        paint.setTextSize(12f);
-//        canvas.drawText(greeting,canvas.getWidth()/2,320,paint);
-//
-
-/*
-
-
-        myPdfDocument.finishPage(myPage);
-
-        String pdfDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).toString();
-        File pdfFile = new File(pdfDirectory, "AppointmentInvoice" + ".pdf");
-
-        try{
-
-            myPdfDocument.writeTo(new FileOutputStream(pdfFile));
-
-        }catch(IOException e){
-            e.printStackTrace();
-        }finally {
-            myPdfDocument.close();
-
-            DownloadManager downloadManager = (DownloadManager) this.getSystemService(DOWNLOAD_SERVICE);
-            downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf",pdfFile.getAbsolutePath(),pdfFile.length(),true);
-
-            Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
-        }
-
-    }
-*/
-
-
-        ///////
-    }
 }
