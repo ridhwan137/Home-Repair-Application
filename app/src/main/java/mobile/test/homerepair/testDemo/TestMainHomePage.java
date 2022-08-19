@@ -21,6 +21,8 @@ public class TestMainHomePage extends AppCompatActivity {
         Button btn_testAdminAddService = findViewById(R.id.btn_testAdminAddService);
         Button btn_testProviderDislayServiceOffer = findViewById(R.id.btn_testProviderDislayServiceOffer);
         Button btn_testCreatePDF = findViewById(R.id.btn_testCreatePDF);
+        Button btn_testLineChart = findViewById(R.id.btn_testLineChart);
+        Button btn_testLineChartWithDB = findViewById(R.id.btn_testLineChartWithDB);
 
 
 
@@ -62,6 +64,24 @@ public class TestMainHomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TestCreatePDF.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_testLineChart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestLineChart.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        btn_testLineChartWithDB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestLineChartWithDB.class);
                 startActivity(intent);
             }
         });

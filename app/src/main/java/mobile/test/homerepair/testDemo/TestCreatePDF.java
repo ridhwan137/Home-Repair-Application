@@ -128,7 +128,7 @@ public class TestCreatePDF extends AppCompatActivity {
         btnSaveAndPrint.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                addInvoiceToDbUsingHashMap();
+                addInvoiceToDbUsingHashMap();
 
 //                addInvoiceToDbMethodOOP();
 

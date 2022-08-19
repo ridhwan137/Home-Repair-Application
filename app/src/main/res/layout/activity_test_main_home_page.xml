@@ -60,4 +60,24 @@
         android:textColor="@color/white"
         app:backgroundTint="#417D7A"/>
 
+    <Button
+        android:id="@+id/btn_testLineChart"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Line_Chart"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
+    <Button
+        android:id="@+id/btn_testLineChartWithDB"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Line_Chart_With_DB"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
 </LinearLayout>
