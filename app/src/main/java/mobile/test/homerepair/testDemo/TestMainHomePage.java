@@ -23,6 +23,7 @@ public class TestMainHomePage extends AppCompatActivity {
         Button btn_testCreatePDF = findViewById(R.id.btn_testCreatePDF);
         Button btn_testLineChart = findViewById(R.id.btn_testLineChart);
         Button btn_testLineChartWithDB = findViewById(R.id.btn_testLineChartWithDB);
+        Button btn_testRating = findViewById(R.id.btn_testRating);
 
 
 
@@ -82,6 +83,15 @@ public class TestMainHomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TestLineChartWithDB.class);
+                startActivity(intent);
+            }
+        });
+
+
+        btn_testRating.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestRating.class);
                 startActivity(intent);
             }
         });

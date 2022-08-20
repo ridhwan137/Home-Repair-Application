@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -66,7 +69,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
         btn_click = findViewById(R.id.btn_click);
 
-        lineDataSet.setLineWidth(4);
+
 
         getDataFromDB();
 
@@ -132,8 +135,8 @@ public class TestLineChartWithDB extends AppCompatActivity {
         String lineChartID;
         lineChartID = "lineChartID" + randomID;
 
-        int x = Integer.parseInt(et_xValue.getText().toString());
-        int y = Integer.parseInt(et_yValue.getText().toString());
+        String x = et_xValue.getText().toString();
+        String y = et_yValue.getText().toString();
 
         // Put all data to hash map
         Map<String, Object> data = new HashMap<>();
@@ -181,8 +184,8 @@ public class TestLineChartWithDB extends AppCompatActivity {
 //                                dataValue.add(new Entry(dataPoint.getxValue(),dataPoint.getyValue()));
 
                                 try {
-                                    int x_coordinate = Integer.parseInt(document.getData().get("xValue").toString());
-                                    int y_coordinate = Integer.parseInt(document.getData().get("xValue").toString());
+                                    float x_coordinate = Float.parseFloat(document.getData().get("xValue").toString());
+                                    float y_coordinate = Float.parseFloat(document.getData().get("yValue").toString());
 
                                     Log.e("x->", String.valueOf(x_coordinate));
                                     Log.e("y->", String.valueOf(y_coordinate));
@@ -217,8 +220,20 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
     private void showChart(ArrayList<Entry> dataValue) {
 
+        XAxis xAxis = lineChartDB.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.RED);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+
+
+
         lineDataSet.setValues(dataValue);
         lineDataSet.setLabel("Data Set1");
+        lineDataSet.setLineWidth(4);
+        lineDataSet.setColor(Color.RED);
+        lineDataSet.setValueTextSize(10);
 
         iLineDataSets.clear();
         iLineDataSets.add(lineDataSet);

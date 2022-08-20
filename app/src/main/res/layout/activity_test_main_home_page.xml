@@ -80,4 +80,15 @@
         android:textColor="@color/white"
         app:backgroundTint="#417D7A"/>
 
+
+    <Button
+        android:id="@+id/btn_testRating"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Rating"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
 </LinearLayout>

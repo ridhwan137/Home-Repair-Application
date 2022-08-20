@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".testDemo.TestRating"
+            android:exported="true" />
+        <activity
             android:name=".testDemo.TestLineChartWithDB"
             android:exported="true" />
         <activity
