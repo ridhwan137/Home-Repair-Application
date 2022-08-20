@@ -5,6 +5,7 @@
       <map>
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable-v24/background_shape.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable/bottom_navigation_background_shape.xml" value="0.2712820512820513" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable/ratingbar_custom.xml" value="0.13229166666666667" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/drawable/selector.xml" value="0.2712820512820513" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_account_type.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/activity_add_service_offer.xml" value="0.259375" />
@@ -76,6 +77,7 @@
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/add_service_offer_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/fragment_appointment_schedule_client_tab_pending.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/fragment_history_appointment_service_provider_tab_complete.xml" value="0.259375" />
+        <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/ratingbar_custom.xml" value="0.11614583333333334" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/spinner_item.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/layout/test_add_service_type_row.xml" value="0.259375" />
         <entry key="..\:/Users/60177/Desktop/HomeRepair_17062022_version_0.8.5/HomeRepair/app/src/main/res/menu/menu_navigation_provider.xml" value="0.259375" />

@@ -2,7 +2,13 @@ package mobile.test.homerepair.testDemo;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.LayerDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,6 +26,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -47,6 +54,29 @@ public class TestRating extends AppCompatActivity {
         tv_averageRate = findViewById(R.id.tv_averageRate);
         getRatingBar = findViewById(R.id.getRatingBar);
         setRatingBar = findViewById(R.id.setRatingBar);
+
+        ///////////////////////////
+        // Configuration Rating Bar
+        //////////////////////////
+
+
+        // Configure Get Rating Bar
+        LayerDrawable getRatingBarDrawable = (LayerDrawable) getRatingBar.getProgressDrawable();
+
+        // No star
+//        DrawableCompat.setTint(DrawableCompat.wrap(getRatingBarDrawable.getDrawable(0)),
+//                ContextCompat.getColor(getApplicationContext(), android.R.color.tertiary_text_light));
+
+        // Partial star
+        DrawableCompat.setTint(DrawableCompat.wrap(getRatingBarDrawable.getDrawable(1)),
+                ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+
+        // Custom star
+//        DrawableCompat.setTint(DrawableCompat.wrap(getRatingBarDrawable.getDrawable(2)),
+//                ContextCompat.getColor(getApplicationContext(), android.R.color.holo_orange_dark));
+
+
+
 
         calculateAverageRatingFromDB();
 
@@ -114,8 +144,8 @@ public class TestRating extends AppCompatActivity {
                         if (task.isSuccessful()) {
 
                             int totalOfUserThatRate = 0;
-                            double totalRating = 0.00;
-                            double averateRating = 0.00;
+                            float totalRating = 0.0F;
+                            float averateRating = 0.0F;
 
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.e("calculateAverageRatingFromDB->", document.getId() + " => " + document.getData());
@@ -134,17 +164,24 @@ public class TestRating extends AppCompatActivity {
                             Log.e("totalOfUserThatRate->", String.valueOf(totalOfUserThatRate));
 
                             averateRating = totalRating/totalOfUserThatRate;
-                            Log.e("averateRating->", String.valueOf(averateRating));
 
-                            getRatingBar.setRating((float) averateRating);
+                            DecimalFormat decimalFormat = new DecimalFormat("#.#");
+                            String formatAverageRating = decimalFormat.format(averateRating);
+
+//                            String.format("%.1f", averateRating);
+
+                            Log.e("averateRating->", formatAverageRating);
+
+                            getRatingBar.setRating(Float.parseFloat(formatAverageRating));
+
 
 
                             if (Double.isNaN(averateRating)){
                                 tv_averageRate.setText("0.0");
-                                Log.e("averateRating2->", String.valueOf(averateRating));
+                                Log.e("averateRating2->", formatAverageRating);
                             }else{
                                 tv_averageRate.setText(String. format("%.1f", averateRating));
-                                Log.e("averateRating3->", String.valueOf(averateRating));
+                                Log.e("averateRating3->", formatAverageRating);
                             }
 
 
