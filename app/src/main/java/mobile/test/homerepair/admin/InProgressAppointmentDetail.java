@@ -230,6 +230,7 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
                 }else{
                     // change appointment status in DB to complete
                     updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
+
                     addTotalPriceToAppointmentDB();
 
 

@@ -99,7 +99,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
     MaterialIconView btn_addItem;
     EditText et_addServiceOffer,et_addServicePrice;
 
-    Button btn_completeAppointment,btn_downloadReceipt,btn_generateInvoice;
+    Button btn_completeAppointment,btn_downloadReceipt,btn_generateInvoice,btn_ratingService;
 
     String TAG = "TAG";
     String providerPictureURL;
@@ -269,6 +269,21 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                     } else
                         getAppointmentDataFormDbForInvoice();
                 }
+            }
+        });
+
+
+        // Rate Service
+        btn_ratingService = findViewById(R.id.btn_ratingService);
+
+        btn_ratingService.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ClientRateServiceProvided.class);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("providerID", providerID);
+//                intent.putExtra("clientID", clientID);
+                startActivity(intent);
             }
         });
 
@@ -539,7 +554,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
                                 try {
-                                    providerID = document.getData().get("providerID").toString() + ", ";
+                                    providerID = document.getData().get("providerID").toString();
 
                                     Log.e("providerID",providerID);
 

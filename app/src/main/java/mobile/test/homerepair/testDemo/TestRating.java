@@ -55,9 +55,9 @@ public class TestRating extends AppCompatActivity {
         getRatingBar = findViewById(R.id.getRatingBar);
         setRatingBar = findViewById(R.id.setRatingBar);
 
-        ///////////////////////////
-        // Configuration Rating Bar
-        //////////////////////////
+        //////////////////////////////////////
+        // Configuration Rating Bar Colour
+        /////////////////////////////////////
 
 
         // Configure Get Rating Bar
@@ -80,12 +80,6 @@ public class TestRating extends AppCompatActivity {
 
         calculateAverageRatingFromDB();
 
-        btn_submit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                insertRatingToDB();
-            }
-        });
 
         setRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -93,6 +87,14 @@ public class TestRating extends AppCompatActivity {
                 rateValue = setRatingBar.getRating();
                 Log.e("rateValue->", String.valueOf(rateValue));
 
+            }
+        });
+
+
+        btn_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                insertRatingToDB();
             }
         });
 
@@ -170,7 +172,7 @@ public class TestRating extends AppCompatActivity {
 
 //                            String.format("%.1f", averateRating);
 
-                            Log.e("averateRating->", formatAverageRating);
+                            Log.e("averageRating2->", formatAverageRating);
 
                             getRatingBar.setRating(Float.parseFloat(formatAverageRating));
 
@@ -178,10 +180,10 @@ public class TestRating extends AppCompatActivity {
 
                             if (Double.isNaN(averateRating)){
                                 tv_averageRate.setText("0.0");
-                                Log.e("averateRating2->", formatAverageRating);
+                                Log.e("averageRating2->", formatAverageRating);
                             }else{
                                 tv_averageRate.setText(String. format("%.1f", averateRating));
-                                Log.e("averateRating3->", formatAverageRating);
+                                Log.e("averageRating2->", formatAverageRating);
                             }
 
 

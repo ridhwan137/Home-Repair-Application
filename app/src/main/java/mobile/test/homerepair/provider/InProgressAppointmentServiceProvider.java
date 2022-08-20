@@ -247,6 +247,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                 }else{
                     // change appointment status in DB to complete
                     updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
+
                     addTotalPriceToAppointmentDB();
 
 //                addReceiptPictureUrlToDB(); // add picture URL on table appointment
