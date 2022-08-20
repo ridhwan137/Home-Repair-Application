@@ -8,11 +8,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.utils.EntryXComparator;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -21,8 +20,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -37,6 +34,9 @@ public class TestRating extends AppCompatActivity {
     Button btn_submit;
     TextView tv_averageRate;
 
+    RatingBar setRatingBar,getRatingBar;
+    float rateValue = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +45,10 @@ public class TestRating extends AppCompatActivity {
         et_oneRating = findViewById(R.id.et_oneRating);
         btn_submit = findViewById(R.id.btn_submit);
         tv_averageRate = findViewById(R.id.tv_averageRate);
+        getRatingBar = findViewById(R.id.getRatingBar);
+        setRatingBar = findViewById(R.id.setRatingBar);
+
+        calculateAverageRatingFromDB();
 
         btn_submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,6 +57,14 @@ public class TestRating extends AppCompatActivity {
             }
         });
 
+        setRatingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rateValue = setRatingBar.getRating();
+                Log.e("rateValue->", String.valueOf(rateValue));
+
+            }
+        });
 
         ////////
     }
@@ -65,12 +77,12 @@ public class TestRating extends AppCompatActivity {
         String ratingID;
         ratingID = "ratingID" + randomID;
 
-        double getRatingInput = Double.parseDouble(et_oneRating.getText().toString());
+//        double getRatingInput = Double.parseDouble(et_oneRating.getText().toString());
 
         // Put all data to hash map
         Map<String, Object> data = new HashMap<>();
         data.put("ratingID", ratingID);
-        data.put("oneRating", getRatingInput);
+        data.put("oneRating", rateValue);
 
         db.collection("testRating").document(ratingID)
                 .set(data)
@@ -124,7 +136,19 @@ public class TestRating extends AppCompatActivity {
                             averateRating = totalRating/totalOfUserThatRate;
                             Log.e("averateRating->", String.valueOf(averateRating));
 
-                            tv_averageRate.setText(String.valueOf(averateRating));
+                            getRatingBar.setRating((float) averateRating);
+
+
+                            if (Double.isNaN(averateRating)){
+                                tv_averageRate.setText("0.0");
+                                Log.e("averateRating2->", String.valueOf(averateRating));
+                            }else{
+                                tv_averageRate.setText(String. format("%.1f", averateRating));
+                                Log.e("averateRating3->", String.valueOf(averateRating));
+                            }
+
+
+
 
 
                         } else {
