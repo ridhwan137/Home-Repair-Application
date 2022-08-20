@@ -180,7 +180,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 
         Map<String, Object> dataServiceRate = new HashMap<>();
 
-        dataServiceRate.put("serviceRate", rateValue);
+        dataServiceRate.put("serviceRate", String.format("%.1f",rateValue));
 
         db.collection("appointment")
                 .document(appointmentID)
@@ -243,8 +243,9 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 //                            Log.e("formatAverageRating2->", formatAverageRating);
 
 //                            ratingBar.setRating(Float.parseFloat(formatAverageRating));
+//                            String. format("%.1f", averateRating);
 
-                            insertAverageRatingToProviderDB(averateRating);
+                            insertAverageRatingToProviderDB(String. format("%.1f",averateRating));
 
 
                         } else {
@@ -255,7 +256,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 
     }
 
-    private void insertAverageRatingToProviderDB(float averageRating) {
+    private void insertAverageRatingToProviderDB(String averageRating) {
 
         Map<String, Object> dataAverageServiceRate = new HashMap<>();
 

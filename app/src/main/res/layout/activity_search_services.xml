@@ -56,7 +56,7 @@
             android:layout_gravity="center"
             android:textColorHint="@color/black"
             android:padding="10dp"
-            app:placeholderText="e.g: Electrician,Plumber,Air-conditioner"
+            app:placeholderText="e.g: Provider Name,Service, Rating"
             app:startIconDrawable="@drawable/ic_baseline_search_24">
 
             <EditText

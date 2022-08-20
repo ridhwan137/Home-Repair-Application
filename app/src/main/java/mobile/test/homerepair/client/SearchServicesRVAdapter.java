@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.squareup.picasso.Picasso;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
+
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -57,9 +60,25 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
         }
 
 
+//        float serviceRating = Float.parseFloat(users.getUserServiceRating());
 
         holder.tv_searchCompanyName.setText(users.getCompanyName());
         holder.tv_searchCompanyServiceType.setText(users.getServiceType());
+//        holder.tv_userRating.setText(String.format("%.1f", users.getUserServiceRating()));
+//        holder.tv_userRating.setText(users.getUserServiceRating());
+
+        try{
+            holder.ratingBar_user.setRating(Float.parseFloat(users.getUserServiceRating()));
+            holder.tv_userRating.setText(users.getUserServiceRating());
+            System.out.println(users.getUserServiceRating());
+        }catch (Exception e){
+            e.printStackTrace();
+            System.out.println(users.getUserServiceRating());
+            holder.ratingBar_user.setRating(0.0F);
+//            holder.tv_userRating.setText(0);
+        }
+
+
 
     }
 
@@ -76,9 +95,11 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
-        private final TextView tv_searchCompanyName,tv_searchCompanyServiceType;
-        private final MaterialIconView btn_searchMoreDetail;
-        private final CircleImageView img_searchCompany;
+        TextView tv_searchCompanyName,tv_searchCompanyServiceType;
+        MaterialIconView btn_searchMoreDetail;
+        CircleImageView img_searchCompany;
+        RatingBar ratingBar_user;
+        TextView tv_userRating;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -88,6 +109,8 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
             tv_searchCompanyServiceType = itemView.findViewById(R.id.tv_searchCompanyServiceType);
             img_searchCompany = itemView.findViewById(R.id.img_searchCompany);
             btn_searchMoreDetail = itemView.findViewById(R.id.btn_searchMoreDetail);
+            ratingBar_user = itemView.findViewById(R.id.ratingBar_user);
+            tv_userRating = itemView.findViewById(R.id.tv_userRating);
 
             itemView.setOnClickListener(this);
         }

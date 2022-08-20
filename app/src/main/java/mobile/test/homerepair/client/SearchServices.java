@@ -165,12 +165,20 @@ public class SearchServices extends AppCompatActivity implements SearchServicesR
 
                 ArrayList<Users> searchItems = new ArrayList<>();
                 for(Users documentSnapshot : usersArrayList){
-                    if(documentSnapshot.getServiceType().toLowerCase().contains(s.toString().toLowerCase())){
-                        searchItems.add(documentSnapshot);
+                    try {
+                        if(documentSnapshot.getServiceType().toLowerCase().contains(s.toString().toLowerCase())){
+                            searchItems.add(documentSnapshot);
+                        }
+                        else if(documentSnapshot.getCompanyName().toLowerCase().contains(s.toString().toLowerCase())){
+                            searchItems.add(documentSnapshot);
+                        }
+                        else if(documentSnapshot.getUserServiceRating().toLowerCase().contains(s.toString().toLowerCase())){
+                            searchItems.add(documentSnapshot);
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                    else if(documentSnapshot.getCompanyName().toLowerCase().contains(s.toString().toLowerCase())){
-                        searchItems.add(documentSnapshot);
-                    }
+
                 }
                 searchServicesRVAdapter = new SearchServicesRVAdapter(searchItems,SearchServices.this);
                 rvFindService.setLayoutManager(new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL,false));

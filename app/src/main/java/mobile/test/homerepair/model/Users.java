@@ -22,6 +22,17 @@ public class Users {
     String providerID;
     String dateRegistration;
     String hasServiceOffer;
+    String userServiceRating;
+
+    public String getUserServiceRating() {
+        return userServiceRating;
+    }
+
+    public void setUserServiceRating(String userServiceRating) {
+        this.userServiceRating = userServiceRating;
+    }
+
+
 
     public String getHasServiceOffer() {
         return hasServiceOffer;

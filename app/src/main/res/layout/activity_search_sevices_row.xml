@@ -74,6 +74,32 @@
                 tools:layout_editor_absoluteX="60dp"
                 tools:layout_editor_absoluteY="782dp" />
 
+            <RatingBar
+                android:id="@+id/ratingBar_user"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:stepSize="0.1"
+                android:progressTint="#FFCC01"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp" />
+
+            <TextView
+                android:id="@+id/tv_userRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:focusable="false"
+                android:fontFamily="@font/keepcalm_medium"
+                android:text="0.0"
+                android:hint="Rate"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="7sp"
+                android:layout_marginTop="0dp"/>
+
+
 
         </LinearLayout>
 
