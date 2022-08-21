@@ -222,13 +222,16 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.e("calculateAverageRatingFromDB->", document.getId() + " => " + document.getData());
 
-                                float oneUserRating = Float.parseFloat(document.getData().get("serviceRate").toString());
+                                try {
+                                    float oneUserRating = Float.parseFloat(document.getData().get("serviceRate").toString());
 
-                                Log.e("oneUserRating->", String.valueOf(oneUserRating));
+                                    Log.e("oneUserRating->", String.valueOf(oneUserRating));
 
-                                totalRating += oneUserRating;
-                                totalOfUserThatRate++;
+                                    totalRating += oneUserRating;
+                                    totalOfUserThatRate++;
+                                }catch (Exception e){
 
+                                }
 
                             }
 
