@@ -13,11 +13,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.EntryXComparator;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -47,14 +49,13 @@ public class TestLineChartWithDB extends AppCompatActivity {
     TestLineChartDataObject dataObject = new TestLineChartDataObject();
 
     LineChart lineChartDB;
-    LineDataSet lineDataSet = new LineDataSet(null,null);
+    LineDataSet lineDataSet = new LineDataSet(null, "Income");
     ArrayList<ILineDataSet> iLineDataSets = new ArrayList<>();
     LineData lineData;
 
 
-    EditText et_xValue,et_yValue;
+    EditText et_xValue, et_yValue;
     Button btn_click;
-
 
 
     @Override
@@ -70,8 +71,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
         btn_click = findViewById(R.id.btn_click);
 
 
-
-        getDataFromDB();
+        getDataFromDB2();
 
         btn_click.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +86,6 @@ public class TestLineChartWithDB extends AppCompatActivity {
         });
 
 
-
         /////////
     }
 
@@ -94,7 +93,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
         // Create random invoice ID
         Random rand = new Random();
-        int randomID = rand.nextInt(9999)+1;
+        int randomID = rand.nextInt(9999) + 1;
 
         String lineChartID;
         lineChartID = "lineChartID" + randomID;
@@ -130,7 +129,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
         // Create random invoice ID
         Random rand = new Random();
-        int randomID = rand.nextInt(9999)+1;
+        int randomID = rand.nextInt(9999) + 1;
 
         String lineChartID;
         lineChartID = "lineChartID" + randomID;
@@ -159,7 +158,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
                         Log.e("Error writing document->", "Error writing document");
                     }
                 });
-        
+
         getDataFromDB();
     }
 
@@ -173,7 +172,8 @@ public class TestLineChartWithDB extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         ArrayList<Entry> dataValue = new ArrayList<Entry>();
-                        dataValue.add(new Entry(0,0));
+
+                        dataValue.add(new Entry(0, 0));
 
                         if (task.isSuccessful()) {
 
@@ -190,11 +190,11 @@ public class TestLineChartWithDB extends AppCompatActivity {
                                     Log.e("x->", String.valueOf(x_coordinate));
                                     Log.e("y->", String.valueOf(y_coordinate));
 
-                                    dataValue.add(new Entry(x_coordinate,y_coordinate));
+                                    dataValue.add(new Entry(x_coordinate, y_coordinate));
 
                                     Collections.sort(dataValue, new EntryXComparator());
 
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -218,7 +218,9 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
     }
 
+
     private void showChart(ArrayList<Entry> dataValue) {
+
 
         XAxis xAxis = lineChartDB.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -228,12 +230,12 @@ public class TestLineChartWithDB extends AppCompatActivity {
         xAxis.setDrawGridLines(false);
 
 
-
         lineDataSet.setValues(dataValue);
         lineDataSet.setLabel("Data Set1");
         lineDataSet.setLineWidth(4);
         lineDataSet.setColor(Color.RED);
-        lineDataSet.setValueTextSize(10);
+        lineDataSet.setValueTextColor(Color.BLACK);
+        lineDataSet.setValueTextSize(15f);
 
         iLineDataSets.clear();
         iLineDataSets.add(lineDataSet);
@@ -242,6 +244,269 @@ public class TestLineChartWithDB extends AppCompatActivity {
         lineChartDB.clear();
         lineChartDB.setData(lineData);
         lineChartDB.invalidate();
+
+    }
+
+
+    private void getDataFromDB2() {
+
+        db.collection("testLineChart")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        ArrayList<Entry> dataValue = new ArrayList<Entry>();
+                        List<Float> listValueY = new ArrayList<>();
+
+//                        dataValue.add(new Entry(0,0));
+
+                        int x_coordinate = 1;
+
+                        if (task.isSuccessful()) {
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFromDB->", document.getId() + " => " + document.getData());
+
+                                try {
+
+                                    float y_coordinate = Float.parseFloat(document.getData().get("yValue").toString());
+
+                                    Log.e("y->", String.valueOf(y_coordinate));
+
+
+                                    listValueY.add(y_coordinate);
+
+                                    Log.e("listValueY->", String.valueOf(listValueY));
+
+
+                                    dataValue.add(new Entry(x_coordinate, y_coordinate));
+
+                                    Log.e("dataValue->", String.valueOf(dataValue));
+
+//                                    Collections.sort(dataValue, new EntryXComparator());
+
+                                    x_coordinate++;
+
+                                    Log.e("x->", String.valueOf(x_coordinate));
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+
+                            Log.e("getDataValuesXY->", String.valueOf(dataValue));
+
+//                            showChart2(dataValue);
+
+
+                            LineDataSet dataSet = new LineDataSet(dataValue, "Income");
+                            dataSet.setLineWidth(2);
+                            dataSet.setColor(Color.RED);
+                            dataSet.setValueTextColor(Color.BLACK);
+                            dataSet.setValueTextSize(15f);
+                            dataSet.setValues(dataValue);
+
+                            LineData lineData = new LineData(dataSet);
+
+                            XAxis xAxis = lineChartDB.getXAxis();
+                            xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+                            xAxis.setTextSize(10f);
+                            xAxis.setTextColor(Color.RED);
+                            xAxis.setDrawAxisLine(true);
+                            xAxis.setDrawGridLines(false);
+                            xAxis.setGranularity(1f);
+                            xAxis.setGranularityEnabled(true);
+
+
+                            List<String> list2 = new ArrayList<>();
+                            list2.add("24/07/2022 05:02PM");
+                            list2.add("28/07/2022 06:02PM");
+                            list2.add("17/07/2022 01:02PM");
+                            list2.add("19/07/2022 02:02PM");
+                            list2.add("21/07/2022 03:02PM");
+                            list2.add("22/07/2022 04:02PM");
+
+
+                            Log.e("List2->", String.valueOf(list2));
+
+                            // Sort in Ascending Order
+//                            Collections.sort(list2);
+
+                            // Sort in Descending Order
+                            Collections.sort(list2, Collections.reverseOrder());
+
+                            Log.e("sort->List2->", String.valueOf(list2));
+
+                            lineChartDB.getAxisRight().setDrawLabels(false);
+
+                            lineChartDB.getXAxis().setValueFormatter(new ValueFormatter() {
+                                @Override
+                                public String getAxisLabel(float value, AxisBase axis) {
+
+                                    List<String> labelList = new ArrayList<>();
+                                    String label = "";
+
+                                    float counter;
+                                    int listIndex = 0;
+
+                                    for(counter = 0; counter <= list2.size();counter++){
+
+
+                                        if (value == counter){
+
+                                            Log.e("getAxisLabel->value->", String.valueOf(value));
+                                            Log.e("getAxisLabel->counter->", String.valueOf(counter));
+                                            Log.e("getAxisLabel->listIndex->", String.valueOf(listIndex));
+
+
+                                            label = list2.get(listIndex);
+                                            Log.e("getAxisLabel->label->", String.valueOf(label));
+
+                                            value++;
+                                            listIndex++;
+
+                                        }
+
+
+                                        labelList.add(label);
+
+                                    }
+
+                                    Log.e("labelList->", String.valueOf(labelList));
+
+                                    return label;
+
+                              /*      if (value == 1)
+                                        label = list2.get(0);
+
+                                    else if (value == 2)
+                                        label = list2.get(1);
+
+                                    else if (value == 3)
+                                        label = list2.get(2);
+
+                                    else if (value == 4)
+                                        label = list2.get(3);
+
+                                    else if (value == 5)
+                                        label = list2.get(4);
+
+                                    else if (value == 6)
+                                        label = list2.get(5);
+*/
+//                                    return label;
+
+                                }
+                            });
+
+
+
+                            lineChartDB.setXAxisRenderer(new CustomXAxisRenderer
+                                    (
+                                            lineChartDB.getViewPortHandler(),
+                                            lineChartDB.getXAxis(),
+                                            lineChartDB.getTransformer(YAxis.AxisDependency.LEFT)
+                                    ));
+
+                            lineChartDB.setExtraBottomOffset(20f);
+
+                            lineChartDB.setData(lineData);
+                            lineChartDB.getDescription().setText("Income Chart");
+
+
+                        } else {
+                            lineChartDB.clear();
+                            lineChartDB.invalidate();
+
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+
+    }
+
+
+    private void showChart2(ArrayList<Entry> dataValue) {
+
+//        ArrayList<ILineDataSet> iLineDataSets2 = new ArrayList<>();
+
+        LineDataSet dataSet = new LineDataSet(dataValue, "Income");
+//        dataSet.setLabel("Data Set1");
+        dataSet.setLineWidth(4);
+        dataSet.setColor(Color.RED);
+        dataSet.setValueTextColor(Color.BLACK);
+        dataSet.setValueTextSize(15f);
+        dataSet.setValues(dataValue);
+
+        LineData lineData = new LineData(dataSet);
+
+        XAxis xAxis = lineChartDB.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setTextSize(10f);
+        xAxis.setTextColor(Color.RED);
+        xAxis.setDrawAxisLine(true);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f);
+        xAxis.setGranularityEnabled(true);
+
+
+        List<String> list2 = new ArrayList<>();
+
+        list2.add("17/07/2022 04:02PM");
+        list2.add("19/07/2022 04:02PM");
+        list2.add("21/07/2022 04:02PM");
+        list2.add("22/07/2022 04:02PM");
+        list2.add("24/07/2022 04:02PM");
+
+        Log.e("List2->", String.valueOf(list2));
+
+        lineChartDB.getAxisRight().setDrawLabels(false);
+
+        lineChartDB.getXAxis().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getAxisLabel(float value, AxisBase axis) {
+
+                String label = "";
+
+                if (value == 1)
+                    label = list2.get(0);
+                else if (value == 2)
+                    label = list2.get(1);
+
+                else if (value == 3)
+                    label = list2.get(2);
+
+                else if (value == 4)
+                    label = list2.get(3);
+
+                else if (value == 5)
+                    label = list2.get(4);
+
+                return label;
+
+            }
+        });
+
+        lineChartDB.setXAxisRenderer(new CustomXAxisRenderer
+                (
+                        lineChartDB.getViewPortHandler(),
+                        lineChartDB.getXAxis(),
+                        lineChartDB.getTransformer(YAxis.AxisDependency.LEFT)
+                ));
+
+        lineChartDB.setExtraBottomOffset(20f);
+
+        lineChartDB.setData(lineData);
+        lineChartDB.getDescription().setText("Income Chart");
+
+
+//        lineChartDB.clear();
+//        lineChartDB.setData(lineData);
+//        lineChartDB.invalidate();
 
     }
 
