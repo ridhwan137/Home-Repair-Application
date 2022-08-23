@@ -1,4 +1,4 @@
-package mobile.test.homerepair.testDemo.TestJavaMailAPI;
+package mobile.test.homerepair.MailAPI;
 
 public class MailUtils {
 

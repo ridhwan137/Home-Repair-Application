@@ -1,10 +1,9 @@
-package mobile.test.homerepair.testDemo.TestJavaMailAPI;
+package mobile.test.homerepair.MailAPI;
 
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import java.util.Properties;
 
@@ -47,14 +46,14 @@ public class JavaMailAPI extends AsyncTask<Void,Void,Void>  {
     protected void onPreExecute() {
         super.onPreExecute();
         //Show progress dialog while sending email
-        mProgressDialog = ProgressDialog.show(mContext,"Sending message", "Please wait...",false,false);
+//        mProgressDialog = ProgressDialog.show(mContext,"Loading...", "Please wait...",false,false);
     }
 
     @Override
     protected void onPostExecute(Void aVoid) {
         super.onPostExecute(aVoid);
         //Dismiss progress dialog when message successfully send
-        mProgressDialog.dismiss();
+//        mProgressDialog.dismiss();
 
         //Show success toast
 //        Toast.makeText(mContext,"Message Sent To: "+ mEmail,Toast.LENGTH_SHORT).show();

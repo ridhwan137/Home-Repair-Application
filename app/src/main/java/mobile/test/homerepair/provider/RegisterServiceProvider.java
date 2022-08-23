@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.text.SimpleDateFormat;
@@ -38,6 +39,7 @@ import java.util.Map;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.main.Login;
+import mobile.test.homerepair.MailAPI.JavaMailAPI;
 
 public class RegisterServiceProvider extends AppCompatActivity {
 
@@ -206,6 +208,8 @@ public class RegisterServiceProvider extends AppCompatActivity {
                 email = et_providerEmail.getText().toString();
                 password = et_providerPassword.getText().toString();
                 confirmPassword = et_providerConfirmPassword.getText().toString();
+                getSelectedServiceType = sp_serviceType.getSelectedItem().toString();
+
 
 
                 //// <---- Validation ---- ////
@@ -282,8 +286,6 @@ public class RegisterServiceProvider extends AppCompatActivity {
 
                 // <---- Validation Spinner serviceType
 
-                getSelectedServiceType = sp_serviceType.getSelectedItem().toString();
-
                 Log.d("getServicesSpinner", getSelectedServiceType);
 
                 if(getSelectedServiceType.equals("Select Your Service Type")){
@@ -293,36 +295,17 @@ public class RegisterServiceProvider extends AppCompatActivity {
                 // ----> Validation Spinner serviceType
 
 
-/*
 
-                // validation serviceType
-                if (serviceType.isEmpty()){
-                    et_providerServiceType.setError("Require to fill");
-                    return;
-                }
-
-                if (!serviceType.matches("^[a-zA-Z\\s]+$")){
-                    et_providerServiceType.setError("Invalid character, input A~Z only");
-                    return;
-                }
-
-                if (serviceType.length()>20){
-                    et_providerServiceType.setError("Should be less than 20 characters");
-                    return;
-                }
-*/
+//        // Check identityNo in database
+//        Map checkIdentityNo = databaseController.getADataFromTable("user","userIdentityNo LIKE '"+editTextDonorIC.getText().toString()+"' ");
+//
+//        // If there is identityNo on database
+//        if (!checkIdentityNo.isEmpty()){
+//            editTextDonorIC.setError("This identity number is unavailable");
+//            return;
+//        }
 
 
-/*
-        // Check identityNo in database
-        Map checkIdentityNo = databaseController.getADataFromTable("user","userIdentityNo LIKE '"+editTextDonorIC.getText().toString()+"' ");
-
-        // If there is identityNo on database
-        if (!checkIdentityNo.isEmpty()){
-            editTextDonorIC.setError("This identity number is unavailable");
-            return;
-        }
-*/
 
 
                 //validation address1
@@ -398,16 +381,18 @@ public class RegisterServiceProvider extends AppCompatActivity {
                     et_providerPhone.setError("Phone number should be at least 10 and at most 11 characters");
                     return;
                 }
-/*
-        // Check phone number in database
-        Map checkPhoneNo = databaseController.getADataFromTable("user","contactNo LIKE '"+editTextDonorPhone.getText().toString()+"' ");
 
-        // If there is phone on database
-        if (!checkPhoneNo.isEmpty()){
-            editTextDonorPhone.setError("This phone number is unavailable");
-            return;
-        }
-*/
+
+//        // Check phone number in database
+//        Map checkPhoneNo = databaseController.getADataFromTable("user","contactNo LIKE '"+editTextDonorPhone.getText().toString()+"' ");
+//
+//        // If there is phone on database
+//        if (!checkPhoneNo.isEmpty()){
+//            editTextDonorPhone.setError("This phone number is unavailable");
+//            return;
+//        }
+
+
 
                 //validation email
                 if (email.isEmpty()){
@@ -419,16 +404,16 @@ public class RegisterServiceProvider extends AppCompatActivity {
                     return;
                 }
 
-/*
-        // Check email in database
-        Map checkEmailDatabase = databaseController.getADataFromTable("user","email LIKE '"+et_clientEmail.getText().toString()+"' ");
 
-        // If there is email on database
-        if (!checkEmailDatabase.isEmpty()){
-            et_clientEmail.setError("This email is unavailable");
-            return;
-        }
-*/
+
+//        // Check email in database
+//        Map checkEmailDatabase = databaseController.getADataFromTable("user","email LIKE '"+et_clientEmail.getText().toString()+"' ");
+//
+//        // If there is email on database
+//        if (!checkEmailDatabase.isEmpty()){
+//            et_clientEmail.setError("This email is unavailable");
+//            return;
+//        }
 
 
                 //validation password
@@ -457,11 +442,66 @@ public class RegisterServiceProvider extends AppCompatActivity {
                 //// ---- Validation ----> ////
 
 
+
                 registerUser();
+
+                getAdminEmailFromDB_notifyAdminThroughEmail(email);
             }
         });
 
     }
+
+
+    // <-- Notification Through Email
+    private void getAdminEmailFromDB_notifyAdminThroughEmail(String providerEmail){
+
+        db.collection("users")
+                .whereEqualTo("email","home.repair.management@gmail.com")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String adminEmailFromDB = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                adminEmailFromDB = document.getData().get("email").toString();
+
+                            }
+
+                            sendEmailNotificationToAdmin(adminEmailFromDB,providerEmail);
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+
+    private void sendEmailNotificationToAdmin(String receiverEmail, String providerEmail) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Service Provider Registration Approval";
+        String messageNotify = "Please approve new user service provider registration\n" +providerEmail.toString().trim();
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mail,subject,message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
 
     // Add to Authentication DB
     public void registerUser(){
@@ -521,7 +561,9 @@ public class RegisterServiceProvider extends AppCompatActivity {
 
         // format Date
         Date currentDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+
 
         String formatCurrentDate = simpleDateFormat.format(currentDate);
         Log.e("formatCurrentDate->",formatCurrentDate);

@@ -38,8 +38,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.provider.PendingAppointmentServiceProvider;
 
 public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
@@ -103,6 +103,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
             public void onClick(View v) {
                 rejectRegistration();
 
+
                 Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
@@ -114,6 +115,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
             public void onClick(View v) {
                 acceptRegistration();
 
+
                 Intent intent = new Intent(getApplicationContext(), HomeAdmin.class);
                 intent.putExtra("userID",userID);
                 startActivity(intent);
@@ -123,6 +125,114 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
 
         // End Bracket
     }
+
+    // <-- Notification Through Email Status Reject
+    private void getProviderEmailFromDB_notifyProviderThroughEmail_statusReject(){
+
+        db.collection("users")
+                .whereEqualTo("userID",userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String providerEmailFromDB = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                providerEmailFromDB = document.getData().get("email").toString();
+
+                            }
+
+                            sendEmailNotificationToProvider_statusReject(providerEmailFromDB);
+
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+
+    private void sendEmailNotificationToProvider_statusReject(String receiverEmail) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Service Provider Approval Status";
+        String messageNotify = "Your registration status has been rejected.\n" +
+                "Kindly contact our admin if there is any question.\n" + "home.repair.management@gmail.com";
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mail,subject,message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
+
+
+    // <-- Notification Through Email Status Accept
+    private void getProviderEmailFromDB_notifyProviderThroughEmail_statusAccept(){
+
+        db.collection("users")
+                .whereEqualTo("userID",userID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String providerEmailFromDB = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                providerEmailFromDB = document.getData().get("email").toString();
+
+                            }
+
+                            sendEmailNotificationToProvider_statusAccept(providerEmailFromDB);
+
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+
+    private void sendEmailNotificationToProvider_statusAccept(String receiverEmail) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Service Provider Approval Status";
+        String messageNotify = "Congratulation your registration has been approve by our administration.\n"+
+                "You may login to use the application";
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mail,subject,message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
+
 
 
 
@@ -195,7 +305,8 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
 
 
     public void displayProviderInfoFromDB(){
-        db.collection("users").whereEqualTo("userID",userID)
+        db.collection("users")
+                .whereEqualTo("userID",userID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -255,8 +366,10 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Update", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                        getProviderEmailFromDB_notifyProviderThroughEmail_statusReject();
 
 //                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
 //                        startActivity(intent);
@@ -282,9 +395,10 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Update", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
+                        getProviderEmailFromDB_notifyProviderThroughEmail_statusAccept();
 //                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProvider.class);
 //                        startActivity(intent);
                     }
