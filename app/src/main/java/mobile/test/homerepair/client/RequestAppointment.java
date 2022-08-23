@@ -206,16 +206,13 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         btn_detailRequestAppointment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                requestAppointment();
+
 //                requestAppointment();
 //                requestAppointmentUsingAppointmentStatusFromDB();
-
-                requestAppointmentMakeItSortByDate();
-
 //                addAppointmentIDToUserDB();
-
 //                Toast.makeText(getApplicationContext(), "Your request has been sent to the service provider, you are eligible to cancel the appointment if the service provider does not respond within 2 to 3 days", Toast.LENGTH_LONG).show();
-
-
 
             }
         });
@@ -394,8 +391,8 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                 fullAddress = document.getData().get("address1").toString() + ", ";
                                 fullAddress += document.getData().get("address2").toString() + ", \n";
                                 fullAddress += document.getData().get("postcode").toString() + " ";
-                                fullAddress += document.getData().get("city").toString() + ", \n";
-                                fullAddress += document.getData().get("state").toString() ;
+                                fullAddress += document.getData().get("state").toString() + ", \n";
+                                fullAddress += document.getData().get("city").toString() ;
 
                                 clientFullAddress = fullAddress;
 
@@ -519,7 +516,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
 
 
-    public void requestAppointmentMakeItSortByDate(){
+    public void requestAppointment(){
 
         String companyName,companyServiceType,companyEmail,companyPhone;
 
