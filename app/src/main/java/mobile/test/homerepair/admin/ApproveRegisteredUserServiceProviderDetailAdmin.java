@@ -161,7 +161,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
     private void sendEmailNotificationToProvider_statusReject(String receiverEmail) {
 
         String emailReceiver = receiverEmail;
-        String subjectNotify = "Service Provider Approval Status";
+        String subjectNotify = "Home Repair Apps: Service Provider Approval Status";
         String messageNotify = "Your registration status has been rejected.\n" +
                 "Kindly contact our admin if there is any question.\n" + "home.repair.management@gmail.com";
 
@@ -215,7 +215,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
     private void sendEmailNotificationToProvider_statusAccept(String receiverEmail) {
 
         String emailReceiver = receiverEmail;
-        String subjectNotify = "Service Provider Approval Status";
+        String subjectNotify = "Home Repair Apps: Service Provider Approval Status";
         String messageNotify = "Congratulation your registration has been approve by our administration.\n"+
                 "You may login to use the application";
 

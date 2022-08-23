@@ -486,7 +486,7 @@ public class RegisterServiceProvider extends AppCompatActivity {
     private void sendEmailNotificationToAdmin(String receiverEmail, String providerEmail) {
 
         String emailReceiver = receiverEmail;
-        String subjectNotify = "Service Provider Registration Approval";
+        String subjectNotify = "Home Repair Apps: Service Provider Registration Approval";
         String messageNotify = "Please approve new user service provider registration\n" +providerEmail.toString().trim();
 
 

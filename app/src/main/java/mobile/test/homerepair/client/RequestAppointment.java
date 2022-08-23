@@ -44,10 +44,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -58,8 +56,8 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.unnecessary.HomeClient;
 import mobile.test.homerepair.model.Services;
 
 public class RequestAppointment extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,RequestAppointmentRVAdapter.ItemClickListener {
@@ -80,7 +78,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     String appointmentID;
     String TAG = "TAG";
 
-    String clientPictureURL,clientName,clientEmail,clientPhone,clientAddress;
+    String clientPictureURL,clientName,clientEmail,clientPhone, clientFullAddress;
 
     String providerAddress1,providerAddress2,providerPostcode,providerState,providerCity;
     String clientAddress1,clientAddress2,clientPostcode,clientState,clientCity;
@@ -368,30 +366,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
 
 
-/*    private void showDateDialog(final EditText date_in) {
-        final Calendar calendar=Calendar.getInstance();
-
-        DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                calendar.set(Calendar.YEAR,year);
-                calendar.set(Calendar.MONTH,month);
-                calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
-
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
-
-                date_in.setText(simpleDateFormat.format(calendar.getTime()));
-
-            }
-        };
-
-//        new DatePickerDialog(RequestAppointment.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
-        DatePickerDialog datePickerDialog = new DatePickerDialog(RequestAppointment.this,dateSetListener,calendar.get(Calendar.YEAR),calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH)).show();
-        datePickerDialog.getDatePicker().setMinDate(Calendar.getInstance().getTimeInMillis());
-        datePickerDialog.show();
-    }
-    */
-
 
     public void getClientInfoFromDB(){
         db.collection("users").whereEqualTo("userID", currentUserID)
@@ -423,14 +397,14 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                 fullAddress += document.getData().get("city").toString() + ", \n";
                                 fullAddress += document.getData().get("state").toString() ;
 
-                                clientAddress = fullAddress;
+                                clientFullAddress = fullAddress;
 
                                 Log.e(TAG, "Successful getting documents: ", task.getException());
 
                                 Log.e("clientName",clientName);
                                 Log.e("clientEmail",clientEmail);
                                 Log.e("clientPhone",clientPhone);
-                                Log.e("clientAddress",clientAddress);
+                                Log.e("clientAddress", clientFullAddress);
 //                                Log.e("clientPicture",clientPictureURL);
 
 
@@ -543,124 +517,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    public void requestAppointment(){
-
-        String companyName,companyServiceType,companyEmail,companyPhone,companyAddress;
-
-        message = et_message.getText().toString();
-        chooseDate = date_in.getText().toString();
-        chooseTime = time_in.getText().toString();
-
-        companyName = et_detailCompanyName.getText().toString();
-        companyServiceType = et_detailCompanyServiceType.getText().toString();
-        companyEmail = et_detailCompanyEmail.getText().toString();
-        companyPhone = et_detailCompanyPhone.getText().toString();
-//        companyAddress = tv_detailCompanyAddress.getText().toString();
-
-
-        //create random id
-        Random rand = new Random();
-        int randomID = rand.nextInt(99999999)+1;
-
-        appointmentID = "appointment" + randomID;
-
-        Map<String, Object> requestAppointment = new HashMap<>();
-
-        requestAppointment.put("appointmentID",appointmentID);
-
-        requestAppointment.put("providerID", providerID);
-        requestAppointment.put("providerPictureURL",providerPictureURL);
-        requestAppointment.put("companyName",companyName);
-        requestAppointment.put("companyServiceType",companyServiceType);
-        requestAppointment.put("companyEmail",companyEmail);
-        requestAppointment.put("companyPhone",companyPhone);
-        requestAppointment.put("companyAddress1",providerAddress1);
-        requestAppointment.put("companyAddress2",providerAddress2);
-        requestAppointment.put("companyPostcode",providerPostcode);
-        requestAppointment.put("companyState",providerState);
-        requestAppointment.put("companyCity",providerCity);
-//        requestAppointment.put("companyAddress",companyAddress);
-
-
-        requestAppointment.put("clientID", currentUserID);
-        requestAppointment.put("clientPictureURL",clientPictureURL);
-        requestAppointment.put("clientName", clientName);
-        requestAppointment.put("clientEmail", clientEmail);
-        requestAppointment.put("clientPhone", clientPhone);
-        requestAppointment.put("clientAddress1",clientAddress1);
-        requestAppointment.put("clientAddress2",clientAddress2);
-        requestAppointment.put("clientPostcode",clientPostcode);
-        requestAppointment.put("clientState",clientState);
-        requestAppointment.put("clientCity",clientCity);
-//        requestAppointment.put("clientAddress", clientAddress);
-
-
-        requestAppointment.put("date",chooseDate);
-        requestAppointment.put("time",chooseTime);
-        requestAppointment.put("message",message);
-        requestAppointment.put("appointmentStatus","pending");
-        requestAppointment.put("requestStatus","pending");
-//        requestAppointment.put("serviceID",serviceID);
-
-        Log.e("testMapData", String.valueOf(requestAppointment));
-
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.e("testIdentifyCurrentUserID",userID);
-
-        db.collection("appointment").document(appointmentID)
-                .set(requestAppointment)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Intent intent = new Intent(getApplicationContext(), SearchServices.class);
-
-                        Log.e("testPassProviderUserID",providerID);
-                        intent.putExtra("userID",providerID);
-
-                        startActivity(intent);
-
-                        RequestAppointment.this.finish();
-
-                        Toast.makeText(getApplicationContext(), "Services added successfully.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-
-    }
-
-
-    public void addAppointmentIDToUserDB(){
-
-        Map<String, Object> data = new HashMap<>();
-
-        data.put("appointmentID",appointmentID);
-
-        Log.e("testMapData->", String.valueOf(data));
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.e("testIdentifyCurrentUserID->",userID);
-
-        db.collection("users").document(currentUserID)
-                .set(data, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.e("addAppointmentIDToUserDB->", "Successfully writing document");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("addAppointmentIDToUserDB->", "Error writing document", e);
-                    }
-                });
-    }
 
 
     public void requestAppointmentMakeItSortByDate(){
@@ -686,17 +542,11 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         }else{
         /// --> Validation Date Time Null
 
-//        //create random id
-//        Random rand = new Random();
-//        int randomID = rand.nextInt(99999999)+1;
-//        appointmentID = "appointment" + randomID;
 
 
             //create appointment id by date
             Date currentDate = new Date();
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyy");
-
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyyyyHHmmssSSS");
 
             String formatCurrentDate = simpleDateFormat.format(currentDate);
             Log.e("formatCurrentDate->",formatCurrentDate);
@@ -705,8 +555,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
             int randomID = rand.nextInt(9999)+1;
 
             appointmentID = "appointment" + formatCurrentDate + randomID;
-
-
 
             Map<String, Object> requestAppointment = new HashMap<>();
 
@@ -737,14 +585,14 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
             requestAppointment.put("clientCity",clientCity);
 
 
-            requestAppointment.put("date",chooseDate);
+
 
 
             Date date = new Date();
             Timestamp ts = new Timestamp(date);
             requestAppointment.put("dateRequest",ts);
 
-
+            requestAppointment.put("date",chooseDate);
             requestAppointment.put("time",chooseTime);
             requestAppointment.put("message",message);
             requestAppointment.put("appointmentStatus","pending");
@@ -761,6 +609,38 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                         @Override
                         public void onSuccess(Void aVoid) {
                             Log.e("requestAppointmentMakeItSortByDate->", "Successfully writing document");
+
+                            getProviderEmailFromDB_notifyProviderThroughEmail(providerID,
+                                    clientName,clientPhone,clientEmail, clientFullAddress,chooseDate,chooseTime);
+
+
+                            AlertDialog.Builder dialog = new AlertDialog.Builder(RequestAppointment.this);
+                            dialog.setCancelable(false);
+                            dialog.setTitle("Successfully Request Appointment");
+                            dialog.setMessage("Your request has been sent to the service provider, you are eligible to cancel the appointment if the service provider does not respond within 2 to 3 days" );
+                            dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+
+
+
+
+                                    Intent intent = new Intent(getApplicationContext(), SearchServices.class);
+
+                                    Log.e("testPassProviderUserID",providerID);
+                                    intent.putExtra("userID",providerID);
+
+                                    startActivity(intent);
+                                    RequestAppointment.this.finish();
+                                }
+                            });
+
+                            final AlertDialog alert = dialog.create();
+                            alert.show();
+
+
+
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -771,26 +651,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                     });
 
 
-            AlertDialog.Builder dialog = new AlertDialog.Builder(RequestAppointment.this);
-            dialog.setCancelable(false);
-            dialog.setTitle("Successfully Request Appointment");
-            dialog.setMessage("Your request has been sent to the service provider, you are eligible to cancel the appointment if the service provider does not respond within 2 to 3 days" );
-            dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int id) {
 
-                    Intent intent = new Intent(getApplicationContext(), SearchServices.class);
-
-                    Log.e("testPassProviderUserID",providerID);
-                    intent.putExtra("userID",providerID);
-
-                    startActivity(intent);
-                    RequestAppointment.this.finish();
-                }
-            });
-
-            final AlertDialog alert = dialog.create();
-            alert.show();
 
 
         }
@@ -798,201 +659,73 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    // <-- Notification Through Email
+    private void getProviderEmailFromDB_notifyProviderThroughEmail(String providerID,
+                                                                   String clientName,
+                                                                   String clientPhone,
+                                                                   String clientEmail,
+                                                                   String clientFullAddress,
+                                                                   String date,
+                                                                   String time){
 
-
-
-
-
-    public void requestAppointmentUsingAppointmentStatusFromDB(){
-
-        String companyName,companyServiceType,companyEmail,companyPhone,companyAddress;
-
-        message = et_message.getText().toString();
-        chooseDate = date_in.getText().toString();
-        chooseTime = time_in.getText().toString();
-
-        companyName = et_detailCompanyName.getText().toString();
-        companyServiceType = et_detailCompanyServiceType.getText().toString();
-        companyEmail = et_detailCompanyEmail.getText().toString();
-        companyPhone = et_detailCompanyPhone.getText().toString();
-//        companyAddress = tv_detailCompanyAddress.getText().toString();
-
-
-        //create random id
-        Random rand = new Random();
-        int randomID = rand.nextInt(99999999)+1;
-
-        appointmentID = "appointment" + randomID;
-
-        Map<String, Object> requestAppointment = new HashMap<>();
-
-        requestAppointment.put("appointmentID",appointmentID);
-
-        requestAppointment.put("providerID", providerID);
-        requestAppointment.put("providerPictureURL",providerPictureURL);
-        requestAppointment.put("companyName",companyName);
-        requestAppointment.put("companyServiceType",companyServiceType);
-        requestAppointment.put("companyEmail",companyEmail);
-        requestAppointment.put("companyPhone",companyPhone);
-        requestAppointment.put("companyAddress1",providerAddress1);
-        requestAppointment.put("companyAddress2",providerAddress2);
-        requestAppointment.put("companyPostcode",providerPostcode);
-        requestAppointment.put("companyState",providerState);
-        requestAppointment.put("companyCity",providerCity);
-//        requestAppointment.put("companyAddress",companyAddress);
-
-
-        requestAppointment.put("clientID", currentUserID);
-        requestAppointment.put("clientPictureURL",clientPictureURL);
-        requestAppointment.put("clientName", clientName);
-        requestAppointment.put("clientEmail", clientEmail);
-        requestAppointment.put("clientPhone", clientPhone);
-        requestAppointment.put("clientAddress1",clientAddress1);
-        requestAppointment.put("clientAddress2",clientAddress2);
-        requestAppointment.put("clientPostcode",clientPostcode);
-        requestAppointment.put("clientState",clientState);
-        requestAppointment.put("clientCity",clientCity);
-//        requestAppointment.put("clientAddress", clientAddress);
-
-
-        requestAppointment.put("date",chooseDate);
-        requestAppointment.put("time",chooseTime);
-        requestAppointment.put("message",message);
-        requestAppointment.put("appointmentStatus","pending");
-//        requestAppointment.put("requestStatus","pending");
-//        requestAppointment.put("serviceID",serviceID);
-
-        Log.e("testMapData", String.valueOf(requestAppointment));
-
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.e("testIdentifyCurrentUserID",userID);
-
-        db.collection("appointment").document(appointmentID)
-                .set(requestAppointment)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-//                        Intent intent = new Intent(getApplicationContext(), SearchServices.class);
-//
-//                        Log.e("testPassProviderUserID",providerID);
-//                        intent.putExtra("userID",providerID);
-//
-//                        startActivity(intent);
-//
-//                        RequestAppointment.this.finish();
-
-//                        Toast.makeText(getApplicationContext(), "Services added successfully.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error writing document", e);
-                    }
-                });
-
-    }
-
-
-
-    public void requestAppointmentBugError(){
-
-//        getClientInfoFromDB();
-
-        String companyName,companyServiceType,companyEmail,companyPhone,companyAddress;
-
-        message = et_message.getText().toString();
-        chooseDate = date_in.getText().toString();
-        chooseTime = time_in.getText().toString();
-
-        companyName = et_detailCompanyName.getText().toString();
-        companyServiceType = et_detailCompanyServiceType.getText().toString();
-        companyEmail = et_detailCompanyEmail.getText().toString();
-        companyPhone = et_detailCompanyPhone.getText().toString();
-        companyAddress = et_detailCompanyAddress.getText().toString();
-
-
-        //create random id
-        Random rand = new Random();
-        int randomID = rand.nextInt(99999999)+1;
-
-        appointmentID = "appointment" + randomID;
-
-
-
-        Map<String, Object> requestAppointment = new HashMap<>();
-
-        requestAppointment.put("appointmentID",appointmentID);
-
-        requestAppointment.put("providerID", providerID);
-        requestAppointment.put("providerPictureURL",providerPictureURL);
-        requestAppointment.put("companyName",companyName);
-        requestAppointment.put("companyServiceType",companyServiceType);
-        requestAppointment.put("companyEmail",companyEmail);
-        requestAppointment.put("companyPhone",companyPhone);
-        requestAppointment.put("companyAddress",companyAddress);
-
-
-        requestAppointment.put("clientID", currentUserID);
-        requestAppointment.put("clientPictureURL",clientPictureURL);
-        requestAppointment.put("clientName", clientName);
-        requestAppointment.put("clientEmail", clientEmail);
-        requestAppointment.put("clientPhone", clientPhone);
-        requestAppointment.put("clientAddress", clientAddress);
-
-
-        requestAppointment.put("date",chooseDate);
-        requestAppointment.put("time",chooseTime);
-        requestAppointment.put("message",message);
-        requestAppointment.put("appointmentStatus","pending");
-        requestAppointment.put("requestStatus","pending");
-//        requestAppointment.put("serviceID",serviceID);
-
-        Log.e("testMapData", String.valueOf(requestAppointment));
-
-
-        String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        Log.e("testIdentifyCurrentUserID",userID);
-
-        FirebaseFirestore.getInstance().collection("users")
-                .whereEqualTo("userID", currentUserID)
+        db.collection("users")
+                .whereEqualTo("userID",providerID)
                 .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
-                    public void onSuccess(@NonNull QuerySnapshot queryDocumentSnapshots) {
-                        Log.e("testIdentifyDocumentMaxSize", String.valueOf(queryDocumentSnapshots.size()));
-                        if (queryDocumentSnapshots.size() == 0 ) {
-                            db.collection("appointment").document(appointmentID)
-                                    .set(requestAppointment)
-                                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                                        @Override
-                                        public void onSuccess(Void aVoid) {
-                                            Intent intent = new Intent(getApplicationContext(), HomeClient.class);
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
-                                            Log.e("testPassProviderUserID",providerID);
-                                            intent.putExtra("userID",providerID);
+                        String providerEmailFromDB = null;
 
-                                            startActivity(intent);
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
 
-                                            RequestAppointment.this.finish();
+                                providerEmailFromDB = document.getData().get("email").toString();
 
-                                            Toast.makeText(getApplicationContext(), "Services added successfully.", Toast.LENGTH_SHORT).show();
-                                        }
-                                    })
-                                    .addOnFailureListener(new OnFailureListener() {
-                                        @Override
-                                        public void onFailure(@NonNull Exception e) {
-                                            Log.w(TAG, "Error writing document", e);
-                                        }
-                                    });
+                            }
+
+                            sendEmailNotificationToProvider(providerEmailFromDB,clientName,
+                                    clientPhone,clientEmail,clientFullAddress,date,time);
+
+
                         } else {
-                            Toast.makeText(getApplicationContext(), "Unsuccessfully Add Services", Toast.LENGTH_SHORT).show();
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-
     }
+
+
+
+    private void sendEmailNotificationToProvider(String receiverEmail, String clientName,
+                                                 String clientPhone,String clientEmail,
+                                                 String clientFullAddress, String date, String time) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Home Repair Apps: New Appointment Request";
+        String messageNotify = "You have new appointment request from" +
+                "\n\nClient: "+clientName +
+                "\nPhone: "+clientPhone +
+                "\nEmail: "+clientEmail +
+                "\nLocation: "+ clientFullAddress +
+                "\nAppointment Date: "+date +" "+time;
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mail,subject,message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
+
+
 
     @Override
     public void onBackPressed()
