@@ -82,7 +82,9 @@ public class TestSendEmail extends AppCompatActivity {
             String stringPasswordSenderEmail = "ugtatxqwempgnubx";
 //            String stringHost = "smtp.gmail.com";
 
-            String stringReceiverEmail = "home.repair.management@gmail.com";
+//            String stringReceiverEmail = "home.repair.management@gmail.com";
+
+            String stringReceiverEmail = "iwan1374@gmail.com";
 
 
             Properties properties = System.getProperties();
@@ -91,14 +93,12 @@ public class TestSendEmail extends AppCompatActivity {
             properties.put("mail.smtp.port", "465");
             properties.put("mail.smtp.ssl.enable", "true");
             properties.put("mail.smtp.auth", "true");
-
-
-//            properties.put("mail.smtp.starttls.enable","true");
-            properties.put("mail.smtp.debug", "true");
             properties.put("mail.smtp.socketFactory.port","465");
             properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
-            properties.put("mail.smtp.socketFactory.fallback", "false");
-            properties.put("java.net.preferIPv4Stack", "true");
+
+//            properties.put("mail.smtp.starttls.enable","true");
+//            properties.put("mail.smtp.debug", "true");
+
 
 
 
@@ -113,7 +113,10 @@ public class TestSendEmail extends AppCompatActivity {
             mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(stringReceiverEmail));
 
             mimeMessage.setSubject("Subject: Android App email");
-            mimeMessage.setText("Hello Programmer, \n\nProgrammer World has sent you this 2nd email. \n\n Cheers!\nProgrammer World");
+//            mimeMessage.setText("Hello Programmer, \n\nProgrammer World has sent you this 2nd email. \n\n Cheers!\nProgrammer World");
+
+            mimeMessage.setSubject("Test");
+            mimeMessage.setText("Test");
 
             Thread thread = new Thread(new Runnable() {
                 @Override
@@ -129,10 +132,7 @@ public class TestSendEmail extends AppCompatActivity {
 
             Toast.makeText(getApplicationContext(), "Email Send To: " +stringReceiverEmail, Toast.LENGTH_SHORT).show();
 
-        } catch (AddressException e) {
-            e.printStackTrace();
-            Toast.makeText(getApplicationContext(), " Fail To Send Email ", Toast.LENGTH_SHORT).show();
-        } catch (MessagingException e) {
+        } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(getApplicationContext(), " Fail To Send Email ", Toast.LENGTH_SHORT).show();
         }

@@ -43,6 +43,16 @@
         app:backgroundTint="#417D7A"/>
 
     <Button
+        android:id="@+id/btn_testSendEmailJavaMail"
+        android:layout_width="350dp"
+        android:layout_height="56dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="test_Send_Email_JavaMail"
+        android:textColor="@color/white"
+        app:backgroundTint="#417D7A"/>
+
+    <Button
         android:visibility="gone"
         android:id="@+id/btn_testProviderDislayServiceOffer"
         android:layout_width="350dp"

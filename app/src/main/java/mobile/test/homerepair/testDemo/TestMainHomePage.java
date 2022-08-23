@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.testDemo.TestJavaMailAPI.TestSendJavaMailAPI;
 
 public class TestMainHomePage extends AppCompatActivity {
 
@@ -24,7 +25,7 @@ public class TestMainHomePage extends AppCompatActivity {
         Button btn_testLineChart = findViewById(R.id.btn_testLineChart);
         Button btn_testLineChartWithDB = findViewById(R.id.btn_testLineChartWithDB);
         Button btn_testRating = findViewById(R.id.btn_testRating);
-
+        Button btn_testSendEmailJavaMail = findViewById(R.id.btn_testSendEmailJavaMail);
 
 
 
@@ -92,6 +93,14 @@ public class TestMainHomePage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), TestRating.class);
+                startActivity(intent);
+            }
+        });
+
+        btn_testSendEmailJavaMail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), TestSendJavaMailAPI.class);
                 startActivity(intent);
             }
         });

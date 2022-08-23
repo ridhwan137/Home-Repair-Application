@@ -76,7 +76,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
         btn_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                insertDataToDBUsingHashMap();
+//                insertDataToDBUsingHashMap();
 //                insertDataToDBUsingPOJO();
 
                 Intent intent = new Intent(getApplicationContext(), TestLineChartWithDB.class);
@@ -257,11 +257,15 @@ public class TestLineChartWithDB extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
 
                         ArrayList<Entry> dataValue = new ArrayList<Entry>();
+                        List<Integer> listValueX = new ArrayList<>();
                         List<Float> listValueY = new ArrayList<>();
+
 
 //                        dataValue.add(new Entry(0,0));
 
                         int x_coordinate = 1;
+                        float y_coordinate = 0;
+
 
                         if (task.isSuccessful()) {
 
@@ -270,14 +274,21 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
                                 try {
 
-                                    float y_coordinate = Float.parseFloat(document.getData().get("yValue").toString());
+                                    y_coordinate = Float.parseFloat(document.getData().get("yValue").toString());
 
                                     Log.e("y->", String.valueOf(y_coordinate));
 
 
+                                    listValueX.add(x_coordinate);
                                     listValueY.add(y_coordinate);
 
+                                    Log.e("listValueX->", String.valueOf(listValueX));
                                     Log.e("listValueY->", String.valueOf(listValueY));
+
+//                                    Collections.sort(listValueY, Collections.reverseOrder());
+
+                                    Log.e("sort->listValueY->", String.valueOf(listValueY));
+
 
 
                                     dataValue.add(new Entry(x_coordinate, y_coordinate));
@@ -297,10 +308,13 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
                             }
 
+
                             Log.e("getDataValuesXY->", String.valueOf(dataValue));
 
 //                            showChart2(dataValue);
+                            Collections.sort(dataValue, new EntryXComparator());
 
+                            Log.e("sort-getDataValuesXY->", String.valueOf(dataValue));
 
                             LineDataSet dataSet = new LineDataSet(dataValue, "Income");
                             dataSet.setLineWidth(2);
@@ -321,13 +335,116 @@ public class TestLineChartWithDB extends AppCompatActivity {
                             xAxis.setGranularityEnabled(true);
 
 
+                            db.collection("testLineChart")
+                                    .get()
+                                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                                            List<String> list2 = new ArrayList<>();
+
+                                            if (task.isSuccessful()) {
+
+                                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                                    Log.e("getDataFromDB3->", document.getId() + " => " + document.getData());
+
+
+                                                    try {
+                                                        String dateTime = document.getData().get("dateTime").toString();
+                                                        list2.add(dateTime);
+
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
+                                                    }
+
+
+                                                }
+
+                                                Log.e("List2->", String.valueOf(list2));
+
+                                                // Sort in Ascending Order
+                                                //Collections.sort(list2);
+
+                                                // Sort in Descending Order
+                                                Collections.sort(list2, Collections.reverseOrder());
+
+                                                Log.e("sort->List2->", String.valueOf(list2));
+
+                                                lineChartDB.getAxisRight().setDrawLabels(false);
+
+                                                lineChartDB.getXAxis().setValueFormatter(new ValueFormatter() {
+                                                    @Override
+                                                    public String getAxisLabel(float value, AxisBase axis) {
+
+                                                        List<String> labelList = new ArrayList<>();
+                                                        String label = "";
+
+                                                        float counter;
+                                                        int listIndex = 0;
+
+                                                        for (counter = 0; counter <= list2.size(); counter++) {
+
+
+                                                            if (value == counter) {
+
+                                                                Log.e("getAxisLabel->value->", String.valueOf(value));
+                                                                Log.e("getAxisLabel->counter->", String.valueOf(counter));
+                                                                Log.e("getAxisLabel->listIndex->", String.valueOf(listIndex));
+
+
+                                                                label = list2.get(listIndex);
+                                                                Log.e("getAxisLabel->label->", String.valueOf(label));
+
+                                                                value++;
+                                                                listIndex++;
+
+                                                            }
+
+
+                                                            labelList.add(label);
+
+                                                        }
+
+                                                        Log.e("labelList->", String.valueOf(labelList));
+
+                                                        return label;
+
+
+                                                    }
+                                                });
+
+                                                lineChartDB.setXAxisRenderer(new CustomXAxisRenderer
+                                                        (
+                                                                lineChartDB.getViewPortHandler(),
+                                                                lineChartDB.getXAxis(),
+                                                                lineChartDB.getTransformer(YAxis.AxisDependency.LEFT)
+                                                        ));
+
+                                                lineChartDB.setExtraBottomOffset(20f);
+
+                                                lineChartDB.setData(lineData);
+                                                lineChartDB.getDescription().setText("Income Chart");
+
+
+                                            } else {
+                                                lineChartDB.clear();
+                                                lineChartDB.invalidate();
+
+                                                Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                                            }
+                                        }
+                                    });
+
+/*
+
                             List<String> list2 = new ArrayList<>();
-                            list2.add("24/07/2022 05:02PM");
+
                             list2.add("28/07/2022 06:02PM");
-                            list2.add("17/07/2022 01:02PM");
-                            list2.add("19/07/2022 02:02PM");
-                            list2.add("21/07/2022 03:02PM");
+                            list2.add("24/07/2022 05:02PM");
                             list2.add("22/07/2022 04:02PM");
+                            list2.add("21/07/2022 03:02PM");
+                            list2.add("19/07/2022 02:02PM");
+                            list2.add("17/07/2022 01:02PM");
 
 
                             Log.e("List2->", String.valueOf(list2));
@@ -352,10 +469,10 @@ public class TestLineChartWithDB extends AppCompatActivity {
                                     float counter;
                                     int listIndex = 0;
 
-                                    for(counter = 0; counter <= list2.size();counter++){
+                                    for (counter = 0; counter <= list2.size(); counter++) {
 
 
-                                        if (value == counter){
+                                        if (value == counter) {
 
                                             Log.e("getAxisLabel->value->", String.valueOf(value));
                                             Log.e("getAxisLabel->counter->", String.valueOf(counter));
@@ -379,7 +496,12 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
                                     return label;
 
-                              /*      if (value == 1)
+
+
+
+
+                              */
+/*      if (value == 1)
                                         label = list2.get(0);
 
                                     else if (value == 2)
@@ -396,13 +518,12 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
                                     else if (value == 6)
                                         label = list2.get(5);
-*/
+*//*
+
 //                                    return label;
 
                                 }
                             });
-
-
 
                             lineChartDB.setXAxisRenderer(new CustomXAxisRenderer
                                     (
@@ -416,6 +537,7 @@ public class TestLineChartWithDB extends AppCompatActivity {
                             lineChartDB.setData(lineData);
                             lineChartDB.getDescription().setText("Income Chart");
 
+*/
 
                         } else {
                             lineChartDB.clear();
