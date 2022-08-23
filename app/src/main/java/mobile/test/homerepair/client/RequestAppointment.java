@@ -706,7 +706,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                 "\nPhone: "+clientPhone +
                 "\nEmail: "+clientEmail +
                 "\nLocation: "+ clientFullAddress +
-                "\nAppointment Date: "+date +" "+time;
+                "\n\nAppointment Date: "+date +" "+time;
 
 
         String mail = emailReceiver.trim();

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 
 public class PendingAppointmentServiceProvider extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -328,6 +329,9 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                        getAppointmentDetailFromDB_notifyClientThroughEmail_statusReject(appointmentID);
+
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
@@ -356,6 +360,9 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
+
+                        getAppointmentDetailFromDB_notifyClientThroughEmail_statusAccept(appointmentID);
+
                         Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
@@ -370,6 +377,173 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
         });
 
     }
+
+
+
+    // <-- Notification Through Email Appointment Accept
+    private void getAppointmentDetailFromDB_notifyClientThroughEmail_statusAccept(String appointmentID) {
+
+        db.collection("appointment")
+                .whereEqualTo("appointmentID", appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String clientEmailFromDB = null,
+                                providerName = null,
+                                providerPhone = null,
+                                providerEmail = null,
+                                providerFullAddress = null,
+                                providerAppointmentDate = null,
+                                providerAppointmentTime = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                clientEmailFromDB = document.getData().get("clientEmail").toString();
+                                providerName = document.getData().get("companyName").toString();
+                                providerPhone = document.getData().get("companyPhone").toString();
+                                providerEmail = document.getData().get("companyEmail").toString();
+                                providerAppointmentDate = document.getData().get("date").toString();
+                                providerAppointmentTime = document.getData().get("time").toString();
+
+
+                                // Get Full Address
+                                String fullAddress;
+
+                                fullAddress = document.getData().get("companyAddress1").toString() + ", ";
+                                fullAddress += document.getData().get("companyAddress2").toString() + ", \n";
+                                fullAddress += document.getData().get("companyPostcode").toString() + " ";
+                                fullAddress += document.getData().get("companyState").toString() + ", \n";
+                                fullAddress += document.getData().get("companyCity").toString() ;
+
+                                providerFullAddress = fullAddress;
+
+                            }
+
+                            sendEmailNotificationToProvider_statusAccept(clientEmailFromDB, providerName,
+                                    providerPhone, providerEmail, providerFullAddress, providerAppointmentDate, providerAppointmentTime);
+
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    private void sendEmailNotificationToProvider_statusAccept(String receiverEmail, String name,
+                                                 String phone, String email,
+                                                 String fullAddress, String date, String time) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Home Repair Apps: Appointment Accept By Service Provider";
+        String messageNotify = "Your request appointment has been accepted by" +
+                "\n\nService Provider: " + name +
+                "\nPhone: " + phone +
+                "\nEmail: " + email +
+                "\nLocation: " + fullAddress +
+                "\n\nAppointment Date: " + date + " " + time;
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mail, subject, message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
+
+    // <-- Notification Through Email Appointment Reject
+    private void getAppointmentDetailFromDB_notifyClientThroughEmail_statusReject(String appointmentID) {
+
+        db.collection("appointment")
+                .whereEqualTo("appointmentID", appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String clientEmailFromDB = null,
+                                providerName = null,
+                                providerPhone = null,
+                                providerEmail = null,
+                                providerFullAddress = null,
+                                providerAppointmentDate = null,
+                                providerAppointmentTime = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                clientEmailFromDB = document.getData().get("clientEmail").toString();
+                                providerName = document.getData().get("companyName").toString();
+                                providerPhone = document.getData().get("companyPhone").toString();
+                                providerEmail = document.getData().get("companyEmail").toString();
+                                providerAppointmentDate = document.getData().get("date").toString();
+                                providerAppointmentTime = document.getData().get("time").toString();
+
+
+                                // Get Full Address
+                                String fullAddress;
+
+                                fullAddress = document.getData().get("companyAddress1").toString() + ", ";
+                                fullAddress += document.getData().get("companyAddress2").toString() + ", \n";
+                                fullAddress += document.getData().get("companyPostcode").toString() + " ";
+                                fullAddress += document.getData().get("companyState").toString() + ", \n";
+                                fullAddress += document.getData().get("companyCity").toString() ;
+
+                                providerFullAddress = fullAddress;
+
+                            }
+
+                            sendEmailNotificationToProvider_statusReject(clientEmailFromDB, providerName,
+                                    providerPhone, providerEmail, providerFullAddress, providerAppointmentDate, providerAppointmentTime);
+
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    private void sendEmailNotificationToProvider_statusReject(String receiverEmail, String name,
+                                                 String phone, String email,
+                                                 String fullAddress, String date, String time) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Home Repair Apps: Appointment Reject By Service Provider";
+        String messageNotify = "Your request appointment has been rejected by" +
+                "\n\nService Provider: " + name +
+                "\nPhone: " + phone +
+                "\nEmail: " + email +
+                "\nLocation: " + fullAddress +
+                "\n\nAppointment Date: " + date + " " + time;
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mail, subject, message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
+
 
 
     public void backButton(View view) {

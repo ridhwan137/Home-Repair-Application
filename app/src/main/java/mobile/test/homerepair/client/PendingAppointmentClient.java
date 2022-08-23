@@ -174,7 +174,7 @@ public class PendingAppointmentClient extends AppCompatActivity {
                 "\nPhone: " + clientPhone +
                 "\nEmail: " + clientEmail +
                 "\nLocation: " + clientFullAddress +
-                "\nAppointment Date: " + date + " " + time;
+                "\n\nAppointment Date: " + date + " " + time;
 
 
         String mail = emailReceiver.trim();
