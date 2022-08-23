@@ -68,6 +68,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
 
@@ -248,9 +249,15 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     // change appointment status in DB to complete
                     updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
 
+                    addDateCompleteAppointmentToDB();
+
                     addTotalPriceToAppointmentDB();
 
 //                addReceiptPictureUrlToDB(); // add picture URL on table appointment
+
+
+                    getAppointmentDetailFromDB_notifyClientThroughEmail(appointmentID);
+
 
                     Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
                     intent.putExtra("appointmentID",appointmentID);
@@ -278,6 +285,89 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
+    // <-- Notification Through Email
+    private void getAppointmentDetailFromDB_notifyClientThroughEmail(String appointmentID) {
+
+        db.collection("appointment")
+                .whereEqualTo("appointmentID", appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        String clientEmailFromDB = null,
+                                providerName = null,
+                                providerPhone = null,
+                                providerEmail = null,
+                                providerFullAddress = null,
+                                providerAppointmentDate = null,
+                                providerAppointmentTime = null;
+
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("getDataFormDb->", document.getId() + " => " + document.getData());
+
+                                clientEmailFromDB = document.getData().get("clientEmail").toString();
+                                providerName = document.getData().get("companyName").toString();
+                                providerPhone = document.getData().get("companyPhone").toString();
+                                providerEmail = document.getData().get("companyEmail").toString();
+                                providerAppointmentDate = document.getData().get("date").toString();
+                                providerAppointmentTime = document.getData().get("time").toString();
+
+
+                                // Get Full Address
+                                String fullAddress;
+
+                                fullAddress = document.getData().get("companyAddress1").toString() + ", ";
+                                fullAddress += document.getData().get("companyAddress2").toString() + ", \n";
+                                fullAddress += document.getData().get("companyPostcode").toString() + " ";
+                                fullAddress += document.getData().get("companyState").toString() + ", \n";
+                                fullAddress += document.getData().get("companyCity").toString() ;
+
+                                providerFullAddress = fullAddress;
+
+                            }
+
+                            sendEmailNotificationToProvider(clientEmailFromDB, providerName,
+                                    providerPhone, providerEmail, providerFullAddress, providerAppointmentDate, providerAppointmentTime);
+
+
+                        } else {
+                            Log.e("getDataFormDb2->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+    }
+
+
+    private void sendEmailNotificationToProvider(String receiverEmail, String name,
+                                                              String phone, String email,
+                                                              String fullAddress, String date, String time) {
+
+        String emailReceiver = receiverEmail;
+        String subjectNotify = "Home Repair Apps: Appointment Complete By Service Provider";
+        String messageNotify = "Your appointment has been completed by" +
+                "\n\nService Provider: " + name +
+                "\nPhone: " + phone +
+                "\nEmail: " + email +
+                "\nLocation: " + fullAddress +
+                "\n\nAppointment Date: " + date + " " + time+
+                "\n\nKindly login to the application to see the detail about the appointment.";
+
+
+        String mail = emailReceiver.trim();
+        String subject = subjectNotify.trim();
+        String message = messageNotify;
+
+        //Send Mail
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mail, subject, message);
+        javaMailAPI.execute();
+    }
+
+    // --> Notification Through Email
+
+
 
 
     ///// Map Function
@@ -650,6 +740,40 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
             }
         });
 
+    }
+
+    public void addDateCompleteAppointmentToDB(){
+
+
+        // format Date
+        Date currentDate = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+
+        String formatCurrentDate = simpleDateFormat.format(currentDate);
+        Log.e("formatCurrentDate->",formatCurrentDate);
+
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("dateCompleteAppointment", formatCurrentDate);
+
+        db.collection("appointment")
+                .document(appointmentID)
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e("addDateCompleteAppointmentToDB->", "DocumentSnapshot successfully written!");
+//                        Toast.makeText(getApplicationContext(), "Thank you for rating", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getApplicationContext(),"Unsuccessfully Register", Toast.LENGTH_SHORT).show();
+                        Log.e("insertRatingToDB->", "Error writing document", e);
+                    }
+                });
     }
 
 

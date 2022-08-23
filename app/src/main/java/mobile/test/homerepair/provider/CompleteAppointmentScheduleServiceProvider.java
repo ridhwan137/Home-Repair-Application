@@ -309,13 +309,25 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
+
+                            String invoiceAppointmentID = null,
+                                    invoiceClientName = null,
+                                    invoiceServiceProviderName = null,
+                                    invoiceDateComplete = null;
+
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.e("getAppointmentDataFormDbForInvoice->", document.getId() + " => " + document.getData());
 
-                                invoiceAppointmentID = appointmentID;
-                                invoiceClientName = document.getData().get("clientName").toString();
-                                invoiceServiceProviderName = document.getData().get("companyName").toString();
-                                invoiceDateComplete = document.getData().get("date").toString();
+                                try {
+                                    invoiceAppointmentID = appointmentID;
+                                    invoiceClientName = document.getData().get("clientName").toString();
+                                    invoiceServiceProviderName = document.getData().get("companyName").toString();
+
+                                    invoiceDateComplete = document.getData().get("dateCompleteAppointment").toString();
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                }
+
 
                             }
 
