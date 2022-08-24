@@ -231,6 +231,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
                     // change appointment status in DB to complete
                     updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
 
+                    addDateCompleteAppointmentToDB();
+
                     addTotalPriceToAppointmentDB();
 
 
@@ -560,6 +562,42 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
         });
 
     }
+
+
+    public void addDateCompleteAppointmentToDB(){
+
+
+        // format Date
+        Date currentDate = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+
+        String formatCurrentDate = simpleDateFormat.format(currentDate);
+        Log.e("formatCurrentDate->",formatCurrentDate);
+
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("dateCompleteAppointment", formatCurrentDate);
+
+        db.collection("appointment")
+                .document(appointmentID)
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e("addDateCompleteAppointmentToDB->", "DocumentSnapshot successfully written!");
+//                        Toast.makeText(getApplicationContext(), "Thank you for rating", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getApplicationContext(),"Unsuccessfully Register", Toast.LENGTH_SHORT).show();
+                        Log.e("insertRatingToDB->", "Error writing document", e);
+                    }
+                });
+    }
+
 
 
     public void addTotalPriceToAppointmentDB(){

@@ -744,7 +744,6 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     public void addDateCompleteAppointmentToDB(){
 
-
         // format Date
         Date currentDate = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");

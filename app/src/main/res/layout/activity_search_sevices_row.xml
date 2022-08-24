@@ -67,12 +67,10 @@
                 android:fontFamily="@font/keepcalm_medium"
                 android:hint="Service Type"
                 android:inputType="textPersonName"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="0dp"
                 android:layout_gravity="center"
                 android:textAlignment="center"
-                android:textSize="13sp"
-                tools:layout_editor_absoluteX="60dp"
-                tools:layout_editor_absoluteY="782dp" />
+                android:textSize="13sp" />
 
             <RatingBar
                 android:id="@+id/ratingBar_user"
@@ -84,12 +82,13 @@
                 android:stepSize="0.1"
                 android:progressTint="#FFCC01"
                 android:layout_gravity="center"
-                android:layout_marginTop="10dp" />
+                android:layout_marginTop="5dp" />
 
             <TextView
                 android:id="@+id/tv_userRating"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:focusable="false"
                 android:fontFamily="@font/keepcalm_medium"
                 android:text="0.0"
@@ -97,7 +96,25 @@
                 android:layout_gravity="center"
                 android:textAlignment="center"
                 android:textSize="7sp"
+                android:layout_marginRight="0dp"
                 android:layout_marginTop="0dp"/>
+
+            <TextView
+                android:id="@+id/tv_totalUserRating"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:focusable="false"
+                android:fontFamily="@font/keepcalm_medium"
+                android:text="(0)"
+                android:hint="Total Rate"
+                android:layout_gravity="center"
+                android:textAlignment="center"
+                android:textSize="7sp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"/>
+
+
 
 
 

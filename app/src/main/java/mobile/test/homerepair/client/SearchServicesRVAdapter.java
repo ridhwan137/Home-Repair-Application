@@ -68,13 +68,23 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
 //        holder.tv_userRating.setText(users.getUserServiceRating());
 
         try{
+//            String totalUserRate = users.getTotalUserRate();
+
             holder.ratingBar_user.setRating(Float.parseFloat(users.getUserServiceRating()));
             holder.tv_userRating.setText(users.getUserServiceRating());
-            System.out.println(users.getUserServiceRating());
+            holder.tv_totalUserRating.setText("("+users.getTotalUserRate()+")");
+
+            System.out.println("getUserServiceRatingTRY-> "+users.getUserServiceRating());
+            System.out.println("getTotalUserRateTRY-> "+users.getTotalUserRate());
+
+
         }catch (Exception e){
             e.printStackTrace();
-            System.out.println(users.getUserServiceRating());
+            System.out.println("getUserServiceRatingCATCH-> "+users.getUserServiceRating());
+            System.out.println("getTotalUserRateCATCH-> "+users.getTotalUserRate());
+
             holder.ratingBar_user.setRating(0.0F);
+            holder.tv_totalUserRating.setText("("+"0"+")");
 //            holder.tv_userRating.setText(0);
         }
 
@@ -99,7 +109,7 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
         MaterialIconView btn_searchMoreDetail;
         CircleImageView img_searchCompany;
         RatingBar ratingBar_user;
-        TextView tv_userRating;
+        TextView tv_userRating,tv_totalUserRating;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -111,6 +121,7 @@ public class SearchServicesRVAdapter extends RecyclerView.Adapter<SearchServices
             btn_searchMoreDetail = itemView.findViewById(R.id.btn_searchMoreDetail);
             ratingBar_user = itemView.findViewById(R.id.ratingBar_user);
             tv_userRating = itemView.findViewById(R.id.tv_userRating);
+            tv_totalUserRating = itemView.findViewById(R.id.tv_totalUserRating);
 
             itemView.setOnClickListener(this);
         }

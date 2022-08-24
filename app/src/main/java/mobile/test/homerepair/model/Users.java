@@ -23,6 +23,17 @@ public class Users {
     String dateRegistration;
     String hasServiceOffer;
     String userServiceRating;
+    String totalUserRate;
+
+    public String getTotalUserRate() {
+        return totalUserRate;
+    }
+
+    public void setTotalUserRate(String totalUserRate) {
+        this.totalUserRate = totalUserRate;
+    }
+
+
 
     public String getUserServiceRating() {
         return userServiceRating;

@@ -24,6 +24,8 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -125,6 +127,11 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     insertRatingToDB();
+
+                    Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
                 }
             });
         }
@@ -176,6 +183,41 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 
     }
 
+
+    private void addDateServiceRate(){
+
+        // format Date
+        Date currentDate = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+
+        String formatCurrentDate = simpleDateFormat.format(currentDate);
+        Log.e("formatCurrentDate->",formatCurrentDate);
+
+
+        Map<String, Object> data = new HashMap<>();
+
+        data.put("dateServiceRate", formatCurrentDate);
+
+        db.collection("appointment")
+                .document(appointmentID)
+                .set(data, SetOptions.merge())
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.e("addDateServiceRate->", "DocumentSnapshot successfully written!");
+//                        Toast.makeText(getApplicationContext(), "Thank you for rating", Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+//                        Toast.makeText(getApplicationContext(),"Unsuccessfully Register", Toast.LENGTH_SHORT).show();
+                        Log.e("addDateServiceRate->", "Error writing document", e);
+                    }
+                });
+    }
+
+
     private void insertRatingToDB() {
 
         Map<String, Object> dataServiceRate = new HashMap<>();
@@ -190,6 +232,11 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.e("insertRatingToDB->", "DocumentSnapshot successfully written!");
                         Toast.makeText(getApplicationContext(), "Thank you for rating", Toast.LENGTH_SHORT).show();
+
+                        addDateServiceRate();
+
+                        calculateAverageRatingFromDB();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
@@ -199,8 +246,6 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                         Log.e("insertRatingToDB->", "Error writing document", e);
                     }
                 });
-
-        calculateAverageRatingFromDB();
     }
 
 
@@ -248,7 +293,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 //                            ratingBar.setRating(Float.parseFloat(formatAverageRating));
 //                            String. format("%.1f", averateRating);
 
-                            insertAverageRatingToProviderDB(String. format("%.1f",averateRating));
+                            insertAverageRatingToProviderDB(String.format("%.1f",averateRating),String.valueOf(totalOfUserThatRate));
 
 
                         } else {
@@ -259,11 +304,12 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 
     }
 
-    private void insertAverageRatingToProviderDB(String averageRating) {
+    private void insertAverageRatingToProviderDB(String averageRating, String totalUserRate) {
 
         Map<String, Object> dataAverageServiceRate = new HashMap<>();
 
         dataAverageServiceRate.put("userServiceRating", averageRating);
+        dataAverageServiceRate.put("totalUserRate", totalUserRate);
 
         db.collection("users")
                 .document(providerID)
@@ -273,9 +319,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.e("insertAverageRatingToProviderDB->", "DocumentSnapshot successfully written!");
 
-                        Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
-                        intent.putExtra("appointmentID",appointmentID);
-                        startActivity(intent);
+
 
                     }
                 })
