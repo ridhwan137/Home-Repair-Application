@@ -366,7 +366,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
                         getProviderEmailFromDB_notifyProviderThroughEmail_statusReject();
@@ -395,7 +395,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Successfully Update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
 
                         getProviderEmailFromDB_notifyProviderThroughEmail_statusAccept();

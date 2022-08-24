@@ -269,7 +269,7 @@ public class ProfileAdmin extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Log.d("EditName", "DocumentSnapshot successfully updated!");
 
-                        Toast.makeText(getApplicationContext(), "Name updated successfully.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Updated.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

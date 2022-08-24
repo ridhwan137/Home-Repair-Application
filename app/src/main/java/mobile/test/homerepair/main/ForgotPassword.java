@@ -134,7 +134,7 @@ public class ForgotPassword extends AppCompatActivity {
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()) {
                             Log.e("TAG", "Email sent.");
-                            Toast.makeText(getApplicationContext(), "Email sent.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Reset Password has been send to your email", Toast.LENGTH_LONG).show();
 
                             Intent intent = new Intent(getApplicationContext(), Login.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

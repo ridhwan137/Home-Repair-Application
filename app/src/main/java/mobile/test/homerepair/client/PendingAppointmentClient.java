@@ -283,7 +283,7 @@ public class PendingAppointmentClient extends AppCompatActivity {
 
                         getAppointmentDetailFromDB_notifyProviderThroughEmail(appointmentID);
 
-                        Toast.makeText(getApplicationContext(), "Successfully Update", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
                         Log.d(TAG, "DocumentSnapshot successfully updated!");
                     }
                 }).addOnFailureListener(new OnFailureListener() {

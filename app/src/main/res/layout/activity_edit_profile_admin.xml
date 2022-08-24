@@ -270,14 +270,15 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_adminEditState"
+                            android:id="@+id/et_adminEditCity"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="State"
+                            android:hint="City"
                             android:inputType="text"
                             android:padding="10dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
 
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -288,14 +289,16 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_adminEditCity"
+                            android:id="@+id/et_adminEditState"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:hint="City"
+                            android:hint="State"
                             android:inputType="text"
                             android:padding="10dp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+
 
 
                 </LinearLayout>

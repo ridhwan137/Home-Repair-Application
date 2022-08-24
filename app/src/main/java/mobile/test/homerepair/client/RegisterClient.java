@@ -302,8 +302,8 @@ public class RegisterClient extends AppCompatActivity {
                             user = mAuth.getCurrentUser();
                             //updateUI(user);
 
-                            Toast.makeText(getApplicationContext(), "Authentication Success.",
-                                    Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(getApplicationContext(), "Authentication Success.",
+//                                    Toast.LENGTH_SHORT).show();
 
                             addUserInfo();
 

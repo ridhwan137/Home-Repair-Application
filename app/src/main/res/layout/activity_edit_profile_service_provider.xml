@@ -289,12 +289,12 @@
                 android:textColorHint="@color/black">
 
                 <EditText
-                    android:id="@+id/et_providerEditState"
+                    android:id="@+id/et_providerEditCity"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:hint="State"/>
+                    android:hint="City"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -310,14 +310,17 @@
                 android:textColorHint="@color/black">
 
                 <EditText
-                    android:id="@+id/et_providerEditCity"
+                    android:id="@+id/et_providerEditState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:padding="10dp"
-                    android:hint="City"/>
+                    android:hint="State"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
             <Button

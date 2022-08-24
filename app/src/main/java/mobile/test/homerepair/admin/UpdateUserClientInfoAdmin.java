@@ -516,7 +516,7 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
 
                                     img_pictureClient.setImageURI(null);
-                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
+//                                    Toast.makeText(getApplicationContext(),"Successfully Uploaded" + storageReference.getDownloadUrl(),Toast.LENGTH_SHORT).show();
 
                                     storageReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                         @Override
@@ -578,7 +578,7 @@ public class UpdateUserClientInfoAdmin extends AppCompatActivity {
 
                         Log.d("EditName", "DocumentSnapshot successfully updated!");
 
-                        Toast.makeText(getApplicationContext(), "Successfully Update.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getApplicationContext(), "Successfully Updated.", Toast.LENGTH_SHORT).show();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

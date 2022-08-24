@@ -246,12 +246,12 @@
             android:textColorHint="@color/black">
 
             <EditText
-                android:id="@+id/et_clientEditState"
+                android:id="@+id/et_clientEditCity"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:padding="10dp"
-                android:hint="State"/>
+                android:hint="City"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -267,14 +267,17 @@
             android:textColorHint="@color/black">
 
             <EditText
-                android:id="@+id/et_clientEditCity"
+                android:id="@+id/et_clientEditState"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="text"
                 android:padding="10dp"
-                android:hint="City"/>
+                android:hint="State"/>
 
         </com.google.android.material.textfield.TextInputLayout>
+
+
+
 
 
         <Button
