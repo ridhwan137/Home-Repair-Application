@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -65,6 +66,8 @@ public class AdminAddServiceRVAdapter extends RecyclerView.Adapter<AdminAddServi
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d("TAG", "DocumentSnapshot successfully deleted!");
+
+                                    Toast.makeText(context, "Services remove successfully", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(context, AdminAddService.class);
                                     context.startActivity(intent);
 
