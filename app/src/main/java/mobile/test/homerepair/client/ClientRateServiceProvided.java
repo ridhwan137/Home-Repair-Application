@@ -188,7 +188,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
 
         // format Date
         Date currentDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 
         String formatCurrentDate = simpleDateFormat.format(currentDate);
         Log.e("formatCurrentDate->",formatCurrentDate);
