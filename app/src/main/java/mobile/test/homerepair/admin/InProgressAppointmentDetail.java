@@ -56,11 +56,10 @@ import java.util.Map;
 import java.util.Random;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
 import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.provider.AppointmentScheduleServiceProviderTabLayout;
 import mobile.test.homerepair.provider.InProgressAppointmentServiceProvider;
-import mobile.test.homerepair.provider.InProgressAppointmentServiceProviderRVAdapter;
 
 public class InProgressAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener,ServiceOrderRVAdapter.ItemClickListener {
 
@@ -569,7 +568,7 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
         // format Date
         Date currentDate = new Date();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 
         String formatCurrentDate = simpleDateFormat.format(currentDate);
         Log.e("formatCurrentDate->",formatCurrentDate);

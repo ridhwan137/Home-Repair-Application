@@ -230,7 +230,9 @@
         </LinearLayout>
 
 
+<!--        Button show total income-->
         <Button
+            android:visibility="gone"
             android:id="@+id/btn_providerTotalIncome"
             android:layout_width="246dp"
             android:layout_height="56dp"

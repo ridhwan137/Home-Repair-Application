@@ -9,12 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.DownloadManager;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -23,7 +20,6 @@ import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -44,27 +40,20 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
-import com.theartofdev.edmodo.cropper.CropImage;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
 import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.provider.CompleteAppointmentScheduleServiceProvider;
 
 public class CompleteAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener,CompleteServiceOrderRVAdapter.ItemClickListener{
 

@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -337,7 +339,12 @@ public class RegisterClient extends AppCompatActivity {
         password = et_clientPassword.getText().toString();
         confirmPassword = et_clientConfirmPassword.getText().toString();*/
 
+        // Date Registration
+        Date currentDate = new Date();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 
+        String dateRegistration = simpleDateFormat.format(currentDate);
+        Log.e("dateRegistration->",dateRegistration);
 
 
         Map<String, Object> user = new HashMap<>();
@@ -354,6 +361,8 @@ public class RegisterClient extends AppCompatActivity {
         user.put("pictureURL","https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=fe7e401f-422e-4c95-9308-2e5a441e0bcb");
 //        user.put("userType","admin");
         user.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
+        user.put("dateRegistration",dateRegistration);
+
 
         db.collection("users").document(this.user.getUid())
                 .set(user)

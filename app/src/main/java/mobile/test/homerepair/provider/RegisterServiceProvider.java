@@ -559,14 +559,12 @@ public class RegisterServiceProvider extends AppCompatActivity {
         password = et_providerPassword.getText().toString();
 */
 
-        // format Date
+        // Date Registration
         Date currentDate = new Date();
-//        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
 
-
-        String formatCurrentDate = simpleDateFormat.format(currentDate);
-        Log.e("formatCurrentDate->",formatCurrentDate);
+        String dateRegistration = simpleDateFormat.format(currentDate);
+        Log.e("dateRegistration->",dateRegistration);
 
 
 
@@ -584,7 +582,7 @@ public class RegisterServiceProvider extends AppCompatActivity {
         user.put("password", password);
         user.put("userType","serviceProvider");
         user.put("userID", FirebaseAuth.getInstance().getCurrentUser().getUid());
-        user.put("dateRegistration",formatCurrentDate);
+        user.put("dateRegistration",dateRegistration);
         user.put("registrationStatus","pending");
         user.put("pictureURL","https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=https://firebasestorage.googleapis.com/v0/b/homerepair-88bbb.appspot.com/o/profilepicturenoimage.png?alt=media&token=fe7e401f-422e-4c95-9308-2e5a441e0bcb");
 

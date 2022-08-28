@@ -123,6 +123,7 @@
             app:backgroundTint="#417D7A"/>
 
         <Button
+            android:visibility="gone"
             android:id="@+id/btn_toTestPage"
             android:layout_width="match_parent"
             android:layout_height="56dp"
