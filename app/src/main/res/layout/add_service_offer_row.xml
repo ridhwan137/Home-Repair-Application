@@ -21,8 +21,9 @@
         android:layout_marginTop="0dp"
         android:layout_gravity="">
 
-        <TextView
-            android:id="@+id/tv_ServiceName"
+        <EditText
+            android:focusable="false"
+            android:id="@+id/et_ServiceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Service"
@@ -38,9 +39,9 @@
             tools:layout_editor_absoluteY="782dp" />
 
 
-        <TextView
+        <EditText
             android:focusable="false"
-            android:id="@+id/tv_ServicePrice"
+            android:id="@+id/et_ServicePrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"

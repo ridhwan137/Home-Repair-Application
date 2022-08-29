@@ -48,7 +48,9 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
@@ -67,7 +69,8 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference;
 
-    EditText et_appointmentID,et_clientName,et_companyName,et_serviceType,et_appointmentDate,et_appointmentTime;
+    EditText et_appointmentID,et_clientName,et_companyName,et_serviceType,et_appointmentDate,et_appointmentTime,
+            et_appointmentComplete,et_message;
 
     MaterialIconView btn_clientDetail,btn_companyDetail;
 
@@ -85,7 +88,7 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
     EditText et_addServiceOffer,et_addServicePrice;
 
-    Button btn_downloadReceipt,btn_generateInvoice;
+    Button btn_downloadReceipt,btn_generateInvoice,btn_rejectCompleteAppointment;
 
     String url;
 
@@ -139,9 +142,12 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
         et_serviceType = findViewById(R.id.et_serviceType);
         et_appointmentDate = findViewById(R.id.et_appointmentDate);
         et_appointmentTime = findViewById(R.id.et_appointmentTime);
+        et_appointmentComplete = findViewById(R.id.et_appointmentComplete);
+        et_message = findViewById(R.id.et_message);
 
         btn_clientDetail = findViewById(R.id.btn_clientDetail);
         btn_companyDetail = findViewById(R.id.btn_companyDetail);
+        btn_rejectCompleteAppointment = findViewById(R.id.btn_rejectCompleteAppointment);
 
         getAppointmentInfoFromDB();
 
@@ -266,7 +272,41 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
         });
 
 
+        btn_rejectCompleteAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                rejectCompleteAppointment();
+            }
+        });
+
+
         // End Bracket
+    }
+
+    private void rejectCompleteAppointment() {
+
+        Map<String, Object> appointment = new HashMap<>();
+
+        appointment.put("updateAppointmentStatus", "reject");
+
+        DocumentReference docRef = db.collection("appointment").document(appointmentID);
+        docRef.update("appointmentStatus", appointment.get("updateAppointmentStatus"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                        Intent intent = new Intent(getApplicationContext(), AdminManageAppointment.class);
+                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+
     }
 
     private void requestStoragePermissions() {
@@ -524,6 +564,8 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
                                     et_serviceType.setText(document.getData().get("companyServiceType").toString());
                                     et_appointmentDate.setText(document.getData().get("date").toString());
                                     et_appointmentTime.setText(document.getData().get("time").toString());
+                                    et_appointmentComplete.setText(document.getData().get("dateCompleteAppointment").toString());
+                                    et_message.setText(document.getData().get("message").toString());
 
                                     providerID = document.getData().get("providerID").toString();
                                     Log.e("1->providerID->",providerID);

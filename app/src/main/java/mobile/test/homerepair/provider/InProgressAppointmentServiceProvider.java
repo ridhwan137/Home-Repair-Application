@@ -246,23 +246,25 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                 }else if (getReceiptURLFromDB == null){
                     Toast.makeText(getApplicationContext(), "Please upload receipt by clicking receipt picture", Toast.LENGTH_SHORT).show();
                 }else{
-                    // change appointment status in DB to complete
-                    updateAppointmentStatusToComplete(); // update appointment status to complete on table appointment
 
-                    addDateCompleteAppointmentToDB();
+//                    updateAppointmentStatusToComplete();
 
-                    addTotalPriceToAppointmentDB();
+//                    addDateCompleteAppointmentToDB();
+
+//                    addTotalPriceToAppointmentDB();
 
 //                addReceiptPictureUrlToDB(); // add picture URL on table appointment
 
 
                     getAppointmentDetailFromDB_notifyClientThroughEmail(appointmentID);
 
+                    Toast.makeText(getApplicationContext(), "We have notify the client, please wait for client to complete the appointment", Toast.LENGTH_SHORT).show();
 
-                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
-                    intent.putExtra("appointmentID",appointmentID);
-                    Log.e("testPassAppointmentID",appointmentID);
-                    startActivity(intent);
+
+//                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
+//                    intent.putExtra("appointmentID",appointmentID);
+//                    Log.e("testPassAppointmentID",appointmentID);
+//                    startActivity(intent);
                 }
                 ///// ----> Validation
 

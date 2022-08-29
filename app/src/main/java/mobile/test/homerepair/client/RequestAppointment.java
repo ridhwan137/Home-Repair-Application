@@ -583,11 +583,17 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
 
 
-
+            //////////////
+            //////////////
 
             Date date = new Date();
             Timestamp ts = new Timestamp(date);
-            requestAppointment.put("dateRequest",ts);
+            requestAppointment.put("testDateRequest",ts);
+
+//            new SimpleDateFormat("dd-MM-yyyy hh:mm a").format(new Date());
+
+            //////////////
+            //////////////
 
             requestAppointment.put("date",chooseDate);
             requestAppointment.put("time",chooseTime);
@@ -618,9 +624,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                             dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {
-
-
-
 
                                     Intent intent = new Intent(getApplicationContext(), SearchServices.class);
 

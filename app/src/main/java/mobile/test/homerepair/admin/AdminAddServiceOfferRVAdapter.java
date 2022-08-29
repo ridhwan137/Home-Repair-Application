@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,8 +24,6 @@ import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.testDemo.TestAdminAddServiceOffer;
-import mobile.test.homerepair.testDemo.TestAdminAddServiceOfferRVAdapter;
 
 public class AdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<AdminAddServiceOfferRVAdapter.ViewHolder>{
 
@@ -52,8 +51,8 @@ public class AdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<AdminAdd
         // setting data to our text views from our modal class.
         Services services = servicesArrayList.get(position);
 
-        holder.tv_ServiceName.setText(services.getServiceName());
-        holder.tv_ServicePrice.setText(services.getServicePrice());
+        holder.et_ServiceName.setText(services.getServiceName());
+        holder.et_ServicePrice.setText(services.getServicePrice());
 
         holder.btn_Delete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -102,17 +101,18 @@ public class AdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<AdminAdd
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         // creating variables for our text views.
 
-        private final TextView tv_ServiceName;
-        private final TextView tv_ServicePrice;
+//        private final TextView tv_ServiceName;
+//        private final TextView tv_ServicePrice;
         private final MaterialIconView btn_Delete;
+        private final TextView et_ServiceName,et_ServicePrice;
 
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             // initializing our text views.
 
-            tv_ServiceName = itemView.findViewById(R.id.tv_ServiceName);
-            tv_ServicePrice = itemView.findViewById(R.id.tv_ServicePrice);
+            et_ServiceName = itemView.findViewById(R.id.et_ServiceName);
+            et_ServicePrice = itemView.findViewById(R.id.et_ServicePrice);
             btn_Delete = itemView.findViewById(R.id.btn_Delete);
 
             itemView.setOnClickListener(this);

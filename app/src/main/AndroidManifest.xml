@@ -19,6 +19,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
+            android:name=".client.InProgressAppointmentClient"
+            android:exported="true" />
+        <activity
             android:name=".testDemo.TestJavaMailAPI.TestSendJavaMailAPI"
             android:exported="true" />
         <activity

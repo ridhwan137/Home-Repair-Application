@@ -89,7 +89,7 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
     // 2nd RecyclerView declaration
 
     EditText et_addServicePrice,et_addServiceOffer;
-    Button btn_completeAppointment;
+    Button btn_completeAppointment,btn_cancelInProgressAppointment;
     MaterialIconView btn_addItem;
     TextView tv_totalPrice;
     ImageView img_receiptPicture;
@@ -153,6 +153,7 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
         img_receiptPicture = findViewById(R.id.img_receiptPicture);
 
         btn_completeAppointment = findViewById(R.id.btn_completeAppointment);
+        btn_cancelInProgressAppointment = findViewById(R.id.btn_cancelInProgressAppointment);
 
         loadingPB2 = findViewById(R.id.idProgressBar2);
         rvServiceItem = findViewById(R.id.rvServiceItem);
@@ -278,13 +279,45 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
             }
         });
 
+        btn_cancelInProgressAppointment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelInProgressAppointment();
+            }
+        });
+
         /////////
     }
 
+    private void cancelInProgressAppointment() {
+        Map<String, Object> appointment = new HashMap<>();
+
+        appointment.put("updateAppointmentStatus", "cancel");
+
+        DocumentReference docRef = db.collection("appointment").document(appointmentID);
+        docRef.update("appointmentStatus", appointment.get("updateAppointmentStatus"))
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                        Log.d(TAG, "DocumentSnapshot successfully updated!");
+
+                        Intent intent = new Intent(getApplicationContext(), AdminManageAppointment.class);
+                        startActivity(intent);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.w(TAG, "Error updating document", e);
+            }
+        });
+    }
 
 
     @Override
     public void onItemClick(View view, int position){
+
+
 
     }
 

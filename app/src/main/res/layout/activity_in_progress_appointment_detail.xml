@@ -252,7 +252,9 @@
 
 
 
+        <!--        Service Offer-->
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_TypeOfService"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -264,8 +266,9 @@
             android:textSize="20dp"
             android:textAlignment="center" />
 
-
+        <!--        Service Offer Adapter-->
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -357,6 +360,7 @@
         </LinearLayout>
 
 
+<!--        Service Charges-->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -635,6 +639,14 @@
             android:layout_marginBottom="30dp"
             android:text="Complete"
             app:backgroundTint="#417D7A" />
+
+        <Button
+            android:id="@+id/btn_cancelInProgressAppointment"
+            android:layout_width="246dp"
+            android:layout_height="56dp"
+            android:layout_marginBottom="30dp"
+            android:text="Cancel"
+            app:backgroundTint="#6A6C6C" />
 
 
 

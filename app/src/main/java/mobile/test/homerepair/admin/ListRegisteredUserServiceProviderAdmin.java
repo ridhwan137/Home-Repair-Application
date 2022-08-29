@@ -71,7 +71,7 @@ public class ListRegisteredUserServiceProviderAdmin extends AppCompatActivity im
 
         db.collection("users")
                 .whereEqualTo("userType","serviceProvider")
-//                .whereEqualTo("registrationStatus","accept")
+                .whereEqualTo("registrationStatus","accept")
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override

@@ -21,7 +21,7 @@
         android:layout_marginTop="0dp"
         android:layout_gravity="">
 
-        <TextView
+        <EditText
             android:focusable="false"
             android:id="@+id/tv_detailServiceName"
             android:layout_width="match_parent"
@@ -39,7 +39,7 @@
             tools:layout_editor_absoluteY="782dp" />
 
 
-        <TextView
+        <EditText
             android:focusable="false"
             android:id="@+id/tv_detailServicePrice"
             android:layout_width="match_parent"

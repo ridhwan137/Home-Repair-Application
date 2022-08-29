@@ -105,8 +105,8 @@ public class TestAdminAddServiceOfferRVAdapter extends RecyclerView.Adapter<Test
             super(itemView);
             // initializing our text views.
 
-            tv_ServiceName = itemView.findViewById(R.id.tv_ServiceName);
-            tv_ServicePrice = itemView.findViewById(R.id.tv_ServicePrice);
+            tv_ServiceName = itemView.findViewById(R.id.et_ServiceName);
+            tv_ServicePrice = itemView.findViewById(R.id.et_ServicePrice);
             btn_Delete = itemView.findViewById(R.id.btn_Delete);
 
             itemView.setOnClickListener(this);

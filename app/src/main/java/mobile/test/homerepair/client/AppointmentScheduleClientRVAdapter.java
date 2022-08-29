@@ -76,9 +76,10 @@ public class AppointmentScheduleClientRVAdapter extends RecyclerView.Adapter<App
         if(appointment.getAppointmentStatus().equals("pending")){
             holder.btn_detailAppointmentStatus.setText(appointment.getAppointmentStatus());
         }else{
-//            holder.btn_detailAppointmentStatus.setVisibility(View.INVISIBLE);
-            holder.btn_detailAppointmentStatus.setVisibility(View.GONE);
+//            holder.btn_detailAppointmentStatus.setVisibility(View.GONE);
+            holder.btn_detailAppointmentStatus.setText(appointment.getAppointmentStatus());
         }
+
         ///////
 
 //        holder.btn_detailAppointmentStatus.setText(appointment.getAppointmentStatus());
@@ -100,9 +101,14 @@ public class AppointmentScheduleClientRVAdapter extends RecyclerView.Adapter<App
                 }else if (appointmentStatus.equals("in-progress")){
                     Log.e("testPassAppointmentID", appointment.getAppointmentID());
 
-/*                    Activity activity = (Activity) context;
+                    Intent intent = new Intent(context, InProgressAppointmentClient.class);
+                    intent.putExtra("appointmentID",appointment.getAppointmentID());
+                    context.startActivity(intent);
+                    Log.e("testPassAppointmentID", appointment.getAppointmentID());
+
+                    Activity activity = (Activity) context;
                     activity.finish();
-                    */
+
                 }else{
 /*                    Log.e("testPassAppointmentID", appointment.getAppointmentID());
 

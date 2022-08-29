@@ -23,9 +23,6 @@ import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.testDemo.TestAdminAddService;
-import mobile.test.homerepair.testDemo.TestAdminAddServiceOffer;
-import mobile.test.homerepair.testDemo.TestAdminAddServiceRVAdapter;
 
 public class AdminAddServiceRVAdapter extends RecyclerView.Adapter<AdminAddServiceRVAdapter.ViewHolder>{
     private ArrayList<Services> servicesArrayList;
@@ -133,7 +130,7 @@ public class AdminAddServiceRVAdapter extends RecyclerView.Adapter<AdminAddServi
             super(itemView);
             // initializing our text views.
 
-            tv_ServiceName = itemView.findViewById(R.id.tv_ServiceName);
+            tv_ServiceName = itemView.findViewById(R.id.et_ServiceName);
             btn_Delete = itemView.findViewById(R.id.btn_Delete);
             btn_addServiceOffer = itemView.findViewById(R.id.btn_addServiceOffer);
 

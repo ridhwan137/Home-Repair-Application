@@ -549,7 +549,7 @@
             android:layout_width="246dp"
             android:layout_height="56dp"
             android:layout_marginBottom="30dp"
-            android:text="Complete"
+            android:text="Notify Client"
             app:backgroundTint="#417D7A" />
 
 

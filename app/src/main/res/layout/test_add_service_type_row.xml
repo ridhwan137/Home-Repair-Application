@@ -22,7 +22,7 @@
         android:layout_gravity="">
 
         <TextView
-            android:id="@+id/tv_ServiceName"
+            android:id="@+id/et_ServiceName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Service"

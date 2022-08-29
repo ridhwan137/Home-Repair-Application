@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".admin.CompleteAppointmentDetail"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent"
+    tools:context=".client.InProgressAppointmentClient">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center">
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -23,43 +21,20 @@
             android:gravity="left">
 
             <Button
-                android:id="@+id/btn_back"
+                android:id="@+id/btn_backToClientProfile"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginLeft="30dp"
+                android:onClick="backButton"
                 android:background="@drawable/ic_baseline_arrow_back_ios_24"
-                android:fontFamily="@font/keepcalm_medium" />
-
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginLeft="10dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginRight="50dp"
-                android:text="Complete Appointment"
                 android:textColor="#000000"
-                android:fontFamily="@font/poppins_regular"
-                android:background="#0000"
-                app:backgroundTint="#fff"/>
+                android:fontFamily="@font/keepcalm_medium"
+                app:backgroundTint="#000000"/>
+
 
         </LinearLayout>
-
-
-        <TextView
-            android:id="@+id/tv_ServicesInformation"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:layout_marginBottom="0dp"
-            android:layout_gravity="center"
-            android:fontFamily="@font/poppins"
-            android:text="Services Information"
-            android:textSize="20dp"
-            android:textAlignment="center" />
 
 
         <LinearLayout
@@ -67,16 +42,36 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center"
-            android:paddingBottom="30dp"
+            android:paddingBottom="10dp"
             android:paddingTop="30dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="30dp"
             android:elevation="10dp"
             android:background="@drawable/background_shape">
 
+            <TextView
+                android:id="@+id/tv_ServicesInformation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"
+                android:text="Services Information"
+                android:fontFamily="@font/poppins"
+                android:textSize="20dp"
+                android:textAlignment="center" />
 
+            <ImageView
+                android:id="@+id/img_pictureCompany"
+                android:src="@drawable/profilepicturenoimage"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp" />
 
 
             <LinearLayout
@@ -85,6 +80,8 @@
                 android:layout_gravity=""
                 android:layout_marginTop="0dp"
                 android:orientation="horizontal">
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,92 +99,16 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_appointmentID"
+                            android:id="@+id/et_detailCompanyName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:padding="10dp"
-                            android:hint="Appointment ID"
+                            android:hint="Company Name"
                             android:focusable="false"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:textColorHint="@color/black">
-
-                            <EditText
-                                android:id="@+id/et_clientName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text"
-                                android:padding="10dp"
-                                android:focusable="false"
-                                android:hint="Client Name"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <net.steamcrafted.materialiconlib.MaterialIconView
-                            android:id="@+id/btn_clientDetail"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_weight="5"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="0dp"
-                            android:layout_marginLeft="0dp"
-                            android:backgroundTint="#36AE7C"
-                            app:materialIcon="arrow_right_bold_box_outline"
-                            app:materialIconColor="@color/black" />
-
-                    </LinearLayout>
-
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:textColorHint="@color/black">
-
-                            <EditText
-                                android:id="@+id/et_companyName"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:inputType="text"
-                                android:padding="10dp"
-                                android:focusable="false"
-                                android:hint="Company Name"/>
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <net.steamcrafted.materialiconlib.MaterialIconView
-                            android:id="@+id/btn_companyDetail"
-                            android:layout_width="match_parent"
-                            android:layout_height="50dp"
-                            android:layout_weight="5"
-                            android:layout_gravity="center"
-                            android:layout_marginRight="0dp"
-                            android:layout_marginLeft="0dp"
-                            android:backgroundTint="#36AE7C"
-                            app:materialIcon="arrow_right_bold_box_outline"
-                            app:materialIconColor="@color/black" />
-
-                    </LinearLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -197,7 +118,7 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_serviceType"
+                            android:id="@+id/et_detailCompanyServiceType"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
@@ -208,23 +129,6 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                        android:textColorHint="@color/black">
-
-                        <EditText
-                            android:id="@+id/et_appointmentDate"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:padding="10dp"
-                            android:focusable="false"
-                            android:hint="Appointment Date"/>
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -234,13 +138,13 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_appointmentTime"
+                            android:id="@+id/et_detailCompanyEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:padding="10dp"
                             android:focusable="false"
-                            android:hint="Appointment Time"/>
+                            android:hint="Email"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -253,14 +157,13 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_message"
+                            android:id="@+id/et_detailCompanyPhone"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:padding="10dp"
                             android:focusable="false"
-                            android:hint="Message"
-                            android:text="No Message"/>
+                            android:hint="Contact Number"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
 
@@ -273,142 +176,107 @@
                         android:textColorHint="@color/black">
 
                         <EditText
-                            android:id="@+id/et_appointmentComplete"
+                            android:id="@+id/et_detailCompanyAddress"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
                             android:padding="10dp"
                             android:focusable="false"
-                            android:hint="Date Appointment Complete"/>
+                            android:hint="Address"/>
 
                     </com.google.android.material.textfield.TextInputLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_providerLocation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_gravity="center"
+                        android:text="Services Location"
+                        android:fontFamily="@font/poppins"
+                        android:textSize="20dp"
+                        android:textAlignment="center" />
+
+                    <!-- Map Fragment-->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp">
+
+                        <fragment
+                            class="com.google.android.gms.maps.SupportMapFragment"
+                            android:id="@+id/mapFragment"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            />
+
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_dateRequestAppointment"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp"
+                        android:ems="5"
+                        android:focusable="false"
+                        android:fontFamily="@font/keepcalm_medium"
+                        android:text="(Date Request Appointment)"
+                        android:hint="Date Request Appointment"
+                        android:textSize="13sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_detailCompanyDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            android:layout_weight="1"
+                            android:ems="5"
+                            android:focusable="false"
+                            android:fontFamily="@font/keepcalm_medium"
+                            android:hint="Date"
+                            android:inputType="textPersonName"
+                            android:textSize="13sp" />
+
+                        <TextView
+                            android:id="@+id/tv_detailCompanyTime"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right"
+                            android:gravity="center"
+                            android:layout_marginLeft="50dp"
+                            android:layout_weight="1"
+                            android:ems="5"
+                            android:focusable="false"
+                            android:fontFamily="@font/keepcalm_medium"
+                            android:hint="Time"
+                            android:inputType="textPersonName"
+                            android:textSize="13sp" />
+
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
 
+
             </LinearLayout>
+
 
         </LinearLayout>
-
-
-<!--        Service Offer-->
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_TypeOfService"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:text="Service Offer"
-            android:fontFamily="@font/poppins"
-            android:textSize="20dp"
-            android:textAlignment="center" />
-
-
-<!--        Service Offer Adapter RC-->
-        <LinearLayout
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity=""
-            android:layout_marginTop="20dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="30dp"
-            android:elevation="10dp"
-            android:background="@drawable/background_shape">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center"
-                android:layout_marginTop="10dp"
-                >
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="Services"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/keepcalm_medium"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-                    android:layout_marginLeft="0dp"
-
-                    />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:textStyle="bold"
-                    android:text="Estimate Price(RM)"
-                    android:textSize="14sp"
-                    android:fontFamily="@font/keepcalm_medium"
-                    android:textColor="@color/black"
-                    android:layout_gravity="center"
-                    android:gravity="center"
-
-                    tools:layout_editor_absoluteX="60dp"
-                    tools:layout_editor_absoluteY="28dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="1dp"
-                android:gravity="center">
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvServiceDetail"
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <ProgressBar
-                        android:id="@+id/idProgressBar"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerInParent="true"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@+id/rvServiceDetail" />
-
-                </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
-            android:text="Service Charges"
-            android:fontFamily="@font/poppins"
-            android:textSize="20dp"
-            android:textAlignment="center" />
 
 
         <LinearLayout
@@ -423,7 +291,7 @@
             android:elevation="10dp"
             android:background="@drawable/background_shape">
 
-<!--            <TextView
+            <TextView
                 android:id="@+id/tv_serviceProvideCharge"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -433,13 +301,15 @@
                 android:text="Services Charges"
                 android:textSize="17sp"
                 android:fontFamily="@font/keepcalm_medium"
-                />-->
+                android:layout_marginLeft="-5dp"
+                />
 
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:gravity="center"
                 android:layout_marginTop="10dp"
                 >
 
@@ -448,13 +318,14 @@
                     android:id="@+id/textView19"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textStyle="bold"
                     android:layout_weight="1"
                     android:layout_gravity="center"
                     android:gravity="center"
-                    android:textStyle="bold"
-                    android:text="Services Charges"
+                    android:text="Services Offer"
                     android:textSize="14sp"
                     android:fontFamily="@font/keepcalm_medium"
+                    android:layout_marginLeft="0dp"
                     />
 
                 <TextView
@@ -468,6 +339,7 @@
                     android:text="Price (RM)"
                     android:textSize="14sp"
                     android:fontFamily="@font/keepcalm_medium"
+                    android:layout_marginLeft="0dp"
 
                     tools:layout_editor_absoluteX="60dp"
                     tools:layout_editor_absoluteY="28dp" />
@@ -497,7 +369,7 @@
 
 
                     <ProgressBar
-                        android:id="@+id/idProgressBar2"
+                        android:id="@+id/idProgressBar"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
@@ -550,7 +422,6 @@
 
 
         </LinearLayout>
-
 
         <Button
             android:id="@+id/btn_generateInvoice"
@@ -608,20 +479,16 @@
             android:text="Download Receipt"
             app:backgroundTint="#417D7A" />
 
-
         <Button
-            android:id="@+id/btn_rejectCompleteAppointment"
+            android:id="@+id/btn_completeAppointment"
             android:layout_width="246dp"
             android:layout_height="56dp"
             android:layout_marginBottom="30dp"
-            android:text="Reject"
-            app:backgroundTint="#B60743" />
-
-
+            android:text="Complete Appointment"
+            app:backgroundTint="#417D7A" />
 
 
     </LinearLayout>
 
+
 </ScrollView>
-
-
