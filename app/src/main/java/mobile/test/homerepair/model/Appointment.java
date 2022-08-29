@@ -35,6 +35,18 @@ public class Appointment {
     String receiptPictureURL;
     String totalPrice;
 
+    String dateCompleteAppointment;
+
+    public String getDateCompleteAppointment() {
+        return dateCompleteAppointment;
+    }
+
+    public void setDateCompleteAppointment(String dateCompleteAppointment) {
+        this.dateCompleteAppointment = dateCompleteAppointment;
+    }
+
+
+
     public String getTotalPrice() {
         return totalPrice;
     }

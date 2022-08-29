@@ -3,6 +3,8 @@ package mobile.test.homerepair.provider;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -38,6 +40,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.client.RequestAppointment;
+import mobile.test.homerepair.client.SearchServices;
 import mobile.test.homerepair.main.Login;
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 
@@ -592,10 +596,32 @@ public class RegisterServiceProvider extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(),"Successfully Register", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(getApplicationContext(), Login.class);
-                        startActivity(intent);
+
+//                        Toast.makeText(getApplicationContext(),"Successfully Register", Toast.LENGTH_SHORT).show();
+//
+//                        Intent intent = new Intent(getApplicationContext(), Login.class);
+//                        startActivity(intent);
                         //Log.d(TAG, "DocumentSnapshot successfully written!");
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(RegisterServiceProvider.this);
+                        dialog.setCancelable(false);
+                        dialog.setTitle("Successfully Register");
+                        dialog.setMessage("Your registration has been sent to the Administrator, please wait for the approval" );
+                        dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                Intent intent = new Intent(getApplicationContext(), Login.class);
+                                startActivity(intent);
+                            }
+                        });
+
+                        final AlertDialog alert = dialog.create();
+                        alert.show();
+
+
+
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

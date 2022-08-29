@@ -46,6 +46,8 @@ public class CompleteAppointmentListRVAdapter extends RecyclerView.Adapter<Compl
         holder.tv_appointmentTime.setText(appointment.getTime());
         holder.tv_totalPrice.setText(appointment.getTotalPrice());
 
+        holder.tv_dateComplete.setText(appointment.getDateCompleteAppointment());
+
     }
 
     @Override
@@ -60,7 +62,7 @@ public class CompleteAppointmentListRVAdapter extends RecyclerView.Adapter<Compl
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private final TextView tv_appointmentID, tv_clientName,tv_providerName,tv_appointmentDate,
-                tv_totalPrice,tv_appointmentTime;
+                tv_totalPrice,tv_appointmentTime,tv_dateComplete;
 
 
         public ViewHolder(@NonNull View itemView){
@@ -72,6 +74,7 @@ public class CompleteAppointmentListRVAdapter extends RecyclerView.Adapter<Compl
             tv_appointmentDate = itemView.findViewById(R.id.tv_appointmentDate);
             tv_appointmentTime = itemView.findViewById(R.id.tv_appointmentTime);
             tv_totalPrice = itemView.findViewById(R.id.tv_totalPrice);
+            tv_dateComplete = itemView.findViewById(R.id.tv_dateComplete);
 
             itemView.setOnClickListener(this);
         }

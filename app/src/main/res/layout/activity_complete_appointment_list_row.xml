@@ -246,6 +246,28 @@
 
     </LinearLayout>
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="9"
+        android:focusable="false"
+        android:layout_weight="1.5"
+        android:fontFamily="@font/keepcalm_medium"
+        android:text="Date Complete :"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:textSize="13sp" />
 
+    <TextView
+        android:id="@+id/tv_dateComplete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="9"
+        android:focusable="false"
+        android:layout_weight="1"
+        android:fontFamily="@font/keepcalm_medium"
+        android:hint="Date Complete"
+        android:layout_marginLeft="20dp"
+        android:textSize="13sp" />
 
 </LinearLayout>
