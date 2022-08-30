@@ -1,5 +1,9 @@
 package mobile.test.homerepair.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Users {
 
     String name;
@@ -20,7 +24,7 @@ public class Users {
     String userType;
     String clientID;
     String providerID;
-    String dateRegistration;
+    String dateRegistration = null;
     String hasServiceOffer;
     String userServiceRating;
     String totalUserRate;
@@ -57,6 +61,33 @@ public class Users {
 
 
     public String getDateRegistration() {
+
+        /*
+        This method is required because the original date is store in format "dd-MM-yyyy hh:mm a",
+        when it is sorted the date will be sort by dd/day only. Thus, the date is not in align
+        with each other. Therefore, the date need to change the format to "MM-dd-yyyy hh:mm a" so that it can be
+        sort by month then by day.
+         */
+
+        try{
+
+            //create SimpleDateFormat object with source string date format
+            SimpleDateFormat sdfSource = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+
+            //parse the string into Date object
+            Date parseDate = sdfSource.parse(dateRegistration);
+
+            //create SimpleDateFormat object with desired date format
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+
+            //parse the date into another format
+            dateRegistration = sdfDestination.format(parseDate);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
         return dateRegistration;
     }
 

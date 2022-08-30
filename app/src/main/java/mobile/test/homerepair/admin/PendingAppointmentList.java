@@ -167,21 +167,12 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
                                 *Experiment
                                 */
 
-//                                DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
-
                                 Collections.sort(appointmentArrayList, new Comparator<Appointment>() {
                                     @Override
                                     public int compare(Appointment o1, Appointment o2) {
 
                                       return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
 //                                        return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
-
-//                                        try {
-//                                            return df.parse(o1.getDate()).compareTo(df.parse(o2.getDate())); // Sort in ascending
-////                                            return df.parse(o2.getDate()).compareTo(df.parse(o1.getDate())); // Sort in descending
-//                                        } catch (ParseException e) {
-//                                            throw new IllegalArgumentException(e);
-//                                        }
 
                                     }
                                 });

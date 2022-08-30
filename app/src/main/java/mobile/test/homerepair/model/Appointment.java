@@ -41,6 +41,45 @@ public class Appointment {
 
     String date = null;
     String dateCompleteAppointment = null;
+    String dateServiceRate = null;
+
+
+    public String getDateServiceRate() {
+
+        /*
+        This method is required because the original date is store in format "dd-MM-yyyy hh:mm a",
+        when it is sorted the date will be sort by dd/day only. Thus, the date is not in align
+        with each other. Therefore, the date need to change the format to "MM-dd-yyyy hh:mm a" so that it can be
+        sort by month then by day.
+         */
+
+        try{
+
+            //create SimpleDateFormat object with source string date format
+            SimpleDateFormat sdfSource = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+
+            //parse the string into Date object
+            Date parseDate = sdfSource.parse(dateServiceRate);
+
+            //create SimpleDateFormat object with desired date format
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+
+            //parse the date into another format
+            dateServiceRate = sdfDestination.format(parseDate);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
+        return dateServiceRate;
+    }
+
+    public void setDateServiceRate(String dateServiceRate) {
+        this.dateServiceRate = dateServiceRate;
+    }
+
+
 
     public String getDateCompleteAppointment() {
 
