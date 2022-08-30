@@ -34,6 +34,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -307,6 +308,14 @@ public class TestLineChartWithDB extends AppCompatActivity {
 
 
                             }
+
+//                            Collections.sort(appointmentArrayList, new Comparator<Appointment>() {
+//                                @Override
+//                                public int compare(Appointment o1, Appointment o2) {
+////                                        return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
+//                                    return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+//                                }
+//                            });
 
 
                             Log.e("getDataValuesXY->", String.valueOf(dataValue));

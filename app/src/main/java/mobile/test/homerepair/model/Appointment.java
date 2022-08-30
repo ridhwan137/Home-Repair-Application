@@ -1,5 +1,9 @@
 package mobile.test.homerepair.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Appointment {
 
     String appointmentID;
@@ -27,7 +31,7 @@ public class Appointment {
     String companyCity;
     String companyState;
 
-    String date;
+
     String message;
     String appointmentStatus;
     String requestStatus;
@@ -35,9 +39,37 @@ public class Appointment {
     String receiptPictureURL;
     String totalPrice;
 
-    String dateCompleteAppointment;
+    String date = null;
+    String dateCompleteAppointment = null;
 
     public String getDateCompleteAppointment() {
+
+        /*
+        This method is required because the original date is store in format "dd-MM-yyyy hh:mm a",
+        when it is sorted the date will be sort by dd/day only. Thus, the date is not in align
+        with each other. Therefore, the date need to change the format to "MM-dd-yyyy hh:mm a" so that it can be
+        sort by month then by day.
+         */
+
+        try{
+
+            //create SimpleDateFormat object with source string date format
+            SimpleDateFormat sdfSource = new SimpleDateFormat("dd-MM-yyyy hh:mm a");
+
+            //parse the string into Date object
+            Date parseDate = sdfSource.parse(dateCompleteAppointment);
+
+            //create SimpleDateFormat object with desired date format
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+
+            //parse the date into another format
+            dateCompleteAppointment = sdfDestination.format(parseDate);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
         return dateCompleteAppointment;
     }
 
@@ -260,6 +292,33 @@ public class Appointment {
     }
 
     public String getDate() {
+
+        /*
+        This method is required because the original date is store in format dd/MM/yyyy,
+        when it is sorted the date will be sort by dd/day only. Thus, the date is not in align
+        with each other. Therefore, the date need to change the format to MM-dd-yyyy so that it can be
+        sort by month then by day.
+         */
+
+        try{
+
+            //create SimpleDateFormat object with source string date format
+            SimpleDateFormat sdfSource = new SimpleDateFormat("dd/MM/yyyy");
+
+            //parse the string into Date object
+            Date parseDate = sdfSource.parse(date);
+
+            //create SimpleDateFormat object with desired date format
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy");
+
+            //parse the date into another format
+            date = sdfDestination.format(parseDate);
+
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
+
         return date;
     }
 

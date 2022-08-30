@@ -26,7 +26,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import mobile.test.homerepair.R;
@@ -141,7 +146,7 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
 
             db.collection("appointment")
                     .whereEqualTo("appointmentStatus", "pending")
-                    .orderBy("date", Query.Direction.DESCENDING)
+//                    .orderBy("date", Query.Direction.DESCENDING)
                     .get()
                     .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                         @Override
@@ -149,12 +154,42 @@ public class PendingAppointmentList extends AppCompatActivity implements Appoint
 
                             if (!queryDocumentSnapshots.isEmpty()) {
 
+                                Appointment appointment = null;
+
                                 loadingPB.setVisibility(View.GONE);
                                 List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
                                 for (DocumentSnapshot documentSnapshot : list) {
-                                    Appointment appointment = documentSnapshot.toObject(Appointment.class);
+                                    appointment = documentSnapshot.toObject(Appointment.class);
                                     appointmentArrayList.add(appointment);
                                 }
+
+                                /*
+                                *Experiment
+                                */
+
+//                                DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+
+                                Collections.sort(appointmentArrayList, new Comparator<Appointment>() {
+                                    @Override
+                                    public int compare(Appointment o1, Appointment o2) {
+
+                                      return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
+//                                        return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+
+//                                        try {
+//                                            return df.parse(o1.getDate()).compareTo(df.parse(o2.getDate())); // Sort in ascending
+////                                            return df.parse(o2.getDate()).compareTo(df.parse(o1.getDate())); // Sort in descending
+//                                        } catch (ParseException e) {
+//                                            throw new IllegalArgumentException(e);
+//                                        }
+
+                                    }
+                                });
+
+                                /*
+                                *Experiment
+                                */
+
                                 appointmentListRVAdapter.notifyDataSetChanged();
                             } else {
                                 // if the snapshot is empty we are displaying a toast message.
