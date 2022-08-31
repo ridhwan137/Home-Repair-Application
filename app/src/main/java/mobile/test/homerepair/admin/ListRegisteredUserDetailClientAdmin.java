@@ -59,6 +59,7 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity imple
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_registered_user_detail_client_admin);
 
+        initializeMap();
 
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
@@ -77,7 +78,7 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity imple
 
 
         displayProviderInfoFromDB();
-        initializeMap();
+
 
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -109,27 +110,55 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity imple
 
         Log.e("geoLocate->",getFullAddressForMap);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
+//            intent.putExtra("userID",userID);
+//
+//            startActivity(intent);
+//        }
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
 
-
+                    Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailClientAdmin.class);
+                    intent.putExtra("userID",userID);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
-            intent.putExtra("userID",userID);
+        });
 
-            startActivity(intent);
-        }
+
+
+
     }
 
     private void gotoLocation(double latitude, double longitude) {

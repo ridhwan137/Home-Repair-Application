@@ -254,7 +254,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
         Log.e("geoLocate->", locationName);
 
-
 //        try {
 //        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 //            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
@@ -272,7 +271,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 //            intent.putExtra("userID",providerID);
 //            startActivity(intent);
 //        }
-
 
 
         // Run on Thread

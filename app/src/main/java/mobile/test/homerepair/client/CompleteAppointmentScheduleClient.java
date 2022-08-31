@@ -157,6 +157,8 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_complete_appointment_schedule_client);
 
+        initMap();
+
         try {
             Intent intent = getIntent();
             appointmentID = intent.getStringExtra("appointmentID");
@@ -232,7 +234,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
             Log.e("No Picture", "No Picture");
         }
 
-        initMap();
+
 
         // Download Receipt Picture
         btn_downloadReceipt.setOnClickListener(new View.OnClickListener() {
@@ -515,27 +517,57 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
 
         Log.e("geoLocate->",locationName);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
-
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
 
 
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleServiceProvider.class);
+//            intent.putExtra("appointmentID",appointmentID);
+//
+//            startActivity(intent);
+//        }
+
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(CompleteAppointmentScheduleClient.this, Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
+        });
 
-            startActivity(intent);
-        }
+
+
+
     }
 
     private void gotoLocation(double latitude, double longitude) {

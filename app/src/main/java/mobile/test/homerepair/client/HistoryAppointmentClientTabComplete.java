@@ -123,7 +123,7 @@ public class HistoryAppointmentClientTabComplete extends Fragment implements His
                                 public int compare(Appointment o1, Appointment o2) {
 
 //                                    return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
-                                    return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+                                    return o2.getDateCompleteAppointment().compareToIgnoreCase(o1.getDateCompleteAppointment()); // Sort in descending
 
                                 }
                             });

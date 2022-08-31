@@ -53,7 +53,6 @@ import java.util.List;
 import java.util.Map;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
 import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.model.Services;
 
@@ -203,6 +202,8 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
                 intent.putExtra("clientID",clientID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","completeAppointment");
                 startActivity(intent);
             }
         });
@@ -214,6 +215,8 @@ public class CompleteAppointmentDetail extends AppCompatActivity implements Serv
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
                 intent.putExtra("providerID",providerID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","completeAppointment");
                 startActivity(intent);
             }
         });

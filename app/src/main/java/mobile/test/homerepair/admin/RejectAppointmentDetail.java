@@ -29,7 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
 import mobile.test.homerepair.model.Services;
 
 public class RejectAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener{
@@ -108,6 +107,8 @@ public class RejectAppointmentDetail extends AppCompatActivity implements Servic
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
                 intent.putExtra("clientID",clientID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","cancelAppointment");
                 startActivity(intent);
             }
         });
@@ -119,6 +120,8 @@ public class RejectAppointmentDetail extends AppCompatActivity implements Servic
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
                 intent.putExtra("providerID",providerID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","cancelAppointment");
                 startActivity(intent);
             }
         });

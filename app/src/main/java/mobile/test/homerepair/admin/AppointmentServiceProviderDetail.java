@@ -1,4 +1,4 @@
-package mobile.test.homerepair.admin.unnecessary;
+package mobile.test.homerepair.admin;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -52,15 +52,30 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity implemen
     GoogleMap mGoogleMap;
     String getFullAddressForMap;
 
+    String appointmentLayout,appointmentID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appointment_service_provider_detail);
 
-        Intent intent = getIntent();
-        providerID = intent.getStringExtra("providerID");
-        Log.e("providerID->",providerID);
+        initializeMap();
+
+
+        try {
+            Intent intent = getIntent();
+            providerID = intent.getStringExtra("providerID");
+            appointmentLayout = intent.getStringExtra("appointmentLayout");
+            appointmentID = intent.getStringExtra("appointmentID");
+
+            Log.e("providerID->",providerID);
+            Log.e("appointmentLayout->",appointmentLayout);
+            Log.e("appointmentID->",appointmentID);
+
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
 
 
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
@@ -77,12 +92,46 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity implemen
 
 
         displayProviderInfoFromDB();
-        initializeMap();
+
 
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                onBackPressed();
+
+                if (appointmentLayout.equals("pendingAppointment")){
+
+                    Intent intent = new Intent(getApplicationContext(), PendingAppointmentDetail.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+                }else if (appointmentLayout.equals("inProgressAppointment")){
+
+                    Intent intent = new Intent(getApplicationContext(), InProgressAppointmentDetail.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+                }else if (appointmentLayout.equals("completeAppointment")){
+
+                    Intent intent = new Intent(getApplicationContext(), CompleteAppointmentDetail.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+                }else if (appointmentLayout.equals("rejectAppointment")){
+
+                    Intent intent = new Intent(getApplicationContext(), RejectAppointmentDetail.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+                }else if (appointmentLayout.equals("cancelAppointment")){
+
+                    Intent intent = new Intent(getApplicationContext(), CancelAppointmentDetail.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+                }else{
+//                    onBackPressed();
+                }
+
             }
         });
 
@@ -91,33 +140,77 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity implemen
         /////////
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+
+    }
+
+
+
     ///// Map Function
     private void geoLocate(String getFullAddressForMap) {
         String locationName = getFullAddressForMap;
 
         Log.e("geoLocate->",getFullAddressForMap);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
+//            intent.putExtra("providerID",providerID);
+//
+//            startActivity(intent);
+//        }
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
 
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
+                    intent.putExtra("providerID",providerID);
+                    intent.putExtra("appointmentLayout",appointmentLayout);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+
+//                    finish();
+//                    overridePendingTransition(0, 0);
+//                    startActivity(intent);
+//                    overridePendingTransition(0, 0);
+
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
-            intent.putExtra("providerID",providerID);
+        });
 
-            startActivity(intent);
-        }
+
     }
 
     private void gotoLocation(double latitude, double longitude) {

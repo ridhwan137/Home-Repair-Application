@@ -24,10 +24,13 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.client.unnecessary.HomeClient;
+import mobile.test.homerepair.model.Appointment;
 import mobile.test.homerepair.model.Users;
 
 public class ApproveRegistrationAdmin extends AppCompatActivity implements ApproveRegistrationAdminRVAdapter.ItemClickListener {
@@ -75,7 +78,7 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
 //                .orderBy("dateRegistration", Query.Direction.DESCENDING)
                 .whereEqualTo("userType","serviceProvider")
                 .whereEqualTo("registrationStatus","pending")
-                .orderBy("dateRegistration", Query.Direction.ASCENDING)
+//                .orderBy("dateRegistration", Query.Direction.ASCENDING)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -88,9 +91,21 @@ public class ApproveRegistrationAdmin extends AppCompatActivity implements Appro
                             for (DocumentSnapshot documentSnapshot : list) {
 
                                 Users users = documentSnapshot.toObject(Users.class);
-
                                 usersArrayList.add(users);
                             }
+
+                            /*
+                             * This will Sort By Date first before it pass to RecyclerView Adapter
+                             */
+                            Collections.sort(usersArrayList, new Comparator<Users>() {
+                                @Override
+                                public int compare(Users o1, Users o2) {
+                                    return o1.getDateRegistration().compareToIgnoreCase(o2.getDateRegistration()); // Sort in ascending
+//                                    return o2.getDateRegistration().compareToIgnoreCase(o1.getDateRegistration()); // Sort in descending
+
+                                }
+                            });
+
 
                             approveRegistrationAdminRVAdapter.notifyDataSetChanged();
                         } else {

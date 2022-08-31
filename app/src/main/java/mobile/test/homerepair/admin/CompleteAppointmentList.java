@@ -164,8 +164,8 @@ public class CompleteAppointmentList extends AppCompatActivity implements Comple
                                     @Override
                                     public int compare(Appointment o1, Appointment o2) {
 
-//                                    return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
-                                        return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+//                                        return o1.getDateCompleteAppointment().compareToIgnoreCase(o2.getDateCompleteAppointment()); // Sort in ascending
+                                        return o2.getDateCompleteAppointment().compareToIgnoreCase(o1.getDateCompleteAppointment()); // Sort in descending
 
                                     }
                                 });

@@ -1,5 +1,7 @@
 package mobile.test.homerepair.model;
 
+import android.util.Log;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -62,7 +64,7 @@ public class Appointment {
             Date parseDate = sdfSource.parse(dateServiceRate);
 
             //create SimpleDateFormat object with desired date format
-            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
 
             //parse the date into another format
             dateServiceRate = sdfDestination.format(parseDate);
@@ -99,7 +101,7 @@ public class Appointment {
             Date parseDate = sdfSource.parse(dateCompleteAppointment);
 
             //create SimpleDateFormat object with desired date format
-            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
 
             //parse the date into another format
             dateCompleteAppointment = sdfDestination.format(parseDate);

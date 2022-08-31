@@ -40,6 +40,7 @@ import java.util.Map;
 
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
+import mobile.test.homerepair.client.CompleteAppointmentScheduleClient;
 
 public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
@@ -65,6 +66,8 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered_user_detail_admin);
 
+        initializeMap();
+
         Intent intent = getIntent();
         userID = intent.getStringExtra("userID");
         Log.e("testUserID",userID);
@@ -87,7 +90,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
 
         displayProviderInfoFromDB();
 
-        initializeMap();
+
 
 
         btn_BackToHome.setOnClickListener(new View.OnClickListener() {
@@ -242,27 +245,58 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
 
         Log.e("geoLocate->",getFullAddressForMap);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
+//            intent.putExtra("userID",userID);
+//
+//            startActivity(intent);
+//        }
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(ApproveRegisteredUserServiceProviderDetailAdmin.this, Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
 
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
+                    intent.putExtra("userID",userID);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
-            intent.putExtra("userID",userID);
+        });
 
-            startActivity(intent);
-        }
+
+
+
+
     }
 
     private void gotoLocation(double latitude, double longitude) {

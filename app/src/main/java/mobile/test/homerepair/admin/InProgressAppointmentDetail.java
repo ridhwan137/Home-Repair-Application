@@ -56,7 +56,6 @@ import java.util.Map;
 import java.util.Random;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.admin.unnecessary.AppointmentServiceProviderDetail;
 import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.model.Services;
 import mobile.test.homerepair.provider.InProgressAppointmentServiceProvider;
@@ -255,6 +254,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
                 intent.putExtra("clientID",clientID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","inProgressAppointment");
                 startActivity(intent);
             }
         });
@@ -266,6 +267,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
 
                 Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
                 intent.putExtra("providerID",providerID);
+                intent.putExtra("appointmentID",appointmentID);
+                intent.putExtra("appointmentLayout","inProgressAppointment");
                 startActivity(intent);
             }
         });
@@ -829,7 +832,8 @@ public class InProgressAppointmentDetail extends AppCompatActivity implements Se
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getApplicationContext(), "Successfully Added.", Toast.LENGTH_SHORT).show();
                             Log.e("addReceiptPictureUrlToDB->", "Added successfully");
-                            Intent intent = new Intent(getApplicationContext(), InProgressAppointmentServiceProvider.class);
+
+                            Intent intent = new Intent(getApplicationContext(), InProgressAppointmentDetail.class);
                             intent.putExtra("appointmentID",appointmentID);
                             startActivity(intent);
 

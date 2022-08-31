@@ -78,7 +78,7 @@ public class Users {
             Date parseDate = sdfSource.parse(dateRegistration);
 
             //create SimpleDateFormat object with desired date format
-            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM-dd-yyyy hh:mm a");
+            SimpleDateFormat sdfDestination = new SimpleDateFormat("MM.dd.yyyy hh:mm a");
 
             //parse the date into another format
             dateRegistration = sdfDestination.format(parseDate);

@@ -103,7 +103,7 @@
             android:name=".admin.RejectAppointmentList"
             android:exported="true" />
         <activity
-            android:name=".admin.unnecessary.AppointmentServiceProviderDetail"
+            android:name=".admin.AppointmentServiceProviderDetail"
             android:exported="true" />
         <activity
             android:name=".admin.AppointmentClientDetail"
