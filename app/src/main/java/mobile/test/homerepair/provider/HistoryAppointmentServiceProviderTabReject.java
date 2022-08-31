@@ -26,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import mobile.test.homerepair.R;
@@ -83,8 +84,7 @@ public class HistoryAppointmentServiceProviderTabReject extends Fragment impleme
         db.collection("appointment")
                 .whereEqualTo("providerID",currentUserID)
                 .whereEqualTo("appointmentStatus","reject")
-                .orderBy("date", Query.Direction.ASCENDING)
-//                .orderBy("date").orderBy("time", Query.Direction.DESCENDING)
+//                .orderBy("date", Query.Direction.ASCENDING)
 //                .whereIn("appointmentStatus", Arrays.asList("cancel","reject","complete"))
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
@@ -101,6 +101,20 @@ public class HistoryAppointmentServiceProviderTabReject extends Fragment impleme
                                 appointmentArrayList.add(appointment);
                             }
 //                            Collections.reverse(appointmentArrayList);
+
+                            /*
+                             * This will Sort By Date first before it pass to RecyclerView Adapter
+                             */
+                            Collections.sort(appointmentArrayList, new Comparator<Appointment>() {
+                                @Override
+                                public int compare(Appointment o1, Appointment o2) {
+
+//                                    return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
+                                    return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+
+                                }
+                            });
+
                             historyAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.

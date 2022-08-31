@@ -25,6 +25,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import mobile.test.homerepair.R;
@@ -102,6 +104,19 @@ public class HistoryAppointmentServiceProviderTabCancel extends Fragment impleme
                                 Appointment appointment = documentSnapshot.toObject(Appointment.class);
                                 appointmentArrayList.add(appointment);
                             }
+
+                            /*
+                             * This will Sort By Date first before it pass to RecyclerView Adapter
+                             */
+                            Collections.sort(appointmentArrayList, new Comparator<Appointment>() {
+                                @Override
+                                public int compare(Appointment o1, Appointment o2) {
+
+//                                    return o1.getDate().compareToIgnoreCase(o2.getDate()); // Sort in ascending
+                                    return o2.getDate().compareToIgnoreCase(o1.getDate()); // Sort in descending
+
+                                }
+                            });
 
                             historyAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
                         } else {

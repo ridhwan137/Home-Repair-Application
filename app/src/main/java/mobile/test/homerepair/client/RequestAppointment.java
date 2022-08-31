@@ -46,6 +46,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -56,11 +57,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.Transport;
+
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Services;
 
-public class RequestAppointment extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,RequestAppointmentRVAdapter.ItemClickListener {
+public class RequestAppointment extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, RequestAppointmentRVAdapter.ItemClickListener {
 
     private RecyclerView rvServiceDetail;
     private ArrayList<Services> servicesArrayList;
@@ -72,16 +76,16 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
-    String providerID,providerPictureURL;
-    String chooseDate,chooseTime,message;
+    String providerID, providerPictureURL;
+    String chooseDate, chooseTime, message;
     String currentUserID;
     String appointmentID;
     String TAG = "TAG";
 
-    String clientPictureURL,clientName,clientEmail,clientPhone, clientFullAddress;
+    String clientPictureURL, clientName, clientEmail, clientPhone, clientFullAddress;
 
-    String providerAddress1,providerAddress2,providerPostcode,providerState,providerCity;
-    String clientAddress1,clientAddress2,clientPostcode,clientState,clientCity;
+    String providerAddress1, providerAddress2, providerPostcode, providerState, providerCity;
+    String clientAddress1, clientAddress2, clientPostcode, clientState, clientCity;
 
     EditText date_in;
     EditText time_in;
@@ -91,7 +95,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
             et_detailCompanyPhone, et_detailCompanyAddress;
 
     ImageView img_pictureCompany;
-    Button btn_BackToProviderDetail,btn_detailRequestAppointment;
+    Button btn_BackToProviderDetail, btn_detailRequestAppointment;
 
     String getFullAddressForMap;
 
@@ -99,6 +103,8 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_request_appointment);
+
+        initMap();
 
         Intent intent = getIntent();
         providerID = intent.getStringExtra("userID");
@@ -109,7 +115,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         Log.e("testGetCurrentUserID", currentUserID);
 
 
-
         loadingPB = findViewById(R.id.idProgressBar);
         rvServiceDetail = findViewById(R.id.rvServiceDetail);
 
@@ -117,7 +122,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         rvServiceDetail.setHasFixedSize(true);
         rvServiceDetail.setLayoutManager(new LinearLayoutManager(this));
 
-        requestAppointmentRVAdapter = new RequestAppointmentRVAdapter(servicesArrayList,this);
+        requestAppointmentRVAdapter = new RequestAppointmentRVAdapter(servicesArrayList, this);
         requestAppointmentRVAdapter.setClickListener(this);
 
         rvServiceDetail.setAdapter(requestAppointmentRVAdapter);
@@ -128,15 +133,15 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
         img_pictureCompany = findViewById(R.id.img_pictureCompany);
 
-        et_detailCompanyName =  findViewById(R.id.et_detailCompanyName);
-        et_detailCompanyServiceType =  findViewById(R.id.et_detailCompanyServiceType);
-        et_detailCompanyEmail =  findViewById(R.id.et_detailCompanyEmail);
-        et_detailCompanyPhone =  findViewById(R.id.et_detailCompanyPhone);
-        et_detailCompanyAddress =  findViewById(R.id.et_detailCompanyAddress);
+        et_detailCompanyName = findViewById(R.id.et_detailCompanyName);
+        et_detailCompanyServiceType = findViewById(R.id.et_detailCompanyServiceType);
+        et_detailCompanyEmail = findViewById(R.id.et_detailCompanyEmail);
+        et_detailCompanyPhone = findViewById(R.id.et_detailCompanyPhone);
+        et_detailCompanyAddress = findViewById(R.id.et_detailCompanyAddress);
 
 
-        date_in=findViewById(R.id.date_input);
-        time_in=findViewById(R.id.time_input);
+        date_in = findViewById(R.id.date_input);
+        time_in = findViewById(R.id.time_input);
 
         et_message = findViewById(R.id.et_message);
 
@@ -148,7 +153,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         getClientAddressFromDB();
         getProviderAddressFromDB();
 //        displayServiceOffer();
-        initMap();
+
 
         date_in.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -169,14 +174,14 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
 
                         int getDay = dayOfMonth;
-                        int getMonth = month+1;
+                        int getMonth = month + 1;
                         int getYear = year;
 
-                        calendar.set(Calendar.YEAR,year);
-                        calendar.set(Calendar.MONTH,month);
-                        calendar.set(Calendar.DAY_OF_MONTH,dayOfMonth);
+                        calendar.set(Calendar.YEAR, year);
+                        calendar.set(Calendar.MONTH, month);
+                        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
 
-                        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
 //                        date_in.setText(simpleDateFormat.format(calendar.getTime()));
 
@@ -187,7 +192,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                         date_in.setText(simpleDateFormat.format(calendar.getTime()));
 
                     }
-                },year,dayOfMonth,day);
+                }, year, dayOfMonth, day);
 
                 datePickerDialog.getDatePicker().setMinDate(calendar.getTimeInMillis());
                 datePickerDialog.show();
@@ -218,7 +223,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         });
 
 
-
         btn_BackToProviderDetail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,9 +237,9 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
 
     @Override
-    public void onItemClick(View view, int position){
+    public void onItemClick(View view, int position) {
         String test = requestAppointmentRVAdapter.getItem(position).getServiceID();
-        Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Test" + test, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -244,32 +248,61 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
     ///// Map Function
     private void geoLocate() {
         String locationName = getFullAddressForMap;
 
-        Log.e("geoLocate->",locationName);
-
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            List<Address> addressList =geocoder.getFromLocationName(locationName,5);
-
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+        Log.e("geoLocate->", locationName);
 
 
+//        try {
+//        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//            Intent intent = new Intent(getApplicationContext(),RequestAppointment.class);
+//            intent.putExtra("userID",providerID);
+//            startActivity(intent);
+//        }
+
+
+
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(RequestAppointment.this, Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), RequestAppointment.class);
+                    intent.putExtra("userID", providerID);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(),RequestAppointment.class);
-            intent.putExtra("userID",providerID);
-            startActivity(intent);
-        }
+        });
+
+
+
+
     }
 
     private void gotoLocation(double latitude, double longitude) {
@@ -282,13 +315,13 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
     private void initMap() {
-        SupportMapFragment supportMapFragment =  (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        SupportMapFragment supportMapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
         supportMapFragment.getMapAsync(this);
     }
     ///// Map Function
 
 
-    public void displayProviderInfoFromDB(){
+    public void displayProviderInfoFromDB() {
         db.collection("users").whereEqualTo("userID", providerID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -314,12 +347,12 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                     fullAddress += document.getData().get("address2").toString() + ",\n";
                                     fullAddress += document.getData().get("postcode").toString() + " ";
                                     fullAddress += document.getData().get("city").toString() + ",\n";
-                                    fullAddress += document.getData().get("state").toString() ;
+                                    fullAddress += document.getData().get("state").toString();
 
                                     et_detailCompanyAddress.setText(fullAddress);
 
                                     getFullAddressForMap = fullAddress;
-                                    Log.e("displayClientInfoFromDB->",getFullAddressForMap);
+                                    Log.e("displayClientInfoFromDB->", getFullAddressForMap);
 
                                     geoLocate();
 
@@ -328,9 +361,9 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                     Picasso.with(getApplicationContext()).load(providerPictureURL).into(img_pictureCompany);
 
 
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
-                                    Log.e("LogDisplayUserInformation","No Data In Database");
+                                    Log.e("LogDisplayUserInformation", "No Data In Database");
                                 }
 
                             }
@@ -344,27 +377,24 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
 
     private void showTimeDialog(final EditText time_in) {
-        final Calendar calendar=Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
 
-        TimePickerDialog.OnTimeSetListener timeSetListener=new TimePickerDialog.OnTimeSetListener() {
+        TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
             @Override
             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
-                calendar.set(Calendar.MINUTE,minute);
+                calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                calendar.set(Calendar.MINUTE, minute);
 
-                SimpleDateFormat simpleDateFormat=new SimpleDateFormat("hh:mm a");
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("hh:mm a");
 
                 time_in.setText(simpleDateFormat.format(calendar.getTime()));
             }
         };
-        new TimePickerDialog(RequestAppointment.this,timeSetListener,calendar.get(Calendar.HOUR_OF_DAY),calendar.get(Calendar.MINUTE),false).show();
+        new TimePickerDialog(RequestAppointment.this, timeSetListener, calendar.get(Calendar.HOUR_OF_DAY), calendar.get(Calendar.MINUTE), false).show();
     }
 
 
-
-
-
-    public void getClientInfoFromDB(){
+    public void getClientInfoFromDB() {
         db.collection("users").whereEqualTo("userID", currentUserID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -374,9 +404,9 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 
-                                try{
+                                try {
                                     clientPictureURL = document.getData().get("pictureURL").toString();
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
                                 }
 
@@ -392,15 +422,15 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                 fullAddress += document.getData().get("address2").toString() + ", \n";
                                 fullAddress += document.getData().get("postcode").toString() + " ";
                                 fullAddress += document.getData().get("state").toString() + ", \n";
-                                fullAddress += document.getData().get("city").toString() ;
+                                fullAddress += document.getData().get("city").toString();
 
                                 clientFullAddress = fullAddress;
 
                                 Log.e(TAG, "Successful getting documents: ", task.getException());
 
-                                Log.e("clientName",clientName);
-                                Log.e("clientEmail",clientEmail);
-                                Log.e("clientPhone",clientPhone);
+                                Log.e("clientName", clientName);
+                                Log.e("clientEmail", clientEmail);
+                                Log.e("clientPhone", clientPhone);
                                 Log.e("clientAddress", clientFullAddress);
 //                                Log.e("clientPicture",clientPictureURL);
 
@@ -415,8 +445,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
-    public void getClientAddressFromDB(){
+    public void getClientAddressFromDB() {
         db.collection("users").whereEqualTo("userID", currentUserID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -442,9 +471,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
-
-    public void getProviderAddressFromDB(){
+    public void getProviderAddressFromDB() {
         db.collection("users").whereEqualTo("userID", providerID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -459,11 +486,11 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                     providerAddress2 = document.getData().get("address2").toString();
                                     providerPostcode = document.getData().get("postcode").toString();
                                     providerCity = document.getData().get("city").toString();
-                                    providerState = document.getData().get("state").toString() ;
+                                    providerState = document.getData().get("state").toString();
 
-                                }catch (Exception e){
+                                } catch (Exception e) {
                                     e.printStackTrace();
-                                    Log.e("LogDisplayUserInformation","No Data In Database");
+                                    Log.e("LogDisplayUserInformation", "No Data In Database");
                                 }
 
                             }
@@ -475,13 +502,13 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                 });
     }
 
-    public void displayServiceOffer(String serviceType){
+    public void displayServiceOffer(String serviceType) {
 
-        Log.e("getServiceType->",serviceType);
+        Log.e("getServiceType->", serviceType);
 
         db.collection("serviceOffer")
 //                .whereEqualTo("userID",providerID)
-                .whereEqualTo("serviceType",serviceType)
+                .whereEqualTo("serviceType", serviceType)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
                     @Override
@@ -514,11 +541,9 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
+    public void requestAppointment() {
 
-
-    public void requestAppointment(){
-
-        String companyName,companyServiceType,companyEmail,companyPhone;
+        String companyName, companyServiceType, companyEmail, companyPhone;
 
         message = et_message.getText().toString();
         chooseDate = date_in.getText().toString();
@@ -530,15 +555,14 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         companyPhone = et_detailCompanyPhone.getText().toString();
 
         /// <-- Validation Date Time Null
-        if(chooseDate.isEmpty() && chooseTime.isEmpty()){
+        if (chooseDate.isEmpty() && chooseTime.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Date and Time not select yet", Toast.LENGTH_SHORT).show();
-        }else if(chooseDate.isEmpty()){
+        } else if (chooseDate.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Date not select yet", Toast.LENGTH_SHORT).show();
-        }else if(chooseTime.isEmpty()){
+        } else if (chooseTime.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Time not select yet", Toast.LENGTH_SHORT).show();
-        }else{
-        /// --> Validation Date Time Null
-
+        } else {
+            /// --> Validation Date Time Null
 
 
             //create appointment id by date
@@ -546,41 +570,40 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("ddMMyy");
 
             String formatCurrentDate = simpleDateFormat.format(currentDate);
-            Log.e("formatCurrentDate->",formatCurrentDate);
+            Log.e("formatCurrentDate->", formatCurrentDate);
 
             Random rand = new Random();
-            int randomID = rand.nextInt(9999)+1;
+            int randomID = rand.nextInt(9999) + 1;
 
             appointmentID = "appointment" + formatCurrentDate + randomID;
 
             Map<String, Object> requestAppointment = new HashMap<>();
 
-            requestAppointment.put("appointmentID",appointmentID);
+            requestAppointment.put("appointmentID", appointmentID);
 
             requestAppointment.put("providerID", providerID);
-            requestAppointment.put("providerPictureURL",providerPictureURL);
-            requestAppointment.put("companyName",companyName);
-            requestAppointment.put("companyServiceType",companyServiceType);
-            requestAppointment.put("companyEmail",companyEmail);
-            requestAppointment.put("companyPhone",companyPhone);
-            requestAppointment.put("companyAddress1",providerAddress1);
-            requestAppointment.put("companyAddress2",providerAddress2);
-            requestAppointment.put("companyPostcode",providerPostcode);
-            requestAppointment.put("companyState",providerState);
-            requestAppointment.put("companyCity",providerCity);
+            requestAppointment.put("providerPictureURL", providerPictureURL);
+            requestAppointment.put("companyName", companyName);
+            requestAppointment.put("companyServiceType", companyServiceType);
+            requestAppointment.put("companyEmail", companyEmail);
+            requestAppointment.put("companyPhone", companyPhone);
+            requestAppointment.put("companyAddress1", providerAddress1);
+            requestAppointment.put("companyAddress2", providerAddress2);
+            requestAppointment.put("companyPostcode", providerPostcode);
+            requestAppointment.put("companyState", providerState);
+            requestAppointment.put("companyCity", providerCity);
 
 
             requestAppointment.put("clientID", currentUserID);
-            requestAppointment.put("clientPictureURL",clientPictureURL);
+            requestAppointment.put("clientPictureURL", clientPictureURL);
             requestAppointment.put("clientName", clientName);
             requestAppointment.put("clientEmail", clientEmail);
             requestAppointment.put("clientPhone", clientPhone);
-            requestAppointment.put("clientAddress1",clientAddress1);
-            requestAppointment.put("clientAddress2",clientAddress2);
-            requestAppointment.put("clientPostcode",clientPostcode);
-            requestAppointment.put("clientState",clientState);
-            requestAppointment.put("clientCity",clientCity);
-
+            requestAppointment.put("clientAddress1", clientAddress1);
+            requestAppointment.put("clientAddress2", clientAddress2);
+            requestAppointment.put("clientPostcode", clientPostcode);
+            requestAppointment.put("clientState", clientState);
+            requestAppointment.put("clientCity", clientCity);
 
 
             //////////////
@@ -588,23 +611,23 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
             Date date = new Date();
             Timestamp ts = new Timestamp(date);
-            requestAppointment.put("testDateRequest",ts);
+            requestAppointment.put("testDateRequest", ts);
 
 //            new SimpleDateFormat("dd-MM-yyyy hh:mm a").format(new Date());
 
             //////////////
             //////////////
 
-            requestAppointment.put("date",chooseDate);
-            requestAppointment.put("time",chooseTime);
-            requestAppointment.put("message",message);
-            requestAppointment.put("appointmentStatus","pending");
+            requestAppointment.put("date", chooseDate);
+            requestAppointment.put("time", chooseTime);
+            requestAppointment.put("message", message);
+            requestAppointment.put("appointmentStatus", "pending");
 
             Log.e("testMapData->", String.valueOf(requestAppointment));
 
 
             String userID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            Log.e("testIdentifyCurrentUserID->",userID);
+            Log.e("testIdentifyCurrentUserID->", userID);
 
             db.collection("appointment").document(appointmentID)
                     .set(requestAppointment)
@@ -614,21 +637,21 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                             Log.e("requestAppointmentMakeItSortByDate->", "Successfully writing document");
 
                             getProviderEmailFromDB_notifyProviderThroughEmail(providerID,
-                                    clientName,clientPhone,clientEmail, clientFullAddress,chooseDate,chooseTime);
+                                    clientName, clientPhone, clientEmail, clientFullAddress, chooseDate, chooseTime);
 
 
                             AlertDialog.Builder dialog = new AlertDialog.Builder(RequestAppointment.this);
                             dialog.setCancelable(false);
                             dialog.setTitle("Successfully Request Appointment");
-                            dialog.setMessage("Your request has been sent to the service provider, you are eligible to cancel the appointment if the service provider does not respond within 2 to 3 days" );
+                            dialog.setMessage("Your request has been sent to the service provider, you are eligible to cancel the appointment if the service provider does not respond within 2 to 3 days");
                             dialog.setPositiveButton("Proceed", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int id) {
 
                                     Intent intent = new Intent(getApplicationContext(), SearchServices.class);
 
-                                    Log.e("testPassProviderUserID",providerID);
-                                    intent.putExtra("userID",providerID);
+                                    Log.e("testPassProviderUserID", providerID);
+                                    intent.putExtra("userID", providerID);
 
                                     startActivity(intent);
                                     RequestAppointment.this.finish();
@@ -639,8 +662,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                             alert.show();
 
 
-
-
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -649,9 +670,6 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                             Log.e("requestAppointmentMakeItSortByDate->", "Error writing document", e);
                         }
                     });
-
-
-
 
 
         }
@@ -666,10 +684,10 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
                                                                    String clientEmail,
                                                                    String clientFullAddress,
                                                                    String date,
-                                                                   String time){
+                                                                   String time) {
 
         db.collection("users")
-                .whereEqualTo("userID",providerID)
+                .whereEqualTo("userID", providerID)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -685,8 +703,8 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
                             }
 
-                            sendEmailNotificationToProvider(providerEmailFromDB,clientName,
-                                    clientPhone,clientEmail,clientFullAddress,date,time);
+                            sendEmailNotificationToProvider(providerEmailFromDB, clientName,
+                                    clientPhone, clientEmail, clientFullAddress, date, time);
 
 
                         } else {
@@ -697,19 +715,18 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
     }
 
 
-
     private void sendEmailNotificationToProvider(String receiverEmail, String clientName,
-                                                 String clientPhone,String clientEmail,
+                                                 String clientPhone, String clientEmail,
                                                  String clientFullAddress, String date, String time) {
 
         String emailReceiver = receiverEmail;
         String subjectNotify = "Home Repair Apps: New Appointment Request";
         String messageNotify = "You have new appointment request from" +
-                "\n\nClient: "+clientName +
-                "\nPhone: "+clientPhone +
-                "\nEmail: "+clientEmail +
-                "\nLocation: "+ clientFullAddress +
-                "\n\nAppointment Date: "+date +" "+time;
+                "\n\nClient: " + clientName +
+                "\nPhone: " + clientPhone +
+                "\nEmail: " + clientEmail +
+                "\nLocation: " + clientFullAddress +
+                "\n\nAppointment Date: " + date + " " + time;
 
 
         String mail = emailReceiver.trim();
@@ -717,22 +734,17 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
         String message = messageNotify;
 
         //Send Mail
-        JavaMailAPI javaMailAPI = new JavaMailAPI(this,mail,subject,message);
+        JavaMailAPI javaMailAPI = new JavaMailAPI(this, mail, subject, message);
         javaMailAPI.execute();
     }
 
     // --> Notification Through Email
 
 
-
-
-
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         moveTaskToBack(true);
     }
-
 
 
     ///// Map Function/Method

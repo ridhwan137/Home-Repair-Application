@@ -160,6 +160,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_in_progress_appointment_client);
 
+        initMap();
 
         try {
             Intent intent = getIntent();
@@ -239,7 +240,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
             Log.e("No Picture", "No Picture");
         }
 
-        initMap();
+
 
         // Download Receipt Picture
         btn_downloadReceipt.setOnClickListener(new View.OnClickListener() {
@@ -744,32 +745,69 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
 
 
     ///// Map Function
+    private void initMap() {
+        SupportMapFragment supportMapFragment =  (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
+        supportMapFragment.getMapAsync(this);
+    }
+
     private void geoLocate() {
         String locationName = getFullAddressForMap;
 
         Log.e("geoLocate->",locationName);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
-
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
 
 
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//
+//            Intent intent = new Intent(getApplicationContext(), InProgressAppointmentClient.class);
+//            intent.putExtra("appointmentID",appointmentID);
+//
+//            startActivity(intent);
+//        }
+
+
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(InProgressAppointmentClient.this, Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), InProgressAppointmentClient.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
+        });
 
-            startActivity(intent);
-        }
+
+
+
     }
 
     private void gotoLocation(double latitude, double longitude) {
@@ -781,11 +819,30 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
         mGoogleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    private void initMap() {
-        SupportMapFragment supportMapFragment =  (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.mapFragment);
-        supportMapFragment.getMapAsync(this);
-    }
+
     ///// Map Function
+
+    ///// Map Function/Method
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        mGoogleMap = googleMap;
+    }
+    ///// Map Function/Method
 
 
     public void getProviderIDFromDB(){
@@ -1138,27 +1195,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
     }
 
 
-    ///// Map Function/Method
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
 
-    }
-
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
-    @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
-        mGoogleMap = googleMap;
-    }
-    ///// Map Function/Method
 
     @Override
     public void onBackPressed()
