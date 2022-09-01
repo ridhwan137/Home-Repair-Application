@@ -103,7 +103,7 @@ public class HistoryAppointmentServiceProviderRVAdapter extends RecyclerView.Ada
                     String appointmentStatus = appointment.getAppointmentStatus();
 
                     if (appointmentStatus.equals("complete")){
-                        Intent intent = new Intent(context, CompleteAppointmentScheduleServiceProvider.class);
+                        Intent intent = new Intent(context, ServiceProviderAppointmentComplete.class);
                         intent.putExtra("appointmentID",appointment.getAppointmentID());
                         context.startActivity(intent);
                         Log.e("testPassAppointmentID", appointment.getAppointmentID());

@@ -22,8 +22,6 @@ import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
-import mobile.test.homerepair.provider.InProgressAppointmentServiceProvider;
-import mobile.test.homerepair.provider.InProgressAppointmentServiceProviderRVAdapter;
 
 public class ServiceOrderRVAdapter extends RecyclerView.Adapter<ServiceOrderRVAdapter.ViewHolder>{
     private ArrayList<Order> orderArrayList;

@@ -23,14 +23,12 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.firestore.SetOptions;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.testDemo.TestAdminAddServiceOffer;
 
 public class ClientRateServiceProvided extends AppCompatActivity {
 
@@ -105,7 +103,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
         btn_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
+                Intent intent = new Intent(getApplicationContext(), ClientAppointmentComplete.class);
                 intent.putExtra("appointmentID",appointmentID);
                 startActivity(intent);
             }
@@ -128,7 +126,7 @@ public class ClientRateServiceProvided extends AppCompatActivity {
                 public void onClick(View v) {
                     insertRatingToDB();
 
-                    Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
+                    Intent intent = new Intent(getApplicationContext(), ClientAppointmentComplete.class);
                     intent.putExtra("appointmentID",appointmentID);
                     startActivity(intent);
 

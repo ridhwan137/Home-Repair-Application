@@ -159,6 +159,7 @@ public class ListRegisteredUserDetailServiceProviderAdmin extends AppCompatActiv
 
                     Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailServiceProviderAdmin.class);
                     intent.putExtra("userID",userID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }

@@ -18,7 +18,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -155,7 +154,7 @@ public class AppointmentScheduleClient extends AppCompatActivity implements Appo
     public void onItemClick(View view, int position){
 
         String appointmentID = appointmentScheduleClientRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getApplicationContext(), PendingAppointmentClient.class);
+        Intent intent = new Intent(getApplicationContext(), ClientAppointmentPending.class);
         intent.putExtra("userID",appointmentID);
         startActivity(intent);
 

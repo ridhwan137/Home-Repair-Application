@@ -75,14 +75,13 @@ import java.util.List;
 import java.util.Locale;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.CompleteAppointmentScheduleClient;
 import mobile.test.homerepair.model.Order;
 
-public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,CompleteAppointmentScheduleServiceProviderRVAdapter.ItemClickListener {
+public class ServiceProviderAppointmentComplete extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , ServiceProviderAppointmentCompleteRVAdapter.ItemClickListener {
 
     private RecyclerView rvServiceItem;
     private ArrayList<Order> orderArrayList;
-    private CompleteAppointmentScheduleServiceProviderRVAdapter completeAppointmentScheduleServiceProviderRVAdapter;
+    private ServiceProviderAppointmentCompleteRVAdapter serviceProviderAppointmentCompleteRVAdapter;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -199,10 +198,10 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
         rvServiceItem.setHasFixedSize(true);
         rvServiceItem.setLayoutManager(new LinearLayoutManager(this));
 
-        completeAppointmentScheduleServiceProviderRVAdapter = new CompleteAppointmentScheduleServiceProviderRVAdapter(orderArrayList,this);
-        completeAppointmentScheduleServiceProviderRVAdapter.setClickListener(this);
+        serviceProviderAppointmentCompleteRVAdapter = new ServiceProviderAppointmentCompleteRVAdapter(orderArrayList,this);
+        serviceProviderAppointmentCompleteRVAdapter.setClickListener(this);
 
-        rvServiceItem.setAdapter(completeAppointmentScheduleServiceProviderRVAdapter);
+        rvServiceItem.setAdapter(serviceProviderAppointmentCompleteRVAdapter);
 
         // Get Client ID from DB
         getClientIDFromDB();
@@ -287,7 +286,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
 
     @Override
     public void onItemClick(View view, int position){
-        String test = completeAppointmentScheduleServiceProviderRVAdapter.getItem(position).getOrderID();
+        String test = serviceProviderAppointmentCompleteRVAdapter.getItem(position).getOrderID();
         Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
     }
 
@@ -466,7 +465,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
                             } finally {
                                 myPdfDocument.close();
 
-                                DownloadManager downloadManager = (DownloadManager) CompleteAppointmentScheduleServiceProvider.this.getSystemService(DOWNLOAD_SERVICE);
+                                DownloadManager downloadManager = (DownloadManager) ServiceProviderAppointmentComplete.this.getSystemService(DOWNLOAD_SERVICE);
                                 downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
 
                                 Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
@@ -493,27 +492,57 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
 
         Log.e("geoLocate->",locationName);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
-
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
-
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
 
 
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentComplete.class);
+//            intent.putExtra("appointmentID",appointmentID);
+//
+//            startActivity(intent);
+//        }
+
+
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentComplete.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(),CompleteAppointmentScheduleServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
+        });
 
-            startActivity(intent);
-        }
+
     }
 
     private void gotoLocation(double latitude, double longitude) {
@@ -670,7 +699,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
                                 servicePrice = servicePrice + Double.parseDouble(order.getServicePrice());
                             }
 
-                            completeAppointmentScheduleServiceProviderRVAdapter.notifyDataSetChanged();
+                            serviceProviderAppointmentCompleteRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
                             loadingPB.setVisibility(View.GONE);
@@ -713,7 +742,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
                             e.printStackTrace();
                         }
 
-                        downloadFile(CompleteAppointmentScheduleServiceProvider.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
+                        downloadFile(ServiceProviderAppointmentComplete.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
 
                     } else {
                         Log.e("downloadReceipt->", "No such document");
@@ -872,11 +901,7 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
                 });
     }
 
-    public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), HistoryAppointmentServiceProviderTabLayout.class);
-        intent.putExtra("testPassAppointmentID",appointmentID);
-        startActivity(intent);
-    }
+
 
 
     ///// Map Function/Method
@@ -901,6 +926,11 @@ public class CompleteAppointmentScheduleServiceProvider extends AppCompatActivit
     }
     ///// Map Function/Method
 
+    public void backButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), HistoryAppointmentListServiceProviderTabLayout.class);
+        intent.putExtra("appointmentID",appointmentID);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackPressed()

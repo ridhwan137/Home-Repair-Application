@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -104,7 +103,7 @@ public class HistoryAppointmentClientRVAdapter extends RecyclerView.Adapter<Hist
                 String appointmentStatus = appointment.getAppointmentStatus();
 
                 if (appointmentStatus.equals("complete")){
-                    Intent intent = new Intent(context, CompleteAppointmentScheduleClient.class);
+                    Intent intent = new Intent(context, ClientAppointmentComplete.class);
                     intent.putExtra("appointmentID",appointment.getAppointmentID());
                     context.startActivity(intent);
                     Log.e("testPassAppointmentID", appointment.getAppointmentID());

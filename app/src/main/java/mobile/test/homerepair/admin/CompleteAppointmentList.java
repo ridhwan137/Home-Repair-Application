@@ -22,7 +22,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -32,7 +31,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.unnecessary.HomeClient;
 import mobile.test.homerepair.model.Appointment;
 
 public class CompleteAppointmentList extends AppCompatActivity implements CompleteAppointmentListRVAdapter.ItemClickListener{
@@ -61,7 +59,7 @@ public class CompleteAppointmentList extends AppCompatActivity implements Comple
         btn_BackToHome = findViewById(R.id.btn_BackToHome);
 
         loadingPB = findViewById(R.id.idProgressBar);
-        rvCompleteAppointment = findViewById(R.id.rvPendingAppointment);
+        rvCompleteAppointment = findViewById(R.id.rvListAppointment);
         et_searchService = findViewById(R.id.et_searchService);
 
         appointmentArrayList = new ArrayList<>();

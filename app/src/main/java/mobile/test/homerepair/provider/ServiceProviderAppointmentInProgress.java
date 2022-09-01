@@ -72,11 +72,11 @@ import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
 
-public class InProgressAppointmentServiceProvider extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,InProgressAppointmentServiceProviderRVAdapter.ItemClickListener {
+public class ServiceProviderAppointmentInProgress extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , ServiceProviderAppointmentInProgressRVAdapter.ItemClickListener {
 
     private RecyclerView rvServiceItem;
     private ArrayList<Order> orderArrayList;
-    private InProgressAppointmentServiceProviderRVAdapter inProgressAppointmentServiceProviderRVAdapter;
+    private ServiceProviderAppointmentInProgressRVAdapter serviceProviderAppointmentInProgressRVAdapter;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -167,10 +167,10 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
         rvServiceItem.setHasFixedSize(true);
         rvServiceItem.setLayoutManager(new LinearLayoutManager(this));
 
-        inProgressAppointmentServiceProviderRVAdapter = new InProgressAppointmentServiceProviderRVAdapter(orderArrayList,this);
-        inProgressAppointmentServiceProviderRVAdapter.setClickListener(this);
+        serviceProviderAppointmentInProgressRVAdapter = new ServiceProviderAppointmentInProgressRVAdapter(orderArrayList,this);
+        serviceProviderAppointmentInProgressRVAdapter.setClickListener(this);
 
-        rvServiceItem.setAdapter(inProgressAppointmentServiceProviderRVAdapter);
+        rvServiceItem.setAdapter(serviceProviderAppointmentInProgressRVAdapter);
 
         // Get Client ID from DB
         getClientIDFromDB();
@@ -261,7 +261,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     Toast.makeText(getApplicationContext(), "We have notify the client, please wait for client to complete the appointment", Toast.LENGTH_SHORT).show();
 
 
-//                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
+//                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);
 //                    intent.putExtra("appointmentID",appointmentID);
 //                    Log.e("testPassAppointmentID",appointmentID);
 //                    startActivity(intent);
@@ -279,7 +279,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     @Override
     public void onItemClick(View view, int position){
-        String test = inProgressAppointmentServiceProviderRVAdapter.getItem(position).getOrderID();
+        String test = serviceProviderAppointmentInProgressRVAdapter.getItem(position).getOrderID();
 //        Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
     }
 
@@ -378,27 +378,57 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
         Log.e("geoLocate->",locationName);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(),InProgressAppointmentServiceProvider.class);
+//            intent.putExtra("appointmentID",appointmentID);
+//            overridePendingTransition(0,0);
+//            startActivity(intent);
+//        }
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
-
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
 
 
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
+
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
+
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+
+                    Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentInProgress.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(),InProgressAppointmentServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
+        });
 
-            startActivity(intent);
-        }
+
     }
 
     private void gotoLocation(double latitude, double longitude) {
@@ -610,11 +640,11 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Intent intent = new Intent(getApplicationContext(), InProgressAppointmentServiceProvider.class);
+                        Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentInProgress.class);
                         intent.putExtra("appointmentID",appointmentID);
                         startActivity(intent);
 
-                        InProgressAppointmentServiceProvider.this.finish();
+                        ServiceProviderAppointmentInProgress.this.finish();
 
                         Toast.makeText(getApplicationContext(), "Services added successfully.", Toast.LENGTH_SHORT).show();
                     }
@@ -626,43 +656,6 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     }
                 });
     }
-
-/*
-
-    public void displayServiceOfferFromTableServiceOffer(){
-        // Display on recycleview and get data from DB collection serviceOffer by User ID
-        db.collection("serviceOffer")
-                .whereEqualTo("userID",currentUserID)
-                .get()
-                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
-                    @Override
-                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
-
-                        if (!queryDocumentSnapshots.isEmpty()) {
-
-                            loadingPB.setVisibility(View.GONE);
-                            List<DocumentSnapshot> list = queryDocumentSnapshots.getDocuments();
-                            for (DocumentSnapshot d : list) {
-
-                                Services c = d.toObject(Services.class);
-                                orderArrayList.add(c);
-                            }
-
-                            inProgressAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
-                        } else {
-                            // if the snapshot is empty we are displaying a toast message.
-                            loadingPB.setVisibility(View.GONE);
-                        }
-                    }
-                }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-
-                Toast.makeText(getApplicationContext(), "Fail to get the data.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-*/
 
 
     public void displayServiceOfferFromTableOrder(){
@@ -695,7 +688,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                                 servicePrice = servicePrice + Double.parseDouble(order.getServicePrice());
                             }
 
-                            inProgressAppointmentServiceProviderRVAdapter.notifyDataSetChanged();
+                            serviceProviderAppointmentInProgressRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
                             loadingPB.setVisibility(View.GONE);
@@ -851,7 +844,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                     storageReference = FirebaseStorage.getInstance().getReference("images/"+ "receiptpic " +fileName);
 
                     //upload the photo uploaded from camera to storage
-                    storageReference.putFile(getImageUri(InProgressAppointmentServiceProvider.this,bitmap))
+                    storageReference.putFile(getImageUri(ServiceProviderAppointmentInProgress.this,bitmap))
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
                                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -866,8 +859,6 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
                                             Log.e("URL1 ", "onSuccess: " + uri);
                                             urlReceiptPicture = uri.toString();
-
-//                                            updatePictureUrl();
 
                                             addReceiptPictureUrlToDB();
 
@@ -948,66 +939,8 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
     }
 
 
-    public void updatePictureUrl(){
-        DocumentReference nameRef = db.collection("appointment").document(appointmentID);
-        nameRef
-                .update("receiptPictureURL", urlReceiptPicture)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Log.e("EditName", "DocumentSnapshot successfully updated!");
-
-//                        Toast.makeText(getApplicationContext(), "updated successfully.", Toast.LENGTH_SHORT).show();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w("EditName", "Error updating document", e);
-                    }
-                });
-    }
-
 
     public void addReceiptPictureUrlToDB(){
-
-        // Make condition, if urlReceiptPicture not exist it will add new
-        // if urlReceiptPicture exist it will merge
-
-
-        /*
-        try {
-            Log.e("addPictureUrlToDB->",getReceiptURLFromDB);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        //////////////////////////////
-        Map<String, Object> completeAppointment = new HashMap<>();
-
-        completeAppointment.put("receiptPictureURL", urlReceiptPicture);
-
-        Log.e("testMapData", String.valueOf(completeAppointment));
-
-        db.collection("appointment").document(appointmentID)
-
-                .set(completeAppointment, SetOptions.merge())
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        Toast.makeText(getApplicationContext(), "Added successfully.", Toast.LENGTH_SHORT).show();
-                        Log.e("addReceiptPictureUrlToDB->", "Error writing document");
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e("addReceiptPictureUrlToDB->", "Error writing document", e);
-                    }
-                });
-        //////////////////////////////
-        */
 
 
         if (getReceiptURLFromDB == null){
@@ -1032,11 +965,12 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
                         public void onSuccess(Void aVoid) {
                             Toast.makeText(getApplicationContext(), "Successfully Added.", Toast.LENGTH_SHORT).show();
                             Log.e("addReceiptPictureUrlToDB->", "Added successfully");
-                            Intent intent = new Intent(getApplicationContext(), InProgressAppointmentServiceProvider.class);
+                            Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentInProgress.class);
                             intent.putExtra("appointmentID",appointmentID);
+                            overridePendingTransition(0,0);
                             startActivity(intent);
 
-                            InProgressAppointmentServiceProvider.this.finish();
+                            ServiceProviderAppointmentInProgress.this.finish();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -1076,11 +1010,7 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
 
     }
 
-    public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
-        intent.putExtra("testPassAppointmentID",appointmentID);
-        startActivity(intent);
-    }
+
 
 
     ///// Map Function/Method
@@ -1104,6 +1034,13 @@ public class InProgressAppointmentServiceProvider extends AppCompatActivity impl
         mGoogleMap = googleMap;
     }
     ///// Map Function/Method
+
+
+    public void backButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);
+        intent.putExtra("appointmentID",appointmentID);
+        startActivity(intent);
+    }
 
 
     @Override

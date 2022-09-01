@@ -83,12 +83,12 @@ public class ProviderDisplayServiceOffer extends AppCompatActivity implements Pr
                         return true;
 
                     case R.id.menu_appointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(),AppointmentScheduleServiceProviderTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(),AppointmentScheduleListServiceProviderTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.menu_historyAppointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(),HistoryAppointmentServiceProviderTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(),HistoryAppointmentListServiceProviderTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 

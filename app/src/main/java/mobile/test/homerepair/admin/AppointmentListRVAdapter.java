@@ -31,7 +31,7 @@ public class AppointmentListRVAdapter extends RecyclerView.Adapter<AppointmentLi
     @NonNull
     @Override
     public AppointmentListRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_pending_appointment_list_row, parent,false));
+        return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_appointment_list_row, parent,false));
     }
 
     @Override

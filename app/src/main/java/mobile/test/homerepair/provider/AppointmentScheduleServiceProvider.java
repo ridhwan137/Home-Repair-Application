@@ -32,7 +32,6 @@ import java.util.List;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Appointment;
-import mobile.test.homerepair.model.Users;
 
 public class AppointmentScheduleServiceProvider extends AppCompatActivity implements AppointmentScheduleServiceProviderRVAdapter.ItemClickListener {
 
@@ -143,7 +142,7 @@ public class AppointmentScheduleServiceProvider extends AppCompatActivity implem
     public void onItemClick(View view, int position){
 
         String appointmentID = appointmentScheduleServiceProviderRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getApplicationContext(), PendingAppointmentServiceProvider.class);
+        Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentPending.class);
         intent.putExtra("testPassAppointmentID",appointmentID);
         startActivity(intent);
 

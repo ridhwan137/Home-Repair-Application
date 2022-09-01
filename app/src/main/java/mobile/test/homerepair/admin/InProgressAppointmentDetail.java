@@ -58,7 +58,6 @@ import java.util.Random;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
 import mobile.test.homerepair.model.Services;
-import mobile.test.homerepair.provider.InProgressAppointmentServiceProvider;
 
 public class InProgressAppointmentDetail extends AppCompatActivity implements ServiceOfferRVAdapter.ItemClickListener,ServiceOrderRVAdapter.ItemClickListener {
 

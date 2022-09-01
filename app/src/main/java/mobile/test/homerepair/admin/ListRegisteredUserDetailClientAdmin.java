@@ -151,6 +151,7 @@ public class ListRegisteredUserDetailClientAdmin extends AppCompatActivity imple
 
                     Intent intent = new Intent(getApplicationContext(), ListRegisteredUserDetailClientAdmin.class);
                     intent.putExtra("userID",userID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }

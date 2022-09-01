@@ -15,13 +15,12 @@ import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
-import mobile.test.homerepair.provider.CompleteAppointmentScheduleServiceProviderRVAdapter;
 
-public class CompleteAppointmentScheduleClientRVAdapter extends RecyclerView.Adapter<CompleteAppointmentScheduleClientRVAdapter.ViewHolder>{
+public class ClientAppointmentCompleteRVAdapter extends RecyclerView.Adapter<ClientAppointmentCompleteRVAdapter.ViewHolder>{
 
     private ArrayList<Order> orderArrayList;
     private Context context;
-    private CompleteAppointmentScheduleClientRVAdapter.ItemClickListener mClickListener;
+    private ClientAppointmentCompleteRVAdapter.ItemClickListener mClickListener;
 
     Order order;
 
@@ -30,19 +29,19 @@ public class CompleteAppointmentScheduleClientRVAdapter extends RecyclerView.Ada
     String TAG = "TAG";
 
     // creating constructor for our adapter class
-    public CompleteAppointmentScheduleClientRVAdapter(ArrayList<Order> orderArrayList, Context context) {
+    public ClientAppointmentCompleteRVAdapter(ArrayList<Order> orderArrayList, Context context) {
         this.orderArrayList = orderArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public CompleteAppointmentScheduleClientRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ClientAppointmentCompleteRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_complete_appointment_schedule_client_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CompleteAppointmentScheduleClientRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ClientAppointmentCompleteRVAdapter.ViewHolder holder, int position) {
         order = orderArrayList.get(position);
 
         holder.tv_detailServiceName.setText(order.getServiceName());
@@ -79,7 +78,7 @@ public class CompleteAppointmentScheduleClientRVAdapter extends RecyclerView.Ada
         void onItemClick(View view, int position);
     }
 
-    void setClickListener(CompleteAppointmentScheduleClientRVAdapter.ItemClickListener itemClickListener) {
+    void setClickListener(ClientAppointmentCompleteRVAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

@@ -40,7 +40,6 @@ import java.util.Map;
 
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.CompleteAppointmentScheduleClient;
 
 public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener{
 
@@ -288,6 +287,7 @@ public class ApproveRegisteredUserServiceProviderDetailAdmin extends AppCompatAc
 
                     Intent intent = new Intent(getApplicationContext(), ApproveRegisteredUserServiceProviderDetailAdmin.class);
                     intent.putExtra("userID",userID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }

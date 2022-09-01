@@ -293,6 +293,7 @@ public class RequestAppointment extends AppCompatActivity implements OnMapReadyC
 
                     Intent intent = new Intent(getApplicationContext(), RequestAppointment.class);
                     intent.putExtra("userID", providerID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }

@@ -82,12 +82,12 @@ public class SearchServices extends AppCompatActivity implements SearchServicesR
                         return true;
 
                     case R.id.menu_appointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 
                     case R.id.menu_historyAppointmentSchedule:
-                        startActivity(new Intent(getApplicationContext(), HistoryAppointmentClientTabLayout.class));
+                        startActivity(new Intent(getApplicationContext(), HistoryAppointmentListClientTabLayout.class));
                         overridePendingTransition(0,0);
                         return true;
 

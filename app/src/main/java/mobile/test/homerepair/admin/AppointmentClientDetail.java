@@ -187,6 +187,7 @@ public class AppointmentClientDetail extends AppCompatActivity implements OnMapR
                     intent.putExtra("clientID",clientID);
                     intent.putExtra("appointmentLayout",appointmentLayout);
                     intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }

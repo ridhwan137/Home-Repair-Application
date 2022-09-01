@@ -36,7 +36,6 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -45,7 +44,7 @@ import java.util.Map;
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 
-public class PendingAppointmentServiceProvider extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
+public class ServiceProviderAppointmentPending extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
 
 
@@ -120,7 +119,7 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
 //                rejectAppointment();
                 rejectAppointmentUsingAppointmentStatusFromDB();
 
-                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
+                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);
                 intent.putExtra("testPassAppointmentID",appointmentID);
                 startActivity(intent);
             }
@@ -132,7 +131,7 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
 //                acceptAppointment();
                 acceptAppointmentUsingAppointmentStatusFromDB();
 
-                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
+                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);
                 intent.putExtra("testPassAppointmentID",appointmentID);
                 startActivity(intent);
 
@@ -150,27 +149,55 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
 
         Log.e("geoLocate->",locationName);
 
-        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//        try {
+//            Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+//            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
+//
+//            if(addressList.size()>0){
+//                Address address = addressList.get(0);
+//                Log.e("geoLocate->addressList->", String.valueOf(address));
+//
+//                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
+//                gotoLocation(address.getLatitude(),address.getLongitude());
+//
+//
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            Intent intent = new Intent(getApplicationContext(),PendingAppointmentServiceProvider.class);
+//            intent.putExtra("appointmentID",appointmentID);
+//            overridePendingTransition(0,0);
+//            startActivity(intent);
+//        }
 
-        try {
-            List<Address> addressList = geocoder.getFromLocationName(locationName,5);
 
-            if(addressList.size()>0){
-                Address address = addressList.get(0);
-                Log.e("geoLocate->addressList->", String.valueOf(address));
+        // Run on Thread
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                //
+                try {
+                    Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                    List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
-                mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(),address.getLongitude())));
-                gotoLocation(address.getLatitude(),address.getLongitude());
+                    if (addressList.size() > 0) {
+                        Address address = addressList.get(0);
 
+                        mGoogleMap.addMarker(new MarkerOptions().position(new LatLng(address.getLatitude(), address.getLongitude())));
+                        gotoLocation(address.getLatitude(), address.getLongitude());
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
 
+                    Intent intent = new Intent(getApplicationContext(), ServiceProviderAppointmentPending.class);
+                    intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
+                    startActivity(intent);
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-            Intent intent = new Intent(getApplicationContext(),PendingAppointmentServiceProvider.class);
-            intent.putExtra("appointmentID",appointmentID);
+        });
 
-            startActivity(intent);
-        }
+
     }
 
     private void gotoLocation(double latitude, double longitude) {
@@ -208,12 +235,21 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
                                 et_detailClientEmail.setText(document.getData().get("clientEmail").toString());
                                 et_detailClientPhone.setText(document.getData().get("clientPhone").toString());
                                 et_detailClientAddress.setText(clientFullAddress);
-                                et_message.setText(document.getData().get("message").toString());
                                 tv_detailClientDate.setText(document.getData().get("date").toString());
                                 tv_detailClientTime.setText(document.getData().get("time").toString());
 
                                 getFullAddressForMap = clientFullAddress;
                                 Log.e("displayClientInfoFromDB->",getFullAddressForMap);
+
+                                et_message.setText(document.getData().get("message").toString());
+
+                                String message = et_message.getText().toString();
+
+                                if(message.equals("") || message == null){
+                                    et_message.setText("No Message");
+                                }
+
+
                                 geoLocate();
                             }
                         } else {
@@ -543,16 +579,6 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
     // --> Notification Through Email
 
 
-
-
-
-    public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleServiceProviderTabLayout.class);
-        intent.putExtra("testPassAppointmentID",appointmentID);
-        startActivity(intent);
-    }
-
-
     ///// Map Function/Method
     @Override
     public void onConnected(@Nullable Bundle bundle) {
@@ -575,6 +601,12 @@ public class PendingAppointmentServiceProvider extends AppCompatActivity impleme
     }
     ///// Map Function/Method
 
+
+    public void backButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);
+        intent.putExtra("appointmentID",appointmentID);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackPressed()

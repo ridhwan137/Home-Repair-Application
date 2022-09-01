@@ -79,14 +79,13 @@ import java.util.Map;
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
-import mobile.test.homerepair.provider.CompleteAppointmentScheduleServiceProvider;
 
-public class InProgressAppointmentClient extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,CompleteAppointmentScheduleClientRVAdapter.ItemClickListener   {
+public class ClientInAppointmentInProgress extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , ClientAppointmentCompleteRVAdapter.ItemClickListener   {
 
 
     private RecyclerView rvServiceItem;
     private ArrayList<Order> orderArrayList;
-    private CompleteAppointmentScheduleClientRVAdapter completeAppointmentScheduleClientRVAdapter;
+    private ClientAppointmentCompleteRVAdapter clientAppointmentCompleteRVAdapter;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -211,10 +210,10 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
         rvServiceItem.setHasFixedSize(true);
         rvServiceItem.setLayoutManager(new LinearLayoutManager(this));
 
-        completeAppointmentScheduleClientRVAdapter = new CompleteAppointmentScheduleClientRVAdapter(orderArrayList,this);
-        completeAppointmentScheduleClientRVAdapter.setClickListener(this);
+        clientAppointmentCompleteRVAdapter = new ClientAppointmentCompleteRVAdapter(orderArrayList,this);
+        clientAppointmentCompleteRVAdapter.setClickListener(this);
 
-        rvServiceItem.setAdapter(completeAppointmentScheduleClientRVAdapter);
+        rvServiceItem.setAdapter(clientAppointmentCompleteRVAdapter);
 
         // Get Provider ID from DB
         getProviderIDFromDB();
@@ -462,7 +461,8 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
 
                         getAppointmentDetailFromDB_notifyProviderThroughEmail(appointmentID);
 
-                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+//                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class);
                         intent.putExtra("testPassAppointmentID",appointmentID);
                         startActivity(intent);
                     }
@@ -542,7 +542,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
 
     @Override
     public void onItemClick(View view, int position){
-        String test = completeAppointmentScheduleClientRVAdapter.getItem(position).getOrderID();
+        String test = clientAppointmentCompleteRVAdapter.getItem(position).getOrderID();
         Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
     }
 
@@ -722,7 +722,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
                             } finally {
                                 myPdfDocument.close();
 
-                                DownloadManager downloadManager = (DownloadManager) InProgressAppointmentClient.this.getSystemService(DOWNLOAD_SERVICE);
+                                DownloadManager downloadManager = (DownloadManager) ClientInAppointmentInProgress.this.getSystemService(DOWNLOAD_SERVICE);
                                 downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
 
                                 Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
@@ -786,7 +786,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
             public void run() {
                 //
                 try {
-                    Geocoder geocoder = new Geocoder(InProgressAppointmentClient.this, Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(ClientInAppointmentInProgress.this, Locale.getDefault());
                     List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
                     if (addressList.size() > 0) {
@@ -798,8 +798,9 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    Intent intent = new Intent(getApplicationContext(), InProgressAppointmentClient.class);
+                    Intent intent = new Intent(getApplicationContext(), ClientInAppointmentInProgress.class);
                     intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }
@@ -985,7 +986,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
                                 servicePrice = servicePrice + Double.parseDouble(order.getServicePrice());
                             }
 
-                            completeAppointmentScheduleClientRVAdapter.notifyDataSetChanged();
+                            clientAppointmentCompleteRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
                             loadingPB.setVisibility(View.GONE);
@@ -1028,7 +1029,7 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
                             e.printStackTrace();
                         }
 
-                        downloadFile(InProgressAppointmentClient.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
+                        downloadFile(ClientInAppointmentInProgress.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
 
                     } else {
                         Log.e("downloadReceipt->", "No such document");
@@ -1189,7 +1190,8 @@ public class InProgressAppointmentClient extends AppCompatActivity implements On
     }
 
     public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+//        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class);
         intent.putExtra("testPassAppointmentID",appointmentID);
         startActivity(intent);
     }

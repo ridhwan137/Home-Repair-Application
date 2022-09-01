@@ -1,9 +1,6 @@
 package mobile.test.homerepair.provider;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,22 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-
-import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.util.ArrayList;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
 
-public class CompleteAppointmentScheduleServiceProviderRVAdapter extends RecyclerView.Adapter<CompleteAppointmentScheduleServiceProviderRVAdapter.ViewHolder> {
+public class ServiceProviderAppointmentCompleteRVAdapter extends RecyclerView.Adapter<ServiceProviderAppointmentCompleteRVAdapter.ViewHolder> {
 
     private ArrayList<Order> orderArrayList;
     private Context context;
-    private CompleteAppointmentScheduleServiceProviderRVAdapter.ItemClickListener mClickListener;
+    private ServiceProviderAppointmentCompleteRVAdapter.ItemClickListener mClickListener;
 
 //    Services services;
 
@@ -38,19 +31,19 @@ public class CompleteAppointmentScheduleServiceProviderRVAdapter extends Recycle
     String TAG = "TAG";
 
     // creating constructor for our adapter class
-    public CompleteAppointmentScheduleServiceProviderRVAdapter(ArrayList<Order> orderArrayList, Context context) {
+    public ServiceProviderAppointmentCompleteRVAdapter(ArrayList<Order> orderArrayList, Context context) {
         this.orderArrayList = orderArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public CompleteAppointmentScheduleServiceProviderRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ServiceProviderAppointmentCompleteRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_complete_appointment_schedule_service_provider_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CompleteAppointmentScheduleServiceProviderRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServiceProviderAppointmentCompleteRVAdapter.ViewHolder holder, int position) {
 
         order = orderArrayList.get(position);
 
@@ -93,7 +86,7 @@ public class CompleteAppointmentScheduleServiceProviderRVAdapter extends Recycle
         void onItemClick(View view, int position);
     }
 
-    void setClickListener(CompleteAppointmentScheduleServiceProviderRVAdapter.ItemClickListener itemClickListener) {
+    void setClickListener(ServiceProviderAppointmentCompleteRVAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

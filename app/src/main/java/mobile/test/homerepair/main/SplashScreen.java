@@ -57,20 +57,20 @@ public class SplashScreen extends AppCompatActivity {
                             userType = document.getData().get("userType").toString();
 
                             if(userType.equals("client")){
-                                Toast.makeText(getApplicationContext(), "Authentication Success.",
-                                        Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Authentication Success",
+//                                        Toast.LENGTH_SHORT).show();
 
                                 intent = new Intent(SplashScreen.this, ProfileClient.class);
 
                             }else if (userType.equals("serviceProvider")){
 
-                                Toast.makeText(getApplicationContext(), "Authentication Success.",
-                                        Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Authentication Success",
+//                                        Toast.LENGTH_SHORT).show();
                                 intent = new Intent(SplashScreen.this, ProfileServiceProvider.class);
 
                             }else{
-                                Toast.makeText(getApplicationContext(), "Authentication Success.",
-                                        Toast.LENGTH_SHORT).show();
+//                                Toast.makeText(getApplicationContext(), "Authentication Success",
+//                                        Toast.LENGTH_SHORT).show();
                                 intent = new Intent(SplashScreen.this, HomeAdmin.class);
                             }
                         }

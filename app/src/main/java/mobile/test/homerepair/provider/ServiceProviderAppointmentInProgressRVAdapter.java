@@ -12,30 +12,22 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import net.steamcrafted.materialiconlib.MaterialIconView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
-import mobile.test.homerepair.model.Services;
 
-public class InProgressAppointmentServiceProviderRVAdapter extends RecyclerView.Adapter<InProgressAppointmentServiceProviderRVAdapter.ViewHolder> {
+public class ServiceProviderAppointmentInProgressRVAdapter extends RecyclerView.Adapter<ServiceProviderAppointmentInProgressRVAdapter.ViewHolder> {
 
     private ArrayList<Order> orderArrayList;
     private Context context;
-    private InProgressAppointmentServiceProviderRVAdapter.ItemClickListener mClickListener;
+    private ServiceProviderAppointmentInProgressRVAdapter.ItemClickListener mClickListener;
 
 //    Services services;
 
@@ -46,19 +38,19 @@ public class InProgressAppointmentServiceProviderRVAdapter extends RecyclerView.
     String TAG = "TAG";
 
     // creating constructor for our adapter class
-    public InProgressAppointmentServiceProviderRVAdapter(ArrayList<Order> orderArrayList, Context context) {
+    public ServiceProviderAppointmentInProgressRVAdapter(ArrayList<Order> orderArrayList, Context context) {
         this.orderArrayList = orderArrayList;
         this.context = context;
     }
 
     @NonNull
     @Override
-    public InProgressAppointmentServiceProviderRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ServiceProviderAppointmentInProgressRVAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         return new ViewHolder(LayoutInflater.from(context).inflate(R.layout.activity_in_progress_appointment_service_provider_row, parent, false));
     }
 
     @Override
-    public void onBindViewHolder(@NonNull InProgressAppointmentServiceProviderRVAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ServiceProviderAppointmentInProgressRVAdapter.ViewHolder holder, int position) {
         order = orderArrayList.get(position);
 
 
@@ -75,7 +67,7 @@ public class InProgressAppointmentServiceProviderRVAdapter extends RecyclerView.
                             @Override
                             public void onSuccess(Void aVoid) {
                                 Log.d("TAG", "DocumentSnapshot successfully deleted!");
-                                Intent intent = new Intent(context, InProgressAppointmentServiceProvider.class);
+                                Intent intent = new Intent(context, ServiceProviderAppointmentInProgress.class);
                                 intent.putExtra("appointmentID",order.getAppointmentID());
                                 context.startActivity(intent);
 
@@ -134,7 +126,7 @@ public class InProgressAppointmentServiceProviderRVAdapter extends RecyclerView.
         void onItemClick(View view, int position);
     }
 
-    public void setClickListener(InProgressAppointmentServiceProviderRVAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(ServiceProviderAppointmentInProgressRVAdapter.ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

@@ -90,7 +90,7 @@ public class AppointmentScheduleClientRVAdapter extends RecyclerView.Adapter<App
                 String appointmentStatus = appointment.getAppointmentStatus();
 
                 if (appointmentStatus.equals("pending")){
-                    Intent intent = new Intent(context, PendingAppointmentClient.class);
+                    Intent intent = new Intent(context, ClientAppointmentPending.class);
                     intent.putExtra("appointmentID",appointment.getAppointmentID());
                     context.startActivity(intent);
                     Log.e("testPassAppointmentID", appointment.getAppointmentID());
@@ -101,7 +101,7 @@ public class AppointmentScheduleClientRVAdapter extends RecyclerView.Adapter<App
                 }else if (appointmentStatus.equals("in-progress")){
                     Log.e("testPassAppointmentID", appointment.getAppointmentID());
 
-                    Intent intent = new Intent(context, InProgressAppointmentClient.class);
+                    Intent intent = new Intent(context, ClientInAppointmentInProgress.class);
                     intent.putExtra("appointmentID",appointment.getAppointmentID());
                     context.startActivity(intent);
                     Log.e("testPassAppointmentID", appointment.getAppointmentID());

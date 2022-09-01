@@ -203,7 +203,7 @@ public class HistoryAppointmentClient extends AppCompatActivity implements Histo
     public void onItemClick(View view, int position){
 
         String appointmentID = historyAppointmentClientRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getApplicationContext(), PendingAppointmentClient.class);
+        Intent intent = new Intent(getApplicationContext(), ClientAppointmentPending.class);
         intent.putExtra("userID",appointmentID);
         startActivity(intent);
 

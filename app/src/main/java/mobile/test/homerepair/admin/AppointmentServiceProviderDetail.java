@@ -199,6 +199,7 @@ public class AppointmentServiceProviderDetail extends AppCompatActivity implemen
                     intent.putExtra("providerID",providerID);
                     intent.putExtra("appointmentLayout",appointmentLayout);
                     intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
 
 //                    finish();

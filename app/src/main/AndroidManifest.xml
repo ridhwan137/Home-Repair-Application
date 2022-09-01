@@ -19,7 +19,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.HomeRepair">
         <activity
-            android:name=".client.InProgressAppointmentClient"
+            android:name=".client.ClientAppointmentReject"
+            android:exported="true" />
+        <activity
+            android:name=".client.ClientAppointmentCancel"
+            android:exported="true" />
+        <activity
+            android:name=".client.ClientInAppointmentInProgress"
             android:exported="true" />
         <activity
             android:name=".testDemo.TestJavaMailAPI.TestSendJavaMailAPI"
@@ -151,19 +157,31 @@
             android:name=".provider.AppointmentScheduleServiceProviderTabLayout"
             android:exported="true" />
         <activity
+            android:name=".provider.AppointmentScheduleListServiceProviderTabLayout"
+            android:exported="true" />
+        <activity
             android:name=".provider.HistoryAppointmentServiceProviderTabLayout"
+            android:exported="true" />
+        <activity
+            android:name=".provider.HistoryAppointmentListServiceProviderTabLayout"
             android:exported="true" />
         <activity
             android:name=".client.AppointmentScheduleClientTabLayout"
             android:exported="true" />
         <activity
+            android:name=".client.AppointmentScheduleListClientTabLayout"
+            android:exported="true" />
+        <activity
             android:name=".client.HistoryAppointmentClientTabLayout"
             android:exported="true" />
         <activity
-            android:name=".client.CompleteAppointmentScheduleClient"
+            android:name=".client.HistoryAppointmentListClientTabLayout"
             android:exported="true" />
         <activity
-            android:name=".provider.CompleteAppointmentScheduleServiceProvider"
+            android:name=".client.ClientAppointmentComplete"
+            android:exported="true" />
+        <activity
+            android:name=".provider.ServiceProviderAppointmentComplete"
             android:exported="true" />
         <activity
             android:name=".provider.HistoryAppointmentServiceProvider"
@@ -172,16 +190,19 @@
             android:name=".client.HistoryAppointmentClient"
             android:exported="true" />
         <activity
-            android:name=".provider.InProgressAppointmentServiceProvider"
+            android:name=".provider.ServiceProviderAppointmentInProgress"
             android:exported="true" />
         <activity
-            android:name=".provider.PendingAppointmentServiceProvider"
+            android:name=".provider.ServiceProviderAppointmentPending"
+            android:exported="true" />
+        <activity
+            android:name=".provider.ServiceProviderAppointmentReject"
             android:exported="true" />
         <activity
             android:name=".provider.AppointmentScheduleServiceProvider"
             android:exported="true" />
         <activity
-            android:name=".client.PendingAppointmentClient"
+            android:name=".client.ClientAppointmentPending"
             android:exported="true" />
         <activity
             android:name=".client.AppointmentScheduleClient"

@@ -176,7 +176,7 @@ public class Login extends AppCompatActivity {
                                             }
 
                                             if(userType.equals("client")){
-                                                Toast.makeText(getApplicationContext(), "Authentication Success.",
+                                                Toast.makeText(getApplicationContext(), "Authentication Success",
                                                         Toast.LENGTH_SHORT).show();
 
                                                 Intent intent = new Intent(Login.this, ProfileClient.class);
@@ -186,7 +186,7 @@ public class Login extends AppCompatActivity {
 
                                             else if(userType.equals("admin"))
                                             {
-                                                Toast.makeText(getApplicationContext(), "Authentication Success.",
+                                                Toast.makeText(getApplicationContext(), "Authentication Success",
                                                         Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(Login.this, HomeAdmin.class);
                                                 startActivity(intent);
@@ -196,7 +196,7 @@ public class Login extends AppCompatActivity {
                                             else if (userType.equals("serviceProvider") && registrationStatus.equals("accept"))
                                             {
 
-                                                Toast.makeText(getApplicationContext(), "Authentication Success.",
+                                                Toast.makeText(getApplicationContext(), "Authentication Success",
                                                         Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(Login.this, ProfileServiceProvider.class);
                                                 startActivity(intent);
@@ -205,18 +205,18 @@ public class Login extends AppCompatActivity {
 
                                             else if(userType.equals("serviceProvider") && registrationStatus.equals("reject"))
                                             {
-                                                Toast.makeText(getApplicationContext(), "Sorry your registration has been reject.",
+                                                Toast.makeText(getApplicationContext(), "Sorry your registration has been reject",
                                                         Toast.LENGTH_SHORT).show();
                                             }
 
                                             else if(userType.equals("serviceProvider") && registrationStatus.equals("pending"))
                                             {
-                                                Toast.makeText(getApplicationContext(), "Sorry your registration still in pending.",
+                                                Toast.makeText(getApplicationContext(), "Sorry your registration still in pending",
                                                         Toast.LENGTH_SHORT).show();
                                             }
 
                                             else{
-                                                Toast.makeText(getApplicationContext(), "Authentication Failed.",
+                                                Toast.makeText(getApplicationContext(), "Authentication Failed",
                                                         Toast.LENGTH_SHORT).show();
                                             }
                                         }

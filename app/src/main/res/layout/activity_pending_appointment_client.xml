@@ -5,7 +5,7 @@
     android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".client.PendingAppointmentClient">
+    tools:context=".client.ClientAppointmentPending">
 
 
     <LinearLayout
@@ -27,6 +27,19 @@
             android:textColor="#000000"
             android:fontFamily="@font/keepcalm_medium"
             app:backgroundTint="#000000"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginRight="50dp"
+            android:text="Pending"
+            android:textColor="#000000"
+            android:fontFamily="@font/poppins_regular"
+            android:background="#0000"
+            app:backgroundTint="#fff"/>
 
     </LinearLayout>
 

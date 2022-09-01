@@ -28,11 +28,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import mobile.test.homerepair.R;
-import mobile.test.homerepair.client.AppointmentScheduleClient;
-import mobile.test.homerepair.client.HistoryAppointmentClientRVAdapter;
-import mobile.test.homerepair.client.PendingAppointmentClient;
-import mobile.test.homerepair.client.ProfileClient;
-import mobile.test.homerepair.client.SearchServices;
 import mobile.test.homerepair.model.Appointment;
 
 public class HistoryAppointmentServiceProvider extends AppCompatActivity implements HistoryAppointmentServiceProviderRVAdapter.ItemClickListener {

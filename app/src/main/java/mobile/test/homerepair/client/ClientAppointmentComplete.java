@@ -76,14 +76,12 @@ import java.util.Locale;
 
 import mobile.test.homerepair.R;
 import mobile.test.homerepair.model.Order;
-import mobile.test.homerepair.provider.CompleteAppointmentScheduleServiceProvider;
-import mobile.test.homerepair.testDemo.TestCreatePDF;
 
-public class CompleteAppointmentScheduleClient extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener ,CompleteAppointmentScheduleClientRVAdapter.ItemClickListener  {
+public class ClientAppointmentComplete extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener , ClientAppointmentCompleteRVAdapter.ItemClickListener  {
 
     private RecyclerView rvServiceItem;
     private ArrayList<Order> orderArrayList;
-    private CompleteAppointmentScheduleClientRVAdapter completeAppointmentScheduleClientRVAdapter;
+    private ClientAppointmentCompleteRVAdapter clientAppointmentCompleteRVAdapter;
 
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -208,10 +206,10 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
         rvServiceItem.setHasFixedSize(true);
         rvServiceItem.setLayoutManager(new LinearLayoutManager(this));
 
-        completeAppointmentScheduleClientRVAdapter = new CompleteAppointmentScheduleClientRVAdapter(orderArrayList,this);
-        completeAppointmentScheduleClientRVAdapter.setClickListener(this);
+        clientAppointmentCompleteRVAdapter = new ClientAppointmentCompleteRVAdapter(orderArrayList,this);
+        clientAppointmentCompleteRVAdapter.setClickListener(this);
 
-        rvServiceItem.setAdapter(completeAppointmentScheduleClientRVAdapter);
+        rvServiceItem.setAdapter(clientAppointmentCompleteRVAdapter);
 
         // Get Provider ID from DB
         getProviderIDFromDB();
@@ -309,7 +307,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
 
     @Override
     public void onItemClick(View view, int position){
-        String test = completeAppointmentScheduleClientRVAdapter.getItem(position).getOrderID();
+        String test = clientAppointmentCompleteRVAdapter.getItem(position).getOrderID();
         Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
     }
 
@@ -489,7 +487,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                             } finally {
                                 myPdfDocument.close();
 
-                                DownloadManager downloadManager = (DownloadManager) CompleteAppointmentScheduleClient.this.getSystemService(DOWNLOAD_SERVICE);
+                                DownloadManager downloadManager = (DownloadManager) ClientAppointmentComplete.this.getSystemService(DOWNLOAD_SERVICE);
                                 downloadManager.addCompletedDownload(pdfFile.getName(), pdfFile.getName(), true, "application/pdf", pdfFile.getAbsolutePath(), pdfFile.length(), true);
 
                                 Toast.makeText(getApplicationContext(), "Saved to Downloads.", Toast.LENGTH_LONG).show();
@@ -546,7 +544,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
             public void run() {
                 //
                 try {
-                    Geocoder geocoder = new Geocoder(CompleteAppointmentScheduleClient.this, Locale.getDefault());
+                    Geocoder geocoder = new Geocoder(ClientAppointmentComplete.this, Locale.getDefault());
                     List<Address> addressList = geocoder.getFromLocationName(locationName, 5);
 
                     if (addressList.size() > 0) {
@@ -558,8 +556,9 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                 } catch (Exception e) {
                     e.printStackTrace();
 
-                    Intent intent = new Intent(getApplicationContext(), CompleteAppointmentScheduleClient.class);
+                    Intent intent = new Intent(getApplicationContext(), ClientAppointmentComplete.class);
                     intent.putExtra("appointmentID",appointmentID);
+                    overridePendingTransition(0,0);
                     startActivity(intent);
                 }
             }
@@ -726,7 +725,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                                 servicePrice = servicePrice + Double.parseDouble(order.getServicePrice());
                             }
 
-                            completeAppointmentScheduleClientRVAdapter.notifyDataSetChanged();
+                            clientAppointmentCompleteRVAdapter.notifyDataSetChanged();
                         } else {
                             // if the snapshot is empty we are displaying a toast message.
                             loadingPB.setVisibility(View.GONE);
@@ -769,7 +768,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                             e.printStackTrace();
                         }
 
-                        downloadFile(CompleteAppointmentScheduleClient.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
+                        downloadFile(ClientAppointmentComplete.this,"AppointmentReceipt",".png", Environment.DIRECTORY_DOWNLOADS,receiptDownloadPictureURI);
 
                     } else {
                         Log.e("downloadReceipt->", "No such document");
@@ -929,11 +928,7 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
                 });
     }
 
-    public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), HistoryAppointmentClientTabLayout.class);
-        intent.putExtra("testPassAppointmentID",appointmentID);
-        startActivity(intent);
-    }
+
 
 
     ///// Map Function/Method
@@ -957,6 +952,13 @@ public class CompleteAppointmentScheduleClient extends AppCompatActivity impleme
         mGoogleMap = googleMap;
     }
     ///// Map Function/Method
+
+
+    public void backButton(View view) {
+        Intent intent = new Intent(getApplicationContext(), HistoryAppointmentListClientTabLayout.class);
+        intent.putExtra("testPassAppointmentID",appointmentID);
+        startActivity(intent);
+    }
 
     @Override
     public void onBackPressed()

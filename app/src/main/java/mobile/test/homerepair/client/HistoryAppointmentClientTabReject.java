@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -145,7 +144,7 @@ public class HistoryAppointmentClientTabReject extends Fragment implements Histo
     public void onItemClick(View view, int position){
 
         String appointmentID = historyAppointmentClientRVAdapter.getItem(position).getAppointmentID();
-        Intent intent = new Intent(getContext(), PendingAppointmentClient.class);
+        Intent intent = new Intent(getContext(), ClientAppointmentPending.class);
         intent.putExtra("userID",appointmentID);
         startActivity(intent);
 

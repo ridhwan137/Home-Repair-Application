@@ -40,7 +40,7 @@
                 android:layout_gravity="center"
                 android:gravity="center"
                 android:layout_marginRight="50dp"
-                android:text="In-Progress Appointment"
+                android:text="In-Progress"
                 android:textColor="#000000"
                 android:fontFamily="@font/poppins_regular"
                 android:background="#0000"

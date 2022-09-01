@@ -31,7 +31,7 @@ import java.util.Map;
 import mobile.test.homerepair.MailAPI.JavaMailAPI;
 import mobile.test.homerepair.R;
 
-public class PendingAppointmentClient extends AppCompatActivity {
+public class ClientAppointmentPending extends AppCompatActivity {
 
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     StorageReference storageReference;
@@ -98,7 +98,8 @@ public class PendingAppointmentClient extends AppCompatActivity {
             public void onClick(View v) {
                 cancelAppointment();
 
-                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+//                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+                Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class);
                 intent.putExtra("clientID", currentUserID);
                 startActivity(intent);
 
@@ -254,10 +255,19 @@ public class PendingAppointmentClient extends AppCompatActivity {
                                 et_detailCompanyEmail.setText(document.getData().get("companyEmail").toString());
                                 et_detailCompanyPhone.setText(document.getData().get("companyPhone").toString());
                                 et_detailCompanyAddress.setText(providerFullAddress);
-                                et_message.setText(document.getData().get("message").toString());
 
                                 tv_detailCompanyDate.setText(document.getData().get("date").toString());
                                 tv_detailCompanyTime.setText(document.getData().get("time").toString());
+
+
+                                et_message.setText(document.getData().get("message").toString());
+
+                                String message = et_message.getText().toString();
+
+                                if(message.equals("") || message == null){
+                                    et_message.setText("No Message");
+                                }
+
                             }
                         } else {
                             Log.d(TAG, "Error getting documents: ", task.getException());
@@ -298,7 +308,8 @@ public class PendingAppointmentClient extends AppCompatActivity {
 
 
     public void backButton(View view) {
-        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+//        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
+        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class);
         intent.putExtra("testPassAppointmentID", appointmentID);
         startActivity(intent);
     }

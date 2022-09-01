@@ -31,43 +31,45 @@
                 android:focusable="false"
                 android:layout_weight="1.5"
                 android:fontFamily="@font/keepcalm_medium"
-                android:text="Appointment ID :"
-                android:inputType="textPersonName"
+                android:text="Appointment ID : "
+
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="0dp"
                 android:textSize="13sp"
                 tools:layout_editor_absoluteX="60dp"
                 tools:layout_editor_absoluteY="782dp" />
 
+            <TextView
+                android:id="@+id/tv_appointmentID"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="9"
+                android:focusable="false"
+                android:layout_weight="1"
 
+                android:fontFamily="@font/keepcalm_medium"
+                android:hint="Appointment ID"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:textSize="13sp"
+                android:layout_gravity="center"
+                tools:layout_editor_absoluteX="60dp"
+                tools:layout_editor_absoluteY="782dp" />
 
         </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_appointmentID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="9"
-        android:focusable="false"
-        android:layout_weight="1"
-        android:layout_marginTop="5dp"
-        android:fontFamily="@font/keepcalm_medium"
-        android:hint="Appointment ID"
-        android:inputType="textPersonName"
-        android:layout_marginLeft="20dp"
-        android:layout_marginBottom="20dp"
-        android:textSize="11sp"
-        tools:layout_editor_absoluteX="60dp"
-        tools:layout_editor_absoluteY="782dp" />
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:layout_gravity="left">
 
         <TextView
+            android:id="@+id/tv_clientNameTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="9"
@@ -101,10 +103,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:layout_gravity="left">
 
         <TextView
+            android:id="@+id/tv_providerNameTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="9"
@@ -134,11 +137,55 @@
 
     </LinearLayout>
 
+
+<!--    Service Type ROW-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="left">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_providerServiceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/keepcalm_medium"
+            android:text="Service Type :"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_providerService"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:fontFamily="@font/keepcalm_medium"
+            android:hint="Service Type"
+            android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+    </LinearLayout>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
         android:layout_gravity="left">
 
         <TextView
@@ -175,7 +222,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="5dp"
+        android:layout_marginTop="0dp"
         android:layout_gravity="left">
 
         <TextView
@@ -207,6 +254,92 @@
             tools:layout_editor_absoluteY="782dp" />
 
     </LinearLayout>
+
+
+
+<!--    Total Price ROW-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="left">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_totalPriceTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/keepcalm_medium"
+            android:text="Total Price :"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_totalPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:fontFamily="@font/keepcalm_medium"
+            android:hint="Total Price"
+            android:layout_marginLeft="0dp"
+            android:layout_gravity="bottom"
+            android:textSize="13sp"
+            tools:layout_editor_absoluteX="60dp"
+            tools:layout_editor_absoluteY="782dp" />
+
+    </LinearLayout>
+
+
+<!--    Date Complete ROW-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginTop="0dp"
+        android:layout_gravity="left">
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_dateCompleteTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1.5"
+            android:fontFamily="@font/keepcalm_medium"
+            android:text="Date Complete :"
+            android:layout_marginTop="0dp"
+            android:layout_marginLeft="20dp"
+            android:textSize="13sp" />
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_dateComplete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="9"
+            android:focusable="false"
+            android:layout_weight="1"
+            android:fontFamily="@font/keepcalm_medium"
+            android:hint="Date Complete"
+            android:layout_marginLeft="0dp"
+            android:textSize="13sp" />
+
+    </LinearLayout>
+
+
+
+
+
 
 
 
