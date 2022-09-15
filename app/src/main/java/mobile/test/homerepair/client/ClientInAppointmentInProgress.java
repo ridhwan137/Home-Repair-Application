@@ -463,7 +463,7 @@ public class ClientInAppointmentInProgress extends AppCompatActivity implements 
 
 //                        Intent intent = new Intent(getApplicationContext(), AppointmentScheduleClientTabLayout.class);
                         Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListClientTabLayout.class);
-                        intent.putExtra("testPassAppointmentID",appointmentID);
+                        intent.putExtra("appointmentID",appointmentID);
                         startActivity(intent);
                     }
                 }).addOnFailureListener(new OnFailureListener() {

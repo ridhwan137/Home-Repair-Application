@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.pdf.PdfDocument;
 import android.location.Address;
 import android.location.Geocoder;
@@ -33,6 +35,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -120,6 +123,11 @@ public class ServiceProviderAppointmentComplete extends AppCompatActivity implem
     String getFullAddressForMap;
 
     String receiptDownloadPictureURI;
+
+    // Rating Bar Properties
+    RatingBar ratingBar;
+    float rateValue;
+    boolean hasRate;
 
 
     // For Appointment Invoice
@@ -267,8 +275,109 @@ public class ServiceProviderAppointmentComplete extends AppCompatActivity implem
         });
 
 
+
+        // Rating Bar
+        ratingBar = findViewById(R.id.ratingBar);
+
+        //////////////////////////////////////
+        // Configuration Rating Bar Colour
+        /////////////////////////////////////
+
+        LayerDrawable getRatingBarDrawable = (LayerDrawable) ratingBar.getProgressDrawable();
+
+
+        // Partial star
+        DrawableCompat.setTint(DrawableCompat.wrap(getRatingBarDrawable.getDrawable(1)),
+                ContextCompat.getColor(getApplicationContext(), android.R.color.transparent));
+
+
+        ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                rateValue = ratingBar.getRating();
+                Log.e("rateValue->", String.valueOf(rateValue));
+
+            }
+        });
+
+        displayServiceRated();
+        // Rating Bar
+
+
+
         // End Bracket onCreate
     }
+
+    @Override
+    public void onItemClick(View view, int position){
+//        String test = serviceProviderAppointmentCompleteRVAdapter.getItem(position).getOrderID();
+//        Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
+
+    }
+
+
+    private void checkRatingHasRate( boolean hasRate) {
+
+        if (hasRate){
+            Log.e("hasRate_IF->", String.valueOf(hasRate));
+            ratingBar.setIsIndicator(true);
+        }else {
+            Log.e("hasRate_ELSE->", String.valueOf(hasRate));
+            ratingBar.setIsIndicator(true);
+        }
+
+    }
+
+    private void displayServiceRated() {
+
+        db.collection("appointment")
+                .whereEqualTo("appointmentID",appointmentID)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        if (task.isSuccessful()) {
+
+                            float oneUserRating = 0;
+
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                Log.e("calculateAverageRatingFromDB->", document.getId() + " => " + document.getData());
+
+
+                                try {
+                                    oneUserRating = Float.parseFloat(document.getData().get("serviceRate").toString());
+                                    Log.e("oneUserRating->", String.valueOf(oneUserRating));
+
+                                    hasRate = true;
+                                    Log.e("hasRate_TRY->", String.valueOf(hasRate));
+                                }catch (Exception e){
+                                    e.printStackTrace();
+                                    hasRate = false;
+                                    Log.e("hasRate_CATCH->", String.valueOf(hasRate));
+                                }
+
+                            }
+
+                            Log.e("hasRate_FOR->", String.valueOf(hasRate));
+
+                            checkRatingHasRate(hasRate);
+
+                            ratingBar.setRating(oneUserRating);
+
+                        } else {
+                            Log.e("calculateAverageRatingFromDB->", "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
+
+    }
+
+
 
     private void checkExternalStoragePermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
@@ -284,16 +393,7 @@ public class ServiceProviderAppointmentComplete extends AppCompatActivity implem
         }
     }
 
-    @Override
-    public void onItemClick(View view, int position){
-        String test = serviceProviderAppointmentCompleteRVAdapter.getItem(position).getOrderID();
-        Toast.makeText(getApplicationContext(), "Test"+test, Toast.LENGTH_SHORT).show();
-    }
 
-    @Override
-    public void onPointerCaptureChanged(boolean hasCapture) {
-
-    }
 
     ///////////////////////////
     // Function Create PDF

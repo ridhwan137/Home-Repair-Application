@@ -451,6 +451,18 @@
             android:text="Download Receipt"
             app:backgroundTint="#417D7A" />
 
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:progressTint="#FFCC01"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="60dp"/>
+
 
     </LinearLayout>
 

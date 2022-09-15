@@ -28,6 +28,7 @@
             android:layout_gravity="center"
             android:textColorHint="@color/black"
             android:padding="10dp"
+            app:placeholderText="e.g: appointmentID, name, date"
             app:startIconDrawable="@drawable/ic_baseline_search_24">
 
             <EditText

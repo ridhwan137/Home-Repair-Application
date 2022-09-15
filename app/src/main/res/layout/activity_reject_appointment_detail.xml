@@ -251,8 +251,9 @@
         </LinearLayout>
 
 
-
+        <!--        recyclerview show service offer-->
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_TypeOfService"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -264,8 +265,9 @@
             android:textSize="20dp"
             android:textAlignment="center" />
 
-
+        <!--        recyclerview show service offer-->
         <LinearLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"

@@ -245,7 +245,9 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
 
+<!--                    Show Message-->
                     <com.google.android.material.textfield.TextInputLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -253,6 +255,7 @@
                         android:textColorHint="@color/black">
 
                         <EditText
+                            android:visibility="gone"
                             android:id="@+id/et_message"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -609,13 +612,30 @@
             app:backgroundTint="#417D7A" />
 
 
+<!--        Reject Button-->
         <Button
+            android:visibility="gone"
             android:id="@+id/btn_rejectCompleteAppointment"
             android:layout_width="246dp"
             android:layout_height="56dp"
             android:layout_marginBottom="30dp"
             android:text="Reject"
             app:backgroundTint="#B60743" />
+
+
+
+
+        <RatingBar
+            android:id="@+id/ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isIndicator="false"
+            android:numStars="5"
+            android:stepSize="1.0"
+            android:progressTint="#FFCC01"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="60dp"/>
 
 
 

@@ -258,7 +258,7 @@ public class ServiceProviderAppointmentInProgress extends AppCompatActivity impl
 
                     getAppointmentDetailFromDB_notifyClientThroughEmail(appointmentID);
 
-                    Toast.makeText(getApplicationContext(), "We have notify the client, please wait for client to complete the appointment", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Successfully Updated, We have notify the client, please wait for client to complete the appointment", Toast.LENGTH_SHORT).show();
 
 
 //                    Intent intent = new Intent(getApplicationContext(), AppointmentScheduleListServiceProviderTabLayout.class);

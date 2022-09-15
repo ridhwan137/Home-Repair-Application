@@ -510,11 +510,14 @@ public class EditProfileServiceProvider extends AppCompatActivity {
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
                                         Log.e("updatePassword", "User password updated.");
+                                        Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+                                    }else{
+                                        Log.e("updatePassword", "User update password Fail.");
                                     }
                                 }
                             });
 
-                            Toast.makeText(getApplicationContext(), "Successfully Updated", Toast.LENGTH_SHORT).show();
+
                             Log.d(TAG, "DocumentSnapshot successfully updated!");
 
 

@@ -108,7 +108,7 @@ public class RejectAppointmentDetail extends AppCompatActivity implements Servic
                 Intent intent = new Intent(getApplicationContext(), AppointmentClientDetail.class);
                 intent.putExtra("clientID",clientID);
                 intent.putExtra("appointmentID",appointmentID);
-                intent.putExtra("appointmentLayout","cancelAppointment");
+                intent.putExtra("appointmentLayout","rejectAppointment");
                 startActivity(intent);
             }
         });
@@ -121,7 +121,7 @@ public class RejectAppointmentDetail extends AppCompatActivity implements Servic
                 Intent intent = new Intent(getApplicationContext(), AppointmentServiceProviderDetail.class);
                 intent.putExtra("providerID",providerID);
                 intent.putExtra("appointmentID",appointmentID);
-                intent.putExtra("appointmentLayout","cancelAppointment");
+                intent.putExtra("appointmentLayout","rejectAppointment");
                 startActivity(intent);
             }
         });

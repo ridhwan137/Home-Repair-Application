@@ -187,7 +187,7 @@ public class HistoryAppointmentListServiceProviderTabComplete extends Fragment i
         intent.putExtra("appointmentID",appointmentID);
         startActivity(intent);
 
-        Toast.makeText(getContext(), "Test "+ appointmentID, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "appointmentID "+ appointmentID, Toast.LENGTH_SHORT).show();
 
     }
 

@@ -74,7 +74,6 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
                 db.collection("users")
                         .whereEqualTo("email", "home.repair.management@gmail.com")
                         .get()
